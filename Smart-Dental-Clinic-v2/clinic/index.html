@@ -1,0 +1,538 @@
+<!doctype html>
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>لوحة تحكم العيادة | Smart Dental Clinic</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/styles.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="../assets/theme.css" rel="stylesheet" />
+      <link href="../assets/responsive-v1.9.2.css" rel="stylesheet" />
+  </head>
+  <body class="bg-light">
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar clinic-navbar bg-white border-bottom sticky-top shadow-sm">
+      <div class="container-fluid clinic-nav-layout px-3 px-lg-4 py-2">
+        <a class="clinic-brand text-decoration-none d-flex align-items-center gap-2" href="index.html">
+          <span class="clinic-brand-mark bg-primary-subtle text-primary p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+            <i class="bi bi-heart-pulse-fill fs-5"></i>
+          </span>
+          <span class="clinic-brand-copy">
+            <strong class="d-block text-dark">عيادة الابتسامة الحديثة</strong>
+            <small class="text-muted" style="font-size: 0.75rem;">Smart Dental Clinic • الإدارة</small>
+          </span>
+        </a>
+
+        <!-- روابط التنقل للشاشات الكبيرة -->
+        <div class="clinic-desktop-nav d-none d-xl-flex">
+          <ul class="navbar-nav flex-row align-items-center gap-1">
+            <li class="nav-item">
+              <a class="nav-link active fw-bold text-primary px-3 py-2 rounded bg-primary-subtle" href="index.html">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark px-3 py-2 rounded hover-bg-light" href="appointments.html">المواعيد</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark px-3 py-2 rounded hover-bg-light" href="patients.html">المرضى</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="treatment-plans.html">خطط العلاج</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark px-3 py-2 rounded hover-bg-light" href="doctors.html">الأطباء</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark px-3 py-2 rounded hover-bg-light" href="invoices.html">الفواتير</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark px-3 py-2 rounded hover-bg-light" href="job-applicants.html">المتقدمون</a>
+            </li>
+          <li class="nav-item"><a class="nav-link" href="inventory.html">المخزون</a></li>
+</ul>
+        </div>
+
+        <!-- الإجراءات العلوية -->
+        <div class="clinic-nav-actions d-flex align-items-center gap-2">
+          <!-- قائمة اللغات -->
+          <div class="dropdown language-dropdown">
+            <button
+              aria-label="اللغة"
+              class="top-action btn btn-light border-0 rounded-circle p-2 text-secondary d-flex align-items-center justify-content-center"
+              data-bs-toggle="dropdown"
+              title="اللغة"
+              type="button"
+              style="width: 40px; height: 40px;"
+            >
+              <i class="bi bi-globe2 fs-5"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end clean-dropdown language-menu shadow border-0 rounded-3">
+              <li>
+                <button class="dropdown-item active py-2 d-flex align-items-center gap-2" data-language="ar">
+                  <span>العربية</span><small class="text-muted ms-auto">AR</small>
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item py-2 d-flex align-items-center gap-2" data-language="en">
+                  <span>English</span><small class="text-muted ms-auto">EN</small>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- قائمة الإشعارات -->
+          <div class="dropdown notification-dropdown">
+            <button
+              aria-label="الإشعارات"
+              class="top-action btn btn-light border-0 rounded-circle p-2 text-secondary position-relative d-flex align-items-center justify-content-center"
+              data-bs-display="static"
+              data-bs-toggle="dropdown"
+              title="الإشعارات"
+              type="button"
+              style="width: 40px; height: 40px;"
+            >
+              <i class="bi bi-bell fs-5"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.65srem;">5</span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end clean-dropdown notification-menu shadow border-0 rounded-4 p-2" style="min-width: 300px;">
+              <div class="px-3 py-2 fw-bold text-dark d-flex justify-content-between align-items-center border-bottom mb-2">
+                <span>الإشعارات</span>
+                <span class="badge text-bg-primary rounded-pill">5 جديدة</span>
+              </div>
+              <a class="notification-entry dropdown-item rounded p-2 mb-1 text-wrap" href="appointments.html">
+                <div class="fw-bold text-dark">طلب حجز جديد</div>
+                <div class="small text-secondary">طلب يحتاج موافقة فورية.</div>
+              </a>
+              <a class="notification-entry dropdown-item rounded p-2 mb-1 text-wrap" href="recalls.html">
+                <div class="fw-bold text-dark">متابعة مستحقة</div>
+                <div class="small text-secondary">متابعة بانتظار الحجز.</div>
+              </a>
+              <a class="notification-entry dropdown-item rounded p-2 mb-1 text-wrap" href="lab-cases.html">
+                <div class="fw-bold text-dark">حالة مخبرية</div>
+                <div class="small text-secondary">تم استلام حالة من المختبر.</div>
+              </a>
+              <a class="notification-entry dropdown-item rounded p-2 text-wrap" href="job-applicants.html">
+                <div class="fw-bold text-dark">متقدم جديد</div>
+                <div class="small text-secondary">طلب توظيف جديد بانتظار المراجعة.</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- قائمة الحساب الإداري -->
+          <div class="dropdown profile-action-dropdown">
+            <button
+              aria-label="حساب العيادة"
+              class="profile-trigger btn btn-light border d-flex align-items-center gap-2 rounded-pill px-3 py-1"
+              data-bs-display="static"
+              data-bs-toggle="dropdown"
+              title="حساب العيادة"
+              type="button"
+            >
+              <span class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 0.85rem;">ع</span>
+              <i class="bi bi-chevron-down small text-muted"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end clean-dropdown profile-dropdown-menu shadow border-0 rounded-4 p-2" style="min-width: 260px;">
+              <div class="px-3 py-2 bg-light rounded-3 mb-2">
+                <small class="text-secondary d-block">الحساب الحالي</small>
+                <strong class="small text-dark">د. عمر ناصر</strong>
+                <div class="text-muted" style="font-size: 0.75rem;">مالك ومدير العيادة</div>
+              </div>
+              <a class="dropdown-item rounded py-2 d-flex align-items-center gap-2" href="profile.html"><i class="bi bi-hospital text-primary"></i>ملف العيادة</a>
+              <a class="dropdown-item rounded py-2 d-flex align-items-center gap-2" href="staff.html"><i class="bi bi-person-gear text-primary"></i>الموظفون والصلاحيات</a>
+              <a class="dropdown-item rounded py-2 d-flex align-items-center gap-2" href="account-settings.html"><i class="bi bi-gear text-primary"></i>إعدادات الحساب</a>
+              <a class="dropdown-item rounded py-2 d-flex align-items-center gap-2" href="job-applicants.html"><i class="bi bi-person-lines-fill text-primary"></i>المتقدمون للوظائف</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item rounded py-2 d-flex align-items-center gap-2 text-primary fw-bold bg-primary-subtle mb-1" href="../doctor/index.html">
+                <i class="bi bi-arrow-left-right"></i>تبديل لمساحة الطبيب
+              </a>
+              <button class="dropdown-item rounded py-2 d-flex align-items-center gap-2 text-danger" data-logout="">
+                <i class="bi bi-box-arrow-right"></i>تسجيل الخروج
+              </button>
+            </div>
+          </div>
+
+          <!-- زر القائمة الجانبية للشاشات -->
+          <button
+            class="btn btn-outline-primary sections-trigger d-flex align-items-center gap-1 rounded-pill px-3"
+            data-bs-target="#sectionsDrawer"
+            data-bs-toggle="offcanvas"
+            title="كل الأقسام"
+            type="button"
+          >
+            <i class="bi bi-grid-3x3-gap"></i>
+            <span class="d-none d-md-inline">كل الأقسام</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- القائمة الجانبية (Offcanvas) الشاملة للأقسام -->
+    <div class="offcanvas offcanvas-start sections-drawer" id="sectionsDrawer" tabindex="-1">
+      <div class="drawer-header border-bottom p-3 d-flex align-items-center justify-content-between bg-light">
+        <div class="drawer-clinic d-flex align-items-center gap-3">
+          <div class="drawer-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 45px; height: 45px;">ع</div>
+          <div>
+            <h6 class="mb-0 fw-bold text-dark">عيادة الابتسامة الحديثة</h6>
+            <small class="text-muted">لوحة الإدارة والتشغيل</small>
+          </div>
+        </div>
+        <button class="drawer-close btn-close" data-bs-dismiss="offcanvas" aria-label="إغلاق"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="drawer-content p-3">
+          <div class="drawer-title text-muted fw-bold small mb-2">الأساسية</div>
+          <div class="d-flex flex-column gap-1 mb-3">
+            <a class="drawer-link active d-flex align-items-center gap-3 p-2 rounded text-primary bg-primary-subtle fw-bold" href="index.html"><span class="drawer-icon"><i class="bi bi-house"></i></span><span class="flex-grow-1">الرئيسية</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="appointments.html"><span class="drawer-icon"><i class="bi bi-calendar2-check"></i></span><span class="flex-grow-1">المواعيد</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="new-appointment.html"><span class="drawer-icon"><i class="bi bi-calendar2-plus"></i></span><span class="flex-grow-1">إضافة موعد</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="patients.html"><span class="drawer-icon"><i class="bi bi-people"></i></span><span class="flex-grow-1">المرضى</span></a>
+          <a class="drawer-link" href="treatment-plans.html">
+            <span class="drawer-icon"><i class="bi bi-diagram-3"></i></span>
+            <span class="flex-grow-1">خطط العلاج</span>
+            <i class="bi bi-chevron-left text-secondary small"></i>
+          </a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="doctors.html"><span class="drawer-icon"><i class="bi bi-person-badge"></i></span><span class="flex-grow-1">الأطباء</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="inventory.html"><span class="drawer-icon"><i class="bi bi-boxes"></i></span><span class="flex-grow-1">إدارة المخزون</span></a>
+<a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="services.html"><span class="drawer-icon"><i class="bi bi-list-check"></i></span><span class="flex-grow-1">الخدمات</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="specialties.html"><span class="drawer-icon"><i class="bi bi-grid"></i></span><span class="flex-grow-1">التخصصات</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="invoices.html"><span class="drawer-icon"><i class="bi bi-receipt"></i></span><span class="flex-grow-1">الفواتير</span></a>
+          </div>
+
+          <div class="drawer-title text-muted fw-bold small mb-2">التشغيل</div>
+          <div class="d-flex flex-column gap-1 mb-3">
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="operations.html"><span class="drawer-icon"><i class="bi bi-clipboard2-pulse"></i></span><span class="flex-grow-1">التشغيل اليومي</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="recalls.html"><span class="drawer-icon"><i class="bi bi-arrow-repeat"></i></span><span class="flex-grow-1">المتابعات</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="lab-cases.html"><span class="drawer-icon"><i class="bi bi-box-seam"></i></span><span class="flex-grow-1">الحالات المخبرية</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="reports.html"><span class="drawer-icon"><i class="bi bi-bar-chart"></i></span><span class="flex-grow-1">التقارير والتحليلات</span></a>
+          </div>
+
+          <div class="drawer-title text-muted fw-bold small mb-2">التوظيف والإدارة</div>
+          <div class="d-flex flex-column gap-1 mb-3">
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="staff.html"><span class="drawer-icon"><i class="bi bi-person-gear"></i></span><span class="flex-grow-1">الموظفون والصلاحيات</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="jobs.html"><span class="drawer-icon"><i class="bi bi-briefcase"></i></span><span class="flex-grow-1">الوظائف</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="job-applicants.html"><span class="drawer-icon"><i class="bi bi-person-lines-fill"></i></span><span class="flex-grow-1">المتقدمون للوظائف</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="profile.html"><span class="drawer-icon"><i class="bi bi-hospital"></i></span><span class="flex-grow-1">ملف العيادة</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="account-settings.html"><span class="drawer-icon"><i class="bi bi-gear"></i></span><span class="flex-grow-1">إعدادات الحساب</span></a>
+          </div>
+
+          <div class="drawer-title text-muted fw-bold small mb-2">تبديل المساحة والمالية</div>
+          <div class="d-flex flex-column gap-1">
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-primary bg-light border" href="../doctor/index.html"><span class="drawer-icon"><i class="bi bi-arrow-left-right"></i></span><span class="flex-grow-1 fw-bold">الانتقال لمساحة الطبيب</span></a>
+            <a class="drawer-link d-flex align-items-center gap-3 p-2 rounded text-dark hover-bg-light" href="settlements.html"><span class="drawer-icon"><i class="bi bi-wallet2"></i></span><span class="flex-grow-1">تسويات المنصة</span></a>
+            <button class="drawer-link border-0 bg-transparent w-100 text-danger d-flex align-items-center gap-3 p-2 rounded text-end mt-2" data-logout="">
+              <span class="drawer-icon"><i class="bi bi-box-arrow-right"></i></span>
+              <span class="flex-grow-1">تسجيل الخروج</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="page-shell py-4">
+      <section class="container">
+        
+        <!-- الترويسة الترحيبية -->
+        <div class="dashboard-hero mb-4 p-4 p-lg-5 bg-primary text-white rounded-4 shadow-sm position-relative overflow-hidden">
+          <div class="row align-items-center g-4 position-relative z-1">
+            <div class="col-lg-8">
+              <span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill fw-bold">الأحد، 4 أكتوبر 2026</span>
+              <h1 class="fw-bold mb-2 fs-2">أهلاً، عيادة الابتسامة الحديثة</h1>
+              <p class="mb-0 opacity-90 fs-6">
+                هذه نظرة سريعة على تشغيل العيادة اليوم والطلبات التي تحتاج إجراء فورياً.
+              </p>
+            </div>
+            <div class="col-lg-4">
+              <div class="bg-white bg-opacity-10 backdrop-blur rounded-4 p-4 border border-white border-opacity-20 shadow-sm text-center text-lg-start">
+                <div class="small opacity-75 mb-1">حالة العيادة</div>
+                <div class="d-flex justify-content-between align-items-center my-2">
+                  <strong class="fs-5">مفتوحة الآن</strong>
+                  <span class="badge bg-success-subtle text-success px-3 py-1 rounded-pill">9:00 ص – 8:00 م</span>
+                </div>
+                <a class="btn btn-sm btn-light text-primary fw-bold w-100 mt-2 shadow-sm" href="profile.html">
+                  تعديل ساعات العمل
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- بطاقات المؤشرات الإحصائية -->
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-xl-3">
+            <div class="stat-card card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <small class="text-secondary d-block mb-1">مواعيد اليوم</small>
+                  <div class="stat-value fw-bold fs-3 text-dark">12</div>
+                </div>
+                <div class="icon-box text-primary bg-primary-subtle rounded-3 p-2 fs-4 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                  <i class="bi bi-calendar2-check"></i>
+                </div>
+              </div>
+              <div class="small text-muted mt-2">
+                8 مؤكدة • 2 انتظار • 2 مكتملة
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="stat-card card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <small class="text-secondary d-block mb-1">بانتظار الموافقة</small>
+                  <div class="stat-value fw-bold fs-3 text-warning">3</div>
+                </div>
+                <div class="icon-box text-warning bg-warning-subtle rounded-3 p-2 fs-4 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+              </div>
+              <a class="small text-primary fw-semibold text-decoration-none mt-2 d-inline-block" href="appointments.html">مراجعة الطلبات <i class="bi bi-arrow-left small"></i></a>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="stat-card card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <small class="text-secondary d-block mb-1">أطباء متاحون اليوم</small>
+                  <div class="stat-value fw-bold fs-3 text-success">4</div>
+                </div>
+                <div class="icon-box text-success bg-success-subtle rounded-3 p-2 fs-4 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                  <i class="bi bi-person-badge"></i>
+                </div>
+              </div>
+              <a class="small text-primary fw-semibold text-decoration-none mt-2 d-inline-block" href="doctors.html">عرض الأطباء <i class="bi bi-arrow-left small"></i></a>
+            </div>
+          </div>
+          <div class="col-6 col-xl-3">
+            <div class="stat-card card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <small class="text-secondary d-block mb-1">فواتير غير مكتملة</small>
+                  <div class="stat-value fw-bold fs-3 text-danger">2</div>
+                </div>
+                <div class="icon-box text-danger bg-danger-subtle rounded-3 p-2 fs-4 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                  <i class="bi bi-receipt"></i>
+                </div>
+              </div>
+              <a class="small text-primary fw-semibold text-decoration-none mt-2 d-inline-block" href="invoices.html">عرض الفواتير <i class="bi bi-arrow-left small"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- المواعيد والمهام العاجلة -->
+        <div class="row g-4 mb-4">
+          <!-- مواعيد اليوم -->
+          <div class="col-lg-7">
+            <div class="soft-card card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h4 class="fw-bold mb-1 text-dark fs-5">مواعيد اليوم</h4>
+                  <p class="text-secondary mb-0 small">ترتيب زمني للمواعيد القادمة.</p>
+                </div>
+                <a class="btn btn-sm btn-outline-primary px-3" href="appointments.html">كل المواعيد</a>
+              </div>
+              <div class="d-grid gap-3">
+                
+                <div class="appointment-row p-3 rounded-3 border bg-light d-flex align-items-center gap-3">
+                  <div class="timeline-time bg-primary text-white px-3 py-2 rounded-3 fw-bold small text-center" style="min-width: 70px;">10:00 ص</div>
+                  <div class="patient-mini bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; min-width: 38px;">أخ</div>
+                  <div class="flex-grow-1">
+                    <strong class="text-dark d-block">أحمد خالد</strong>
+                    <div class="small text-secondary">د. ليان الخطيب • متابعة تقويم</div>
+                  </div>
+                  <span class="badge bg-success-subtle text-success px-3 py-1 rounded-pill">مؤكد</span>
+                </div>
+
+                <div class="appointment-row p-3 rounded-3 border bg-white d-flex align-items-center gap-3">
+                  <div class="timeline-time bg-secondary-subtle text-secondary px-3 py-2 rounded-3 fw-bold small text-center" style="min-width: 70px;">11:30 ص</div>
+                  <div class="patient-mini bg-secondary-subtle text-secondary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; min-width: 38px;">مس</div>
+                  <div class="flex-grow-1">
+                    <strong class="text-dark d-block">محمد سمير</strong>
+                    <div class="small text-secondary">د. عمر ناصر • علاج جذور</div>
+                  </div>
+                  <span class="badge bg-success-subtle text-success px-3 py-1 rounded-pill">مؤكد</span>
+                </div>
+
+                <div class="appointment-row p-3 rounded-3 border bg-white d-flex align-items-center gap-3">
+                  <div class="timeline-time bg-secondary-subtle text-secondary px-3 py-2 rounded-3 fw-bold small text-center" style="min-width: 70px;">1:00 م</div>
+                  <div class="patient-mini bg-warning-subtle text-warning-emphasis rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; min-width: 38px;">رن</div>
+                  <div class="flex-grow-1">
+                    <strong class="text-dark d-block">ريم ناصر</strong>
+                    <div class="small text-secondary">د. سارة عادل • تنظيف وتبييض</div>
+                  </div>
+                  <span class="badge bg-warning-subtle text-warning-emphasis px-3 py-1 rounded-pill">انتظار</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- تحتاج إجراء منك -->
+          <div class="col-lg-5">
+            <div class="soft-card card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+              <h4 class="fw-bold mb-3 text-dark fs-5">تحتاج إجراء منك</h4>
+              <div class="d-flex flex-column gap-3">
+                <div class="status-strip warning p-3 rounded-3 border bg-warning-subtle bg-opacity-25 border-warning-subtle">
+                  <div class="d-flex justify-content-between align-items-center gap-3">
+                    <div>
+                      <strong class="text-dark d-block">طلب حجز جديد</strong>
+                      <div class="small text-secondary">رنا سعيد • د. ليان • 5 أكتوبر 11:30 ص</div>
+                    </div>
+                    <a class="btn btn-sm btn-outline-warning text-dark fw-semibold px-3 bg-white" href="appointments.html">مراجعة</a>
+                  </div>
+                </div>
+                <div class="status-strip info p-3 rounded-3 border bg-info-subtle bg-opacity-25 border-info-subtle">
+                  <div class="d-flex justify-content-between align-items-center gap-3">
+                    <div>
+                      <strong class="text-dark d-block">طلب تعديل موعد</strong>
+                      <div class="small text-secondary">محمد خالد يريد نقل الموعد إلى 6 أكتوبر.</div>
+                    </div>
+                    <a class="btn btn-sm btn-outline-info text-dark fw-semibold px-3 bg-white" href="appointments.html">مراجعة</a>
+                  </div>
+                </div>
+                <div class="status-strip danger p-3 rounded-3 border bg-danger-subtle bg-opacity-25 border-danger-subtle">
+                  <div class="d-flex justify-content-between align-items-center gap-3">
+                    <div>
+                      <strong class="text-dark d-block">فاتورة غير مكتملة</strong>
+                      <div class="small text-secondary">IN-103 • متبقي 300 ₪</div>
+                    </div>
+                    <a class="btn btn-sm btn-outline-danger text-dark fw-semibold px-3 bg-white" href="invoices.html">فتح الفاتورة</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- الأطباء المتاحون وإجراءات سريعة -->
+        <div class="row g-4">
+          <!-- الأطباء المتاحون -->
+          <div class="col-lg-7">
+            <div class="soft-card card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0 text-dark fs-5">الأطباء المتاحون اليوم</h4>
+                <a class="btn btn-sm btn-outline-primary px-3" href="doctors.html">إدارة الأطباء</a>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="d-flex gap-3 align-items-center p-3 border rounded-3 bg-light">
+                    <div class="patient-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="bi bi-person fs-5"></i></div>
+                    <div>
+                      <strong class="text-dark d-block">د. ليان الخطيب</strong>
+                      <div class="small text-secondary">تقويم • حتى 6:00 م</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex gap-3 align-items-center p-3 border rounded-3 bg-light">
+                    <div class="patient-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="bi bi-person fs-5"></i></div>
+                    <div>
+                      <strong class="text-dark d-block">د. عمر ناصر</strong>
+                      <div class="small text-secondary">جذور • حتى 4:00 م</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex gap-3 align-items-center p-3 border rounded-3 bg-light">
+                    <div class="patient-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="bi bi-person fs-5"></i></div>
+                    <div>
+                      <strong class="text-dark d-block">د. سارة عادل</strong>
+                      <div class="small text-secondary">تجميل • 4:00–8:00 م</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex gap-3 align-items-center p-3 border rounded-3 bg-light">
+                    <div class="patient-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="bi bi-person fs-5"></i></div>
+                    <div>
+                      <strong class="text-dark d-block">د. يوسف حماد</strong>
+                      <div class="small text-secondary">طب عام • حتى 5:00 م</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- إجراءات سريعة -->
+          <div class="col-lg-5">
+            <div class="soft-card card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+              <h4 class="fw-bold mb-3 text-dark fs-5">إجراءات سريعة</h4>
+              <div class="d-grid gap-2">
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="staff.html"><i class="bi bi-person-gear fs-5"></i><span>إدارة الموظفين والصلاحيات</span></a>
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="doctors.html"><i class="bi bi-person-plus fs-5"></i><span>إضافة طبيب</span></a>
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="services.html"><i class="bi bi-plus-circle fs-5"></i><span>إضافة خدمة</span></a>
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="invoices.html"><i class="bi bi-receipt fs-5"></i><span>إنشاء / متابعة الفواتير</span></a>
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="profile.html"><i class="bi bi-clock fs-5"></i><span>تعديل ساعات العمل</span></a>
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="operations.html"><i class="bi bi-clipboard2-pulse fs-5"></i><span>التشغيل اليومي</span></a>
+                <a class="btn btn-outline-primary text-start py-2 px-3 d-flex align-items-center gap-2" href="recalls.html"><i class="bi bi-arrow-repeat fs-5"></i><span>المتابعات المستحقة</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- الفوتر -->
+    <footer class="site-footer bg-white border-top mt-5 py-5 text-secondary">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <a class="footer-brand text-decoration-none fw-bold text-dark fs-5 d-flex align-items-center gap-2" href="index.html">
+              <span class="bg-primary-subtle text-primary p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;"><i class="bi bi-heart-pulse-fill"></i></span>
+              <span>Smart Dental Clinic</span>
+            </a>
+            <p class="footer-description mt-3 mb-0 small text-muted">
+              واجهة إدارة العيادة للمواعيد، المرضى، الأطباء، المالية، التشغيل والتوظيف.
+            </p>
+          </div>
+          <div class="col-6 col-lg-3">
+            <h6 class="footer-title fw-bold text-dark mb-3">التشغيل</h6>
+            <ul class="footer-links list-unstyled d-flex flex-column gap-2 small">
+              <li><a class="text-decoration-none text-muted" href="operations.html">التشغيل اليومي</a></li>
+              <li><a class="text-decoration-none text-muted" href="recalls.html">المتابعات</a></li>
+              <li><a class="text-decoration-none text-muted" href="lab-cases.html">الحالات المخبرية</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-4">
+            <h6 class="footer-title fw-bold text-dark mb-3">الإدارة</h6>
+            <ul class="footer-links list-unstyled d-flex flex-column gap-2 small">
+              <li><a class="text-decoration-none text-muted" href="staff.html">الموظفون والصلاحيات</a></li>
+              <li><a class="text-decoration-none text-muted" href="invoices.html">الفواتير</a></li>
+              <li><a class="text-decoration-none text-muted" href="reports.html">التقارير التشغيلية</a></li>
+              <li><a class="text-decoration-none text-muted" href="job-applicants.html">المتقدمون للوظائف</a></li>
+              <li><a class="text-decoration-none text-muted" href="account-settings.html">إعدادات الحساب</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom mt-4 pt-4 border-top d-flex flex-column flex-md-row justify-content-between gap-2 small text-muted">
+          <div>© <span data-year=""></span> Smart Dental Clinic — Graduation Project</div>
+          <div>Clinic Management Front-end Demo</div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- التوست (Toast) -->
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0 shadow" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- السكريبتات -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+    <script src="../assets/ux.js" defer></script>
+  </body>
+</html>

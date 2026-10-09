@@ -1,0 +1,194 @@
+<!doctype html>
+
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <title>المختبرات | Clinic Staff</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/styles.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="../assets/theme.css" rel="stylesheet" />
+    <link href="../assets/responsive-v1.9.2.css" rel="stylesheet" />
+  </head>
+  <body
+    data-page-permission="labs.view"
+    data-staff-account-status="active"
+    data-staff-permissions="appointments.view appointments.manage patients.view patients.create invoices.view invoices.payments.create labs.view lab_cases.manage"
+  >
+    <nav class="navbar clinic-navbar bg-white border-bottom sticky-top">
+      <div class="container-fluid clinic-nav-layout px-3 px-lg-4">
+        <a class="clinic-brand clinic-brand-left" href="index.html"
+          ><span class="clinic-brand-mark"
+            ><i class="bi bi-person-workspace"></i></span
+          ><span class="clinic-brand-copy"
+            ><strong>مساحة موظف العيادة</strong
+            ><small>عيادة الابتسامة الحديثة</small></span
+          ></a
+        >
+        <div class="clinic-desktop-nav d-none d-xl-flex justify-content-center">
+          <ul class="navbar-nav flex-row align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-requires-permission="appointments.view"
+                href="appointments.html"
+                >المواعيد</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-requires-permission="patients.view"
+                href="patients.html"
+                >المرضى</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-requires-permission="invoices.view"
+                href="invoices.html"
+                >الفواتير</a
+              >
+            </li>
+            <li class="nav-item"><a class="nav-link active fw-bold" data-requires-permission="labs.view" href="lab-cases.html">المختبرات</a></li>
+          </ul>
+        </div>
+        <div class="clinic-nav-actions">
+          <div class="dropdown profile-action-dropdown">
+            <button
+              class="clinic-profile-trigger compact-profile-trigger"
+              data-bs-display="static"
+              data-bs-toggle="dropdown"
+            >
+              <span class="clinic-avatar">ن</span
+              ><i
+                class="bi bi-chevron-down small text-secondary d-none d-sm-inline"
+              ></i>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-end clean-dropdown profile-dropdown-menu"
+            >
+              <div class="px-3 py-2">
+                <strong class="d-block">نور علي</strong
+                ><small class="text-secondary">منسق عيادة • STAFF-166</small>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="profile.html"
+                ><i class="bi bi-person"></i>الملف والصلاحيات</a
+              >
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item text-danger" data-logout="">
+                <i class="bi bi-box-arrow-right"></i>تسجيل الخروج
+              </button>
+            </div>
+          </div>
+          <button
+            class="btn btn-outline-primary sections-trigger"
+            data-bs-target="#sectionsDrawer"
+            data-bs-toggle="offcanvas"
+          >
+            <i class="bi bi-grid-3x3-gap"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="offcanvas offcanvas-start mobile-drawer sections-drawer"
+      id="sectionsDrawer"
+      tabindex="-1"
+    >
+      <div class="drawer-header">
+        <div class="drawer-clinic">
+          <div class="drawer-avatar">ن</div>
+          <div>
+            <h6 class="mb-1 fw-bold">نور علي</h6>
+            <small class="opacity-75">منسق عيادة</small>
+          </div>
+        </div>
+        <button class="drawer-close" data-bs-dismiss="offcanvas">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="drawer-content">
+          <div class="drawer-title">المتاح لك</div>
+          <a class="drawer-link" href="index.html"
+            ><span class="drawer-icon"><i class="bi bi-house"></i></span
+            ><span class="flex-grow-1">الرئيسية</span></a
+          ><a
+            class="drawer-link"
+            data-requires-permission="appointments.view"
+            href="appointments.html"
+            ><span class="drawer-icon"
+              ><i class="bi bi-calendar2-check"></i></span
+            ><span class="flex-grow-1">المواعيد</span></a
+          ><a
+            class="drawer-link"
+            data-requires-permission="patients.view"
+            href="patients.html"
+            ><span class="drawer-icon"><i class="bi bi-people"></i></span
+            ><span class="flex-grow-1">المرضى</span></a
+          ><a
+            class="drawer-link"
+            data-requires-permission="invoices.view"
+            href="invoices.html"
+            ><span class="drawer-icon"><i class="bi bi-receipt"></i></span
+            ><span class="flex-grow-1">الفواتير</span></a
+          ><a class="drawer-link active" data-requires-permission="labs.view" href="lab-cases.html"><span class="drawer-icon"><i class="bi bi-box-seam"></i></span><span class="flex-grow-1">المختبرات</span></a>
+          <div class="drawer-title mt-4">الحساب</div>
+          <a class="drawer-link" href="profile.html"
+            ><span class="drawer-icon"><i class="bi bi-person-gear"></i></span
+            ><span class="flex-grow-1">الملف والصلاحيات</span></a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="staffLabDirectory" class="d-none" aria-hidden="true">
+      <span data-staff-lab-record data-id="elite" data-name="Elite Dental Lab" data-address="نابلس - رفيديا" data-phone="0599 123 456" data-status="active"></span>
+      <span data-staff-lab-record data-id="smile" data-name="Smile Lab" data-address="رام الله - البيرة" data-phone="0599 443 322" data-status="active"></span>
+      <span data-staff-lab-record data-id="ortho" data-name="Ortho Lab" data-address="جنين - وسط البلد" data-phone="0568 122 334" data-status="active"></span>
+      <span data-staff-lab-record data-id="classic" data-name="Classic Dental Lab" data-address="نابلس" data-phone="0598 555 777" data-status="archived"></span>
+    </div>
+    <main class="page-shell"><section class="container py-4 py-lg-5">
+        <div class="mb-4"><h1 class="fw-bold fs-2 mb-2">المختبرات والحالات المخبرية</h1><p class="text-secondary mb-0">يمكنك متابعة الحالات وتسجيل الإرسال والاستلام حسب صلاحيتك. إدارة المختبرات نفسها متاحة فقط لمن يملك صلاحية خاصة.</p></div>
+        <div class="alert alert-light border rounded-4"><i class="bi bi-shield-check ms-1"></i>الحساب الحالي يملك <strong>عرض المختبرات</strong> و<strong>إدارة الحالات المخبرية</strong>، ولا يملك إضافة أو أرشفة مختبرات.</div>
+        <div class="filter-panel mb-4"><div class="row g-3"><div class="col-lg-7"><input class="form-control" id="staffLabSearch" placeholder="ابحث باسم المختبر أو المدينة" /></div><div class="col-lg-5"><select class="form-select" id="staffLabState"><option value="active">المختبرات النشطة</option><option value="archived">المؤرشفة</option><option value="all">الكل</option></select></div></div></div>
+        <div class="row g-4" id="staffLabsGrid">
+          <div class="col-md-6 col-xl-4" data-staff-lab data-status="active" data-search="elite dental lab نابلس"><div class="soft-card p-4 h-100"><div class="d-flex justify-content-between mb-3"><div><h5 class="fw-bold mb-1">Elite Dental Lab</h5><small class="text-secondary">نابلس • 0599 123 456</small></div><span class="badge text-bg-success">نشط</span></div><div class="d-flex justify-content-between py-2 border-top"><span>حالات مفتوحة</span><strong>4</strong></div><div class="d-flex justify-content-between py-2"><span>متأخرة</span><strong class="text-danger">1</strong></div><a class="btn btn-primary w-100 mt-2" href="lab-details.html?lab=elite">فتح الحالات</a></div></div>
+          <div class="col-md-6 col-xl-4" data-staff-lab data-status="active" data-search="smile lab رام الله"><div class="soft-card p-4 h-100"><div class="d-flex justify-content-between mb-3"><div><h5 class="fw-bold mb-1">Smile Lab</h5><small class="text-secondary">رام الله • 0599 443 322</small></div><span class="badge text-bg-success">نشط</span></div><div class="d-flex justify-content-between py-2 border-top"><span>حالات مفتوحة</span><strong>2</strong></div><div class="d-flex justify-content-between py-2"><span>متأخرة</span><strong>0</strong></div><a class="btn btn-primary w-100 mt-2" href="lab-details.html?lab=smile">فتح الحالات</a></div></div>
+          <div class="col-md-6 col-xl-4" data-staff-lab data-status="active" data-search="ortho lab جنين"><div class="soft-card p-4 h-100"><div class="d-flex justify-content-between mb-3"><div><h5 class="fw-bold mb-1">Ortho Lab</h5><small class="text-secondary">جنين • 0568 122 334</small></div><span class="badge text-bg-success">نشط</span></div><div class="d-flex justify-content-between py-2 border-top"><span>حالات مفتوحة</span><strong>2</strong></div><div class="d-flex justify-content-between py-2"><span>متأخرة</span><strong>0</strong></div><a class="btn btn-primary w-100 mt-2" href="lab-details.html?lab=ortho">فتح الحالات</a></div></div>
+          <div class="col-md-6 col-xl-4 d-none" data-staff-lab data-status="archived" data-search="classic dental lab نابلس"><div class="soft-card p-4 h-100 opacity-75"><div class="d-flex justify-content-between mb-3"><div><h5 class="fw-bold mb-1">Classic Dental Lab</h5><small class="text-secondary">نابلس</small></div><span class="badge text-bg-secondary">مؤرشف</span></div><p class="small text-secondary">للقراءة ومراجعة التاريخ فقط.</p><a class="btn btn-light border w-100" href="lab-details.html?lab=classic">عرض التاريخ</a></div></div>
+        </div><div class="soft-card p-5 text-center d-none mt-4" id="staffLabsEmpty">لا توجد مختبرات مطابقة.</div>
+      </section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div
+        class="toast align-items-center text-bg-primary border-0"
+        id="appToast"
+      >
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button
+            class="btn-close btn-close-white m-auto ms-2"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+  <script src="../assets/ux.js" defer></script>
+</body>
+</html>

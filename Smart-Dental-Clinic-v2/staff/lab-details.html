@@ -1,0 +1,198 @@
+<!doctype html>
+
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <title>حالات المختبر | Clinic Staff</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/styles.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="../assets/theme.css" rel="stylesheet" />
+    <link href="../assets/responsive-v1.9.2.css" rel="stylesheet" />
+  </head>
+  <body
+    data-page-permission="labs.view"
+    data-staff-account-status="active"
+    data-staff-permissions="appointments.view appointments.manage patients.view patients.create invoices.view invoices.payments.create labs.view lab_cases.manage"
+  >
+    <nav class="navbar clinic-navbar bg-white border-bottom sticky-top">
+      <div class="container-fluid clinic-nav-layout px-3 px-lg-4">
+        <a class="clinic-brand clinic-brand-left" href="index.html"
+          ><span class="clinic-brand-mark"
+            ><i class="bi bi-person-workspace"></i></span
+          ><span class="clinic-brand-copy"
+            ><strong>مساحة موظف العيادة</strong
+            ><small>عيادة الابتسامة الحديثة</small></span
+          ></a
+        >
+        <div class="clinic-desktop-nav d-none d-xl-flex justify-content-center">
+          <ul class="navbar-nav flex-row align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-requires-permission="appointments.view"
+                href="appointments.html"
+                >المواعيد</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-requires-permission="patients.view"
+                href="patients.html"
+                >المرضى</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-requires-permission="invoices.view"
+                href="invoices.html"
+                >الفواتير</a
+              >
+            </li>
+            <li class="nav-item"><a class="nav-link active fw-bold" data-requires-permission="labs.view" href="lab-cases.html">المختبرات</a></li>
+          </ul>
+        </div>
+        <div class="clinic-nav-actions">
+          <div class="dropdown profile-action-dropdown">
+            <button
+              class="clinic-profile-trigger compact-profile-trigger"
+              data-bs-display="static"
+              data-bs-toggle="dropdown"
+            >
+              <span class="clinic-avatar">ن</span
+              ><i
+                class="bi bi-chevron-down small text-secondary d-none d-sm-inline"
+              ></i>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-end clean-dropdown profile-dropdown-menu"
+            >
+              <div class="px-3 py-2">
+                <strong class="d-block">نور علي</strong
+                ><small class="text-secondary">منسق عيادة • STAFF-166</small>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="profile.html"
+                ><i class="bi bi-person"></i>الملف والصلاحيات</a
+              >
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item text-danger" data-logout="">
+                <i class="bi bi-box-arrow-right"></i>تسجيل الخروج
+              </button>
+            </div>
+          </div>
+          <button
+            class="btn btn-outline-primary sections-trigger"
+            data-bs-target="#sectionsDrawer"
+            data-bs-toggle="offcanvas"
+          >
+            <i class="bi bi-grid-3x3-gap"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="offcanvas offcanvas-start mobile-drawer sections-drawer"
+      id="sectionsDrawer"
+      tabindex="-1"
+    >
+      <div class="drawer-header">
+        <div class="drawer-clinic">
+          <div class="drawer-avatar">ن</div>
+          <div>
+            <h6 class="mb-1 fw-bold">نور علي</h6>
+            <small class="opacity-75">منسق عيادة</small>
+          </div>
+        </div>
+        <button class="drawer-close" data-bs-dismiss="offcanvas">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="drawer-content">
+          <div class="drawer-title">المتاح لك</div>
+          <a class="drawer-link" href="index.html"
+            ><span class="drawer-icon"><i class="bi bi-house"></i></span
+            ><span class="flex-grow-1">الرئيسية</span></a
+          ><a
+            class="drawer-link"
+            data-requires-permission="appointments.view"
+            href="appointments.html"
+            ><span class="drawer-icon"
+              ><i class="bi bi-calendar2-check"></i></span
+            ><span class="flex-grow-1">المواعيد</span></a
+          ><a
+            class="drawer-link"
+            data-requires-permission="patients.view"
+            href="patients.html"
+            ><span class="drawer-icon"><i class="bi bi-people"></i></span
+            ><span class="flex-grow-1">المرضى</span></a
+          ><a
+            class="drawer-link"
+            data-requires-permission="invoices.view"
+            href="invoices.html"
+            ><span class="drawer-icon"><i class="bi bi-receipt"></i></span
+            ><span class="flex-grow-1">الفواتير</span></a
+          ><a class="drawer-link active" data-requires-permission="labs.view" href="lab-cases.html"><span class="drawer-icon"><i class="bi bi-box-seam"></i></span><span class="flex-grow-1">المختبرات</span></a>
+          <div class="drawer-title mt-4">الحساب</div>
+          <a class="drawer-link" href="profile.html"
+            ><span class="drawer-icon"><i class="bi bi-person-gear"></i></span
+            ><span class="flex-grow-1">الملف والصلاحيات</span></a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="staffLabDirectory" class="d-none" aria-hidden="true">
+      <span data-staff-lab-record data-id="elite" data-name="Elite Dental Lab" data-address="نابلس - رفيديا" data-phone="0599 123 456" data-status="active"></span>
+      <span data-staff-lab-record data-id="smile" data-name="Smile Lab" data-address="رام الله - البيرة" data-phone="0599 443 322" data-status="active"></span>
+      <span data-staff-lab-record data-id="ortho" data-name="Ortho Lab" data-address="جنين - وسط البلد" data-phone="0568 122 334" data-status="active"></span>
+      <span data-staff-lab-record data-id="classic" data-name="Classic Dental Lab" data-address="نابلس" data-phone="0598 555 777" data-status="archived"></span>
+    </div>
+    <main class="page-shell" data-staff-lab-details-page><section class="container py-4 py-lg-5">
+        <div class="mb-4"><a class="small text-decoration-none" href="lab-cases.html"><i class="bi bi-arrow-right ms-1"></i>العودة للمختبرات</a><div class="d-flex align-items-center gap-2 mt-2"><h1 class="fw-bold fs-2 mb-0" id="staffLabDetailName">Elite Dental Lab</h1><span class="badge text-bg-success" id="staffLabDetailStatus">نشط</span></div><p class="text-secondary mt-2 mb-0"><span id="staffLabDetailAddress">نابلس - رفيديا</span> • <span id="staffLabDetailPhone">0599 123 456</span></p></div>
+        <div class="filter-panel mb-4"><div class="row g-3"><div class="col-lg-7"><input class="form-control" id="staffLabCaseSearch" placeholder="رقم الحالة أو المريض أو الطبيب" /></div><div class="col-lg-5"><select class="form-select" id="staffLabCaseStatus"><option value="all">كل الحالات</option><option value="waiting">بانتظار الإرسال</option><option value="sent">تم الإرسال</option><option value="received">تم الاستلام</option><option value="installed">تم التركيب</option></select></div></div></div>
+        <div class="soft-card p-3"><div class="table-responsive"><table class="table align-middle mb-0 wide-data-table"><thead><tr><th>الرقم</th><th>المريض</th><th>الطبيب</th><th>العمل</th><th>الحالة</th><th>التسليم المتوقع</th><th>الإجراء</th></tr></thead><tbody>
+          <tr data-staff-lab-case data-lab="elite" data-status="waiting" data-search="LAB-1025 أحمد خالد عمر"><td><strong>LAB-1025</strong></td><td>أحمد خالد</td><td>د. عمر ناصر</td><td>تاج Zirconia • سن 46</td><td><span class="badge text-bg-secondary" data-case-status-badge>بانتظار الإرسال</span></td><td>10 أكتوبر</td><td><button class="btn btn-sm btn-primary" data-requires-permission="lab_cases.manage" data-staff-lab-action="send">تسجيل تم الإرسال</button><button class="btn btn-sm btn-light border" data-requires-permission="lab_cases.manage" data-staff-lab-transfer>نقل لمختبر</button></td></tr>
+          <tr data-staff-lab-case data-lab="elite" data-status="sent" data-search="LAB-1019 ليلى أحمد عمر"><td><strong>LAB-1019</strong></td><td>ليلى أحمد</td><td>د. عمر ناصر</td><td>تاج خزفي • سن 16</td><td><span class="badge text-bg-info" data-case-status-badge>تم الإرسال</span></td><td><span class="text-danger fw-bold">5 أكتوبر</span> <span class="badge text-bg-danger">متأخرة</span></td><td><button class="btn btn-sm btn-primary" data-requires-permission="lab_cases.manage" data-staff-lab-action="receive">تسجيل تم الاستلام</button></td></tr>
+          <tr data-staff-lab-case data-lab="elite" data-status="received" data-search="LAB-1016 ريم ناصر سارة"><td><strong>LAB-1016</strong></td><td>ريم ناصر</td><td>د. سارة عادل</td><td>Veneer • سن 12</td><td><span class="badge text-bg-success" data-case-status-badge>تم الاستلام</span></td><td>8 أكتوبر</td><td><span class="small text-secondary">بانتظار الطبيب للتركيب</span></td></tr>
+          <tr data-staff-lab-case data-lab="elite" data-status="installed" data-search="LAB-1008 محمد سمير ليان"><td><strong>LAB-1008</strong></td><td>محمد سمير</td><td>د. ليان الخطيب</td><td>Retainer</td><td><span class="badge text-bg-dark" data-case-status-badge>تم التركيب</span></td><td>30 سبتمبر</td><td><span class="small text-secondary">مكتملة</span></td></tr>
+
+          <tr data-staff-lab-case data-lab="smile" data-status="sent" data-search="LAB-1032 ريم ناصر سارة"><td><strong>LAB-1032</strong></td><td>ريم ناصر</td><td>د. سارة عادل</td><td>Veneer • سن 12</td><td><span class="badge text-bg-info" data-case-status-badge>تم الإرسال</span></td><td>12 أكتوبر</td><td><button class="btn btn-sm btn-primary" data-requires-permission="lab_cases.manage" data-staff-lab-action="receive">تسجيل تم الاستلام</button></td></tr>
+          <tr data-staff-lab-case data-lab="smile" data-status="received" data-search="LAB-1028 يوسف طارق عمر"><td><strong>LAB-1028</strong></td><td>يوسف طارق</td><td>د. عمر ناصر</td><td>E-max Crown • سن 21</td><td><span class="badge text-bg-success" data-case-status-badge>تم الاستلام</span></td><td>9 أكتوبر</td><td><span class="small text-secondary">بانتظار الطبيب للتركيب</span></td></tr>
+          <tr data-staff-lab-case data-lab="ortho" data-status="waiting" data-search="LAB-1035 محمد سمير ليان"><td><strong>LAB-1035</strong></td><td>محمد سمير</td><td>د. ليان الخطيب</td><td>Retainer</td><td><span class="badge text-bg-secondary" data-case-status-badge>بانتظار الإرسال</span></td><td>15 أكتوبر</td><td><button class="btn btn-sm btn-primary" data-requires-permission="lab_cases.manage" data-staff-lab-action="send">تسجيل تم الإرسال</button><button class="btn btn-sm btn-light border" data-requires-permission="lab_cases.manage" data-staff-lab-transfer>نقل لمختبر</button></td></tr>
+          <tr data-staff-lab-case data-lab="classic" data-status="installed" data-search="LAB-0870 خالد عادل عمر"><td><strong>LAB-0870</strong></td><td>خالد عادل</td><td>د. عمر ناصر</td><td>تاج خزفي • سن 24</td><td><span class="badge text-bg-dark" data-case-status-badge>تم التركيب</span></td><td>12 أغسطس</td><td><span class="small text-secondary">حالة تاريخية</span></td></tr>
+        </tbody></table></div><div class="text-center p-4 d-none" id="staffLabCasesEmpty">لا توجد حالات مطابقة.</div></div>
+      </section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div
+        class="toast align-items-center text-bg-primary border-0"
+        id="appToast"
+      >
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button
+            class="btn-close btn-close-white m-auto ms-2"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+  <script src="../assets/ux.js" defer></script>
+</body>
+</html>

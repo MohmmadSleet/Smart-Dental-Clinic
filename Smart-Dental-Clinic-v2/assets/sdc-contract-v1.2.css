@@ -1,0 +1,156 @@
+/* Smart Dental Clinic UI refinement v1.3
+ * Component styles intentionally inherit the site's assets/theme.css tokens.
+ * Supplemental controls use the same surfaces, button scale, typography and RTL language.
+ */
+.sdc-panel {
+  --sdc-ink: var(--text-strong, #1c3340);
+  --sdc-subtle: var(--muted, #5b6e7a);
+  --sdc-stroke: var(--border, #dde7ec);
+  --sdc-accent: var(--brand-600, #0e7490);
+  --sdc-soft: var(--brand-50, #ecf8fb);
+  direction: rtl; text-align: right;
+  min-width:0; font-family:var(--font-ar, inherit); color:var(--text, #12212b);
+  background:var(--surface, #fff); border:1px solid var(--sdc-stroke);
+  border-radius:var(--radius-md, 16px); padding:clamp(15px, 2vw, 24px);
+  box-shadow:var(--shadow-sm, 0 5px 18px #1026300b); margin:18px 0;
+}
+.sdc-panel--integrated {
+  background:transparent; border:0; border-top:1px solid var(--border-soft, #e5edf1);
+  border-radius:0; box-shadow:none; padding:18px 0 0; margin:20px 0 0;
+}
+.sdc-panel-head {display:flex;align-items:flex-start;gap:12px;margin:0 0 18px}
+.sdc-panel-icon {display:inline-grid;place-items:center; flex-shrink:0; width:40px;height:40px;
+  background:var(--brand-50, #ecf8fb);border:1px solid var(--brand-100, #d6f0f6);
+  border-radius:12px;color:var(--brand-700, #0f5f76);font-size:1.15rem}
+.sdc-panel-head-copy {flex:1;min-width:0}
+.sdc-panel-head h5 {font-size:1rem; font-weight:750; color:var(--sdc-ink); margin:0 0 4px; line-height:1.55}
+.sdc-panel-head p {font-size:.85rem;line-height:1.75;color:var(--sdc-subtle);margin:0;max-width:95ch}
+.sdc-panel--integrated .sdc-panel-icon{width:34px;height:34px;border-radius:10px;font-size:1rem}
+.sdc-panel--integrated .sdc-panel-head h5{font-size:.97rem}
+.sdc-panel-body{min-width:0}
+.sdc-panel-body > .sdc-grid:first-child{margin-top:3px}
+.sdc-panel p.small, .sdc-panel .small.text-muted, .sdc-panel .small.text-secondary {line-height:1.75}
+.sdc-panel .sdc-grid {display:grid; gap:14px;grid-template-columns:repeat(2,minmax(0,1fr));min-width:0;align-items:end}
+.sdc-panel .sdc-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.sdc-panel .sdc-grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sdc-panel .sdc-grid.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.sdc-field {display:flex; flex-direction:column; gap:7px;min-width:0; font-size:.86rem; font-weight:650;line-height:1.4;color:var(--text-body, #3f5563)}
+.sdc-field span {display:block}
+.sdc-panel .form-control,.sdc-panel .form-select {min-width:0;width:100%;height:44px;border-radius:var(--radius-sm,12px);border:1px solid var(--border,#dde7ec);
+  background-color:#fff; color:var(--text,#12212b);font-size:.89rem;font-weight:450;box-shadow:none;
+  padding:9px 12px;transition:border-color .15s ease,box-shadow .15s ease}
+.sdc-panel .form-control:focus,.sdc-panel .form-select:focus {border-color:var(--brand-400,#3fb4cf);box-shadow:var(--focus-ring,0 0 0 3px #0e749040)}
+.sdc-panel input[type="file"].form-control{height:auto;min-height:44px}
+.sdc-panel input[readonly]{background:var(--surface-soft,#f9fcfd);color:var(--text-body,#3f5563)}
+.sdc-panel input:disabled,.sdc-panel select:disabled {opacity:.74;cursor:not-allowed;background:#f5f7f9}
+.sdc-panel .btn {display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:38px;font-weight:700;white-space:normal;
+  border-radius:10px;padding:7px 13px;line-height:1.45;font-size:.85rem}
+.sdc-panel .btn-outline-primary {border-color:var(--brand-200,#b0e1ec);background:var(--brand-50,#ecf8fb);color:var(--brand-700,#0f5f76)}
+.sdc-panel .btn-outline-primary:hover {color:#fff;background:var(--brand-600,#0e7490);border-color:var(--brand-600,#0e7490)}
+.sdc-panel .btn-outline-danger {border-color:var(--danger-border,#f6c3c3);color:var(--danger,#c62828);background:var(--danger-bg,#fdecec)}
+.sdc-panel .btn-outline-danger:hover{color:#fff;background:var(--danger,#c62828)}
+.sdc-panel .btn-link {text-decoration:none}
+.sdc-panel :is(h6,.sdc-subsection-title){color:var(--text-strong,#1c3340)}
+.sdc-items {display:grid;gap:14px;min-width:0}
+.sdc-item {position:relative; background:var(--surface,#fff);border:1px solid var(--border,#dde7ec);border-radius:15px;
+ padding:16px;box-shadow:0 3px 10px rgba(15,42,53,.025);min-width:0}
+.sdc-item:hover{border-color:var(--brand-200,#b0e1ec)}
+.sdc-item-caption{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:15px;padding-bottom:11px;border-bottom:1px solid var(--border-soft,#e5edf1)}
+.sdc-item-number{display:inline-flex;align-items:center;gap:7px;font-weight:800;color:var(--text-strong,#1c3340);font-size:.89rem}
+.sdc-item-number:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brand-500,#1a95b3);box-shadow:0 0 0 4px var(--brand-50,#ecf8fb)}
+.sdc-item-count{margin-inline-start:auto;color:var(--text-faint,#72848f);font-size:.74rem}
+.sdc-item-caption [data-remove] {border:0!important;background:transparent!important;color:var(--danger,#c62828)!important;
+ padding:5px 8px!important;font-size:.78rem!important;min-height:30px!important;white-space:nowrap}
+.sdc-item-caption [data-remove]:hover{background:var(--danger-bg,#fdecec)!important}
+.sdc-item > [data-remove]{margin-top:10px}
+.sdc-subsection-title{margin:22px 0 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+ padding-top:19px;border-top:1px solid var(--border-soft,#e5edf1);font-weight:750;font-size:.96rem}
+.sdc-subsection-title small{font-size:.76rem;font-weight:500;color:var(--sdc-subtle)}
+.sdc-panel .alert-light {background:var(--surface-soft,#f9fcfd)!important;border:1px solid var(--border-soft,#e5edf1)!important;color:var(--text-body,#3f5563)}
+.sdc-panel .alert{border-radius:12px;padding:12px 14px}
+.sdc-panel .alert-info {background:var(--info-bg,#e8f0fe);border-color:var(--info-border,#bcd0fb);color:var(--info-text,#1d4ed8)}
+.sdc-check {display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-size:.87rem;line-height:1.7;background:var(--surface-soft,#f9fcfd);
+ padding:12px 14px;border:1px solid var(--border,#dde7ec);border-radius:12px}
+.sdc-check input,.sdc-panel .form-check-input {accent-color:var(--brand-600,#0e7490);cursor:pointer}
+.sdc-check input{width:17px;height:17px;flex:0 0 17px;margin-top:3px}
+.sdc-invalid{border-color:var(--danger,#c62828)!important;background:var(--danger-bg,#fdecec)}
+#sdcInvoiceSummary {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+ padding:13px;background:var(--surface-tint,#f1f8fa)!important;border:1px solid var(--brand-100,#d6f0f6)!important;border-radius:14px}
+.sdc-money-item{display:flex;flex-direction:column;gap:3px;padding:7px 10px}
+.sdc-money-item + .sdc-money-item{border-inline-start:1px solid var(--brand-200,#b0e1ec)}
+.sdc-money-item span{font-size:.75rem;color:var(--muted,#5b6e7a)}
+.sdc-money-item strong{font-size:clamp(1.03rem,1.4vw,1.27rem);font-weight:800;direction:ltr;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text-strong,#1c3340)}
+.sdc-money-item small{font-size:.72rem;font-weight:600}
+.sdc-money-due strong{color:var(--brand-700,#0f5f76)}
+.sdc-payment-state{grid-column:1/-1;border-top:1px solid var(--brand-200,#b0e1ec);padding:8px 10px 0;font-size:.8rem;color:var(--brand-700,#0f5f76);font-weight:700}
+.sdc-payment-state:before{content:"";display:inline-block;vertical-align:middle;background:currentColor;width:7px;height:7px;border-radius:50%;margin-inline-end:7px}
+.sdc-payment-error{border-color:var(--danger-border,#f6c3c3)!important;background:var(--danger-bg,#fdecec)!important}
+.sdc-payment-error .sdc-payment-state{color:var(--danger,#c62828)}
+/* Compact accessible per-lab-case drill-down: keeps the main table scannable */
+.sdc-lab-expander{min-width:210px;max-width:360px;text-align:right}
+.sdc-lab-expander summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:9px 10px;background:var(--brand-50,#ecf8fb);border:1px solid var(--brand-200,#b0e1ec);
+  border-radius:10px;white-space:nowrap;cursor:pointer;color:var(--brand-700,#0f5f76);font-size:.79rem;font-weight:750}
+.sdc-lab-expander summary::-webkit-details-marker{display:none}
+.sdc-lab-expander summary:focus-visible{outline:2px solid var(--brand-500,#1a95b3);outline-offset:2px}
+.sdc-lab-expander summary .sdc-expander-chevron{font-size:.72rem;transition:transform .18s}
+.sdc-lab-expander[open] .sdc-expander-chevron{transform:rotate(180deg)}
+.sdc-lab-expander .sdc-panel{padding:10px;margin:8px 0 0;box-shadow:none;border:1px solid var(--border,#dde7ec);border-radius:10px;background:#fff}
+.sdc-lab-expander .sdc-panel-head{margin-bottom:9px}
+.sdc-lab-expander .sdc-panel-head h5{font-size:.84rem}
+.sdc-lab-expander .sdc-panel-head p{font-size:.74rem}
+.sdc-lab-expander .sdc-panel-icon{display:none}
+.sdc-lab-actions{display:grid;gap:9px}
+.sdc-lab-actions>div{display:flex;align-items:center;gap:9px;justify-content:space-between;border:1px solid var(--border-soft,#e5edf1)!important;
+  background:var(--surface-soft,#f9fcfd);padding:10px!important;border-radius:9px;flex-wrap:wrap}
+.sdc-lab-actions button {flex-shrink:0;font-size:.73rem!important;padding:5px 8px!important;white-space:normal;min-height:30px!important}
+.sdc-lab-summary{border-top:1px solid var(--border-soft,#e5edf1);margin:9px 0 0;padding:9px 0 0;color:var(--text-body,#3f5563);font-size:.77rem;font-weight:700;line-height:1.6}
+/* Invoices, schedule, preferences, file versions */
+.sdc-panel .table-responsive{border:1px solid var(--border,#dde7ec);border-radius:12px;overflow-x:auto}
+.sdc-panel .table {margin-bottom:0;min-width:480px;font-size:.84rem}
+.sdc-panel .table thead th {background:var(--surface-tint,#f1f8fa);color:var(--text-strong,#1c3340);font-weight:750;border-bottom:1px solid var(--border,#dde7ec);white-space:nowrap}
+.sdc-panel .table :is(th,td){padding:12px 13px;text-align:right;vertical-align:middle}
+.sdc-panel .table tbody tr:last-child :is(td,th){border-bottom:0}
+#sdcClinicFileVersions .table{min-width:0}
+.sdc-specialties{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sdc-field-title{grid-column:1/-1;font-size:.88rem;color:var(--text-body,#3f5563);font-weight:650;margin:0 0 2px}
+.sdc-specialty{display:flex;align-items:center;gap:9px;border:1px solid var(--border,#dde7ec);border-radius:11px;
+  background:#fff;padding:11px 12px;cursor:pointer;font-size:.87rem;font-weight:600;transition:border-color .15s,background .15s}
+.sdc-specialty:hover{border-color:var(--brand-300,#7fd0e1);background:var(--brand-50,#ecf8fb)}
+.sdc-specialty input{width:17px;height:17px;flex-shrink:0;accent-color:var(--brand-600,#0e7490)}
+.sdc-specialty i{margin-inline-start:auto;color:var(--brand-600,#0e7490);opacity:0}
+.sdc-specialty:has(input:checked){border-color:var(--brand-400,#3fb4cf);background:var(--brand-50,#ecf8fb)}
+.sdc-specialty:has(input:checked) i{opacity:1}
+.sdc-toast {position:fixed;bottom:24px;inset-inline-end:24px;max-width:min(420px,calc(100vw - 32px));
+  background:var(--brand-800,#134d61);color:#fff;border-radius:13px;padding:13px 17px;
+  box-shadow:var(--shadow-lg,0 24px 60px #0002);z-index:99999;font-weight:600;line-height:1.7;font-size:.87rem;direction:rtl}
+/* Context fixes: forms should integrate into original clinic/doctor settings without expanding their columns */
+#notifications > .sdc-panel, .settings-section > .sdc-panel{width:100%}
+.modal-body .sdc-panel{margin:8px 0 0}
+#sdcStaffPending{margin-block:12px}
+#sdcInvoiceItems .sdc-item{padding:12px}
+#sdcInvoiceItems .sdc-field{font-size:.79rem}
+#sdcInvoiceItems .sdc-grid.five{gap:9px}
+@media(max-width:1200px){.sdc-panel .sdc-grid.five{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sdc-panel .sdc-grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){
+  .sdc-panel{padding:16px;margin:14px 0}.sdc-panel--integrated{padding:16px 0 0;margin:14px 0 0}
+  .sdc-panel .sdc-grid,.sdc-panel .sdc-grid.three,.sdc-panel .sdc-grid.four,.sdc-panel .sdc-grid.five{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .sdc-item{padding:13px}.sdc-panel-head{gap:10px}
+  .sdc-lab-expander{max-width:none;min-width:200px}
+  .sdc-money-item{padding:5px}
+}
+@media(max-width:480px){
+ .sdc-panel .sdc-grid,.sdc-panel .sdc-grid.three,.sdc-panel .sdc-grid.four,.sdc-panel .sdc-grid.five{grid-template-columns:minmax(0,1fr)}
+ .sdc-specialties{grid-template-columns:1fr}
+ .sdc-panel .form-control,.sdc-panel .form-select{font-size:16px}
+ .sdc-panel-head p{font-size:.79rem}
+ .sdc-item-caption{flex-wrap:wrap}
+ .sdc-item-count{display:none}
+ #sdcInvoiceSummary{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sdc-money-due{grid-column:1/-1;border-top:1px solid var(--brand-200,#b0e1ec)}
+ .sdc-lab-actions>div{display:grid;grid-template-columns:1fr}
+ .sdc-toast{inset-inline:16px;bottom:16px;max-width:none}
+}
+@media(prefers-reduced-motion:reduce){.sdc-panel *, .sdc-lab-expander *{transition:none!important;animation:none!important}}

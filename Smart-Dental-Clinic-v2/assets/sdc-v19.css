@@ -1,0 +1,24 @@
+/* Smart Dental Clinic v1.9 additions: same teal, white cards and RTL spacing as existing UI */
+.sdc-v19-card{background:#fff;border:1px solid #dfebf1;border-radius:17px;padding:20px;box-shadow:0 7px 20px rgba(18,65,82,.035);font-family:inherit}
+.sdc-v19-heading{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sdc-v19-icon{color:#0d7895;background:#e8f7fb;border-radius:12px;width:42px;height:42px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.sdc-v19-state{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#f5fafc;padding:14px;border:1px solid #e1ecf0;border-radius:12px}
+.sdc-v19-setup{background:#f7fbfc;border:1px solid #dfeef2;border-radius:12px;padding:16px;margin-top:14px}
+.sdc-v19-setup[hidden],.sdc-v19-overlay[hidden],.sdc-v19-notice[hidden]{display:none!important}
+.sdc-v19-notice{position:fixed;bottom:20px;left:20px;z-index:2000;background:#087d9d;color:white;border-radius:12px;padding:12px 18px;max-width:min(450px,90vw);box-shadow:0 10px 30px #13435533}
+.sdc-v19-error{background:#b53e35}
+.sdc-v19-overlay{position:fixed;inset:0;background:#152b3a9e;z-index:1100;display:grid;place-items:center;padding:18px}
+.sdc-v19-dialog{background:white;border-radius:17px;box-shadow:0 25px 90px #10222d3f;max-width:600px;width:100%;padding:24px;max-height:90vh;overflow:auto}
+.sdc-v19-data-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sdc-v19-data-grid>div{background:#f5fafb;border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.sdc-v19-data-grid small{color:#667d8c}
+.sdc-v19-login{border:1px solid #e1edf2;border-radius:12px;padding:15px;background:#f7fbfd}
+@media(max-width:575px){.sdc-v19-data-grid{grid-template-columns:1fr}.sdc-v19-state{align-items:flex-start;flex-direction:column}.sdc-v19-dialog{padding:16px}.sdc-v19-card{padding:15px}}
+
+/* v1.9.1: appointment detail actions must not inherit the site-wide dark footer */
+.sdc-v19-dialog .sdc-v19-dialog-actions {
+  background: #fff; color: #203744; border-top: 1px solid #e2edf1;
+  padding: 14px 0 0; margin-top: 18px; min-height: auto;
+}
+.sdc-v19-dialog .sdc-v19-dialog-actions .btn { color: #24566c; border-color: #cedfe7; background: #fff; }
+.sdc-v19-dialog .sdc-v19-dialog-actions .btn:hover { color: #0d607b; background: #eef8fb; border-color: #87c6d9; }

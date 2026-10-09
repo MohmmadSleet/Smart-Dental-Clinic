@@ -1,0 +1,173 @@
+/* Smart Dental Clinic | v1.9.2 responsive-only refinements.
+   No workflow, state, permissions, or business logic changes. */
+
+/* Shared intrinsic sizing: do not let long labels expand a page viewport. */
+html { max-width: 100%; }
+body { min-width: 0; max-width: 100%; }
+img, video, canvas, svg { max-width: 100%; }
+.container, .container-fluid, .row > *, .card, .card-body, .modal-content,
+.form-control, .form-select, .input-group, .dropdown, .col, [class*="col-"] {
+  min-width: 0;
+}
+.table-responsive { max-width: 100%; -webkit-overflow-scrolling: touch; }
+.table-responsive:not(.mobile-stack-wrapper) { overflow-x: auto; }
+.table { margin-bottom: 0; }
+.table td, .table th { overflow-wrap: break-word; }
+.card, .alert, .modal-body, .offcanvas-body, .chat-bubble, .chat-input,
+.suggestion-card { overflow-wrap: anywhere; }
+.modal-dialog { max-width: min(94vw, var(--bs-modal-width, 500px)); }
+.modal-content { max-width: 100%; }
+
+@media (max-width: 991.98px) {
+  .row > *, .d-flex > .flex-grow-1, .d-flex > .flex-fill { min-width: 0; }
+  .input-group > .form-control, .input-group > .form-select { min-width: 0; }
+  .modal-dialog { margin-inline: auto; }
+  /* Topbar controls stay inside the screen even on narrow tablets. */
+  .patient-navbar .container, .navbar .container, .navbar .container-fluid {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* Long toolbars and action rows fold without hiding controls. */
+  .card-header .d-flex, .page-header .d-flex, .header-actions,
+  .filter-actions, .report-actions { flex-wrap: wrap; row-gap: .65rem; }
+  .card-header, .card-body { min-width: 0; }
+  .table-responsive:not(.mobile-stack-wrapper) table:not(.responsive-stack-table) { width: max-content; min-width: 100%; }
+  .table-responsive:not(.mobile-stack-wrapper) table:not(.responsive-stack-table) th,
+  .table-responsive:not(.mobile-stack-wrapper) table:not(.responsive-stack-table) td {
+    white-space: normal;
+    min-width: 85px;
+  }
+  .modal-dialog { margin-block: .75rem; }
+  .modal-header, .modal-footer { gap: .5rem; }
+  .modal-header .modal-title { min-width: 0; overflow-wrap: anywhere; }
+  .modal-footer { flex-wrap: wrap; }
+  input[type="file"] { max-width: 100%; }
+  .offcanvas { max-width: min(100vw, 340px); }
+}
+
+@media (max-width: 359.98px) {
+  .container, .container-fluid { padding-inline: 12px; }
+  .page-shell > .container, main > .container { padding-inline: 12px; }
+  .patient-navbar .container { padding-inline: 10px; gap: 5px; }
+  .patient-mobile-actions { gap: 2px !important; flex-shrink: 0; }
+  .patient-brand { gap: 4px !important; min-width: 0; }
+  .patient-brand .brand-main, .patient-brand .brand-accent { font-size: .94rem; }
+  .patient-navbar .navbar-brand { margin-inline: 0 !important; }
+  .site-footer .footer-bottom-links { flex-wrap: wrap; justify-content: center; row-gap: .4rem; }
+  /* A dense dashboard/report card should never force horizontal page panning. */
+  .appointment-row { flex-wrap: wrap !important; min-width: 0 !important; }
+  .clinical-card, .clinical-section { min-width: 0; max-width: 100%; }
+  .clinical-section { overflow-wrap: anywhere; }
+  .hero .row { margin-inline: 0 !important; width: 100%; }
+  .hero .row > * { padding-inline: 0 !important; }
+  .no-print.btn { max-width: 100%; }
+}
+
+/* AI diagnosis: restore the composer on mobile. The old fixed 75vh shell
+   clipped the message field and send button behind overflow:hidden. */
+@media (max-width: 767.98px) {
+  .sdc-ai-page .page-shell { padding-block: 14px !important; }
+  .sdc-ai-page .chat-shell {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden;
+    border-radius: 16px !important;
+  }
+  .sdc-ai-page .ai-toolbar { padding: 15px !important; align-items: stretch !important; }
+  .sdc-ai-page .ai-toolbar > .d-flex { min-width: 0; align-items: flex-start !important; }
+  .sdc-ai-page .ai-toolbar .icon-box { flex: 0 0 42px; width: 42px !important; height: 42px !important; }
+  .sdc-ai-page .ai-toolbar h5 { font-size: 1.05rem; line-height: 1.55; }
+  .sdc-ai-page .ai-toolbar small { display: block; line-height: 1.8; }
+  .sdc-ai-page .ai-toolbar #clearChat { align-self: flex-start; }
+  .sdc-ai-page .ai-location-card {
+    margin: 12px 14px 0 !important;
+    padding: 13px !important;
+    gap: 11px;
+    min-width: 0;
+  }
+  .sdc-ai-page .ai-location-card .btn { width: 100%; white-space: normal; }
+  .sdc-ai-page .chat-body {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 175px !important;
+    max-height: min(43dvh, 420px) !important;
+    padding: 14px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+  }
+  .sdc-ai-page .chat-row { min-width: 0; }
+  .sdc-ai-page .chat-bubble {
+    max-width: 100% !important;
+    min-width: 0;
+    padding: 12px 13px !important;
+    font-size: .92rem;
+    line-height: 1.8;
+  }
+  .sdc-ai-page .chat-input { flex: none; padding: 13px 14px !important; min-width: 0; }
+  .sdc-ai-page .chat-input .input-group { display: flex; flex-wrap: nowrap; min-width: 0; }
+  .sdc-ai-page .chat-input #chatMessage { min-width: 0; flex: 1 1 auto; width: 1%; }
+  .sdc-ai-page .chat-input #sendChat { flex: 0 0 48px; padding-inline: 12px !important; }
+  .sdc-ai-page .chat-input .quick-chip { white-space: normal; font-size: .82rem; }
+  .sdc-ai-page .ai-medical-disclaimer { padding: 11px !important; }
+  .sdc-ai-page .suggestion-card { min-width: 0 !important; width: 100%; max-width: 100%; }
+  .sdc-ai-page .suggestion-card > .d-flex { flex-wrap: wrap; }
+  .sdc-ai-page .suggestion-grid { grid-template-columns: 1fr !important; }
+  .sdc-ai-page .suggest-actions { flex-wrap: wrap; }
+  .sdc-ai-page .suggest-actions .btn { white-space: normal; }
+  .sdc-ai-page .toast-container { max-width: 100%; }
+}
+@media (max-width: 359.98px) {
+  .sdc-ai-page .ai-toolbar { padding: 12px !important; }
+  .sdc-ai-page .ai-location-card { margin-inline: 10px !important; }
+  .sdc-ai-page .chat-body { padding: 11px !important; max-height: 38dvh !important; }
+  .sdc-ai-page .chat-input { padding: 11px !important; }
+}
+
+/* Print layout continues to use its existing independent rules. */
+@media print { .sdc-ai-page .chat-body { max-height: none !important; overflow: visible !important; } }
+
+/* Tiny phones: avoid flex rows that push a third action outside a medical report. */
+@media (max-width: 575.98px) {
+  .unified-system-report .report-attachment {
+    flex-wrap: wrap;
+    gap: .6rem;
+    min-width: 0;
+  }
+  .unified-system-report .report-attachment > .flex-grow-1 {
+    flex: 1 1 55%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .unified-system-report .report-attachment > .btn {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    max-width: 100%;
+  }
+  .d-flex:has(> .badge.badge-soft) { flex-wrap: wrap; }
+  .badge.badge-soft { max-width: 100%; }
+  .hero > .container > .row { margin-inline: 0 !important; width: 100%; }
+  .hero > .container > .row > * { padding-inline: 0 !important; }
+}
+
+/* On tablets/small laptops the accumulated toolbar and location panel can
+   also exceed the legacy 650px chat shell, so keep the composer in flow. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .sdc-ai-page .chat-shell { height: auto !important; min-height: 0 !important; max-height: none !important; }
+  .sdc-ai-page .chat-body {
+    flex: none;
+    min-height: 220px !important;
+    max-height: min(44dvh, 410px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  .sdc-ai-page .chat-input { flex: none; }
+  .sdc-ai-page .suggestion-card { max-width: 100%; min-width: 0 !important; }
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .sdc-ai-page .ai-toolbar { flex-wrap: wrap; }
+}

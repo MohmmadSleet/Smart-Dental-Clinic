@@ -1,0 +1,6 @@
+/* Matches Smart Dental Clinic palette and spacing */
+#inventoryMain .soft-card{background:#fff;border:1px solid #e5edf0;border-radius:18px;box-shadow:0 8px 24px rgba(11,66,83,.05)}
+#inventoryMain .inventory-table th{white-space:nowrap;font-size:.82rem;font-weight:700;color:#41556b}
+#inventoryMain .inventory-table td{vertical-align:middle;padding-top:16px;padding-bottom:16px}
+#inventoryMain .inventory-table td:last-child{min-width:220px}
+@media(max-width:700px){#inventoryMain .inventory-table{min-width:720px}#inventoryMain .table-responsive{border-radius:10px}}

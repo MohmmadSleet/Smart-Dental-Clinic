@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>ملف المريض | Smart Dental Doctor</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/theme.css" rel="stylesheet"/>
+    <link href="../assets/responsive-v1.9.2.css" rel="stylesheet" />
+  </head>
+<body>
+<nav class="navbar doctor-navbar bg-white border-bottom sticky-top">
+<div class="container-fluid doctor-nav-layout px-3 px-lg-4">
+<a class="doctor-brand" href="index.html"><span class="doctor-brand-mark"><i class="bi bi-heart-pulse-fill"></i></span><span class="doctor-brand-copy"><strong>د. عمر ناصر</strong><small>عيادة الابتسامة الحديثة • علاج الجذور</small></span></a>
+<div class="doctor-main-nav d-none d-xl-flex">
+<ul class="navbar-nav flex-row align-items-center">
+<li class="nav-item">
+<a class="nav-link" href="index.html">الرئيسية</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="appointments.html">مواعيدي</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="schedule.html">جدولي وغيابي</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active fw-bold" href="patients.html">مرضاي</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="treatment-plans.html">خطط العلاج</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="reports.html">التقارير</a>
+</li>
+</ul>
+</div>
+<div class="doctor-nav-actions">
+<div class="dropdown language-dropdown">
+<button aria-label="اللغة" class="top-action" data-bs-display="static" data-bs-toggle="dropdown" title="اللغة" type="button">
+<i class="bi bi-globe2"></i>
+</button>
+<ul class="dropdown-menu dropdown-menu-end clean-dropdown language-menu">
+<li>
+<button class="dropdown-item active" data-language="ar">
+                  العربية
+                </button>
+</li>
+<li>
+<button class="dropdown-item" data-language="en">
+                  English
+                </button>
+</li>
+</ul>
+</div>
+<div class="notification-action">
+<button aria-label="الإشعارات" class="top-action" data-ui-popover="doctorNotifications" title="الإشعارات" type="button">
+<i class="bi bi-bell"></i><span class="notification-dot">4</span>
+</button>
+<div class="clean-dropdown notification-menu doctor-popover doctor-notification-popover" id="doctorNotifications">
+<div class="px-3 py-2 fw-bold">الإشعارات</div>
+<div class="dropdown-divider"></div>
+<a class="notification-entry" href="appointments.html"><strong>المريض أحمد وصل</strong>
+<div class="small text-secondary">
+                  موعد 11:30 جاهز لبدء الزيارة.
+                </div></a>
+<a class="notification-entry" href="reports.html"><strong>تقرير غير معتمد</strong>
+<div class="small text-secondary">
+                  مسودة تقرير بحاجة للمراجعة.
+                </div></a>
+<a class="notification-entry" href="lab-cases.html"><strong>حالة مخبرية تم استلامها</strong>
+<div class="small text-secondary">
+                  تاج أحمد خالد جاهز للتركيب.
+                </div></a>
+</div>
+</div>
+<div class="profile-action">
+<button aria-label="حساب الطبيب" class="profile-trigger" data-ui-popover="doctorProfile" title="حساب الطبيب" type="button">
+<span class="avatar-sm">ع</span><i class="bi bi-chevron-down small"></i>
+</button>
+<div class="clean-dropdown profile-menu doctor-popover doctor-profile-popover" id="doctorProfile">
+<a class="dropdown-item" href="profile.html"><i class="bi bi-person ms-2"></i>ملفي الشخصي</a>
+<a class="dropdown-item" href="settings.html"><i class="bi bi-gear ms-2"></i>الإعدادات</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item text-primary fw-bold" href="../clinic/index.html"><i class="bi bi-arrow-left-right ms-2"></i>تبديل لإدارة
+                العيادة</a>
+<div class="px-3 py-2 bg-light rounded-3 mx-2 mb-2">
+<small class="text-secondary d-block">الحساب الحالي</small>
+<strong class="small">د. عمر ناصر • مالك ومدير العيادة</strong>
+</div>
+<button class="dropdown-item text-danger" data-logout="">
+<i class="bi bi-box-arrow-right ms-2"></i>تسجيل الخروج
+              </button>
+</div>
+</div>
+<button class="btn btn-outline-primary sections-btn" data-bs-target="#sectionsDrawer" data-bs-toggle="offcanvas" title="كل الأقسام">
+<i class="bi bi-grid-3x3-gap"></i><span class="d-none d-xxl-inline">كل الأقسام</span>
+</button>
+</div>
+</div>
+</nav>
+<div class="offcanvas offcanvas-start sections-drawer" id="sectionsDrawer" tabindex="-1">
+<div class="drawer-header">
+<div class="drawer-doctor">
+<div class="drawer-avatar">ع</div>
+<div>
+<h6 class="mb-0 fw-bold">د. عمر ناصر</h6>
+<small>واجهة الطبيب</small>
+</div>
+</div>
+<button class="drawer-close" data-bs-dismiss="offcanvas">
+<i class="bi bi-x-lg"></i>
+</button>
+</div>
+<div class="offcanvas-body p-0">
+<div class="drawer-content">
+<div class="drawer-title">العمل اليومي</div>
+<a class="drawer-link" href="index.html"><span class="drawer-icon"><i class="bi bi-house"></i></span><span class="flex-grow-1">الرئيسية</span></a>
+<a class="drawer-link" href="appointments.html"><span class="drawer-icon"><i class="bi bi-calendar2-check"></i></span><span class="flex-grow-1">مواعيدي</span></a><a class="drawer-link" href="schedule.html"><span class="drawer-icon"><i class="bi bi-calendar-week"></i></span><span class="flex-grow-1">جدولي وغيابي</span></a>
+<a class="drawer-link" href="patients.html"><span class="drawer-icon"><i class="bi bi-people"></i></span><span class="flex-grow-1">مرضاي</span></a>
+<a class="drawer-link" href="treatment-plans.html"><span class="drawer-icon"><i class="bi bi-diagram-3"></i></span><span class="flex-grow-1">خطط العلاج</span></a>
+<div class="drawer-title mt-3">الملف الطبي</div>
+<a class="drawer-link" href="reports.html"><span class="drawer-icon"><i class="bi bi-file-earmark-medical"></i></span><span class="flex-grow-1">التقارير الطبية</span></a>
+<a class="drawer-link" href="lab-cases.html"><span class="drawer-icon"><i class="bi bi-box-seam"></i></span><span class="flex-grow-1">الحالات المخبرية</span></a>
+<a class="drawer-link" href="followups.html"><span class="drawer-icon"><i class="bi bi-arrow-repeat"></i></span><span class="flex-grow-1">المتابعات</span></a>
+<div class="drawer-title mt-3">الحساب</div>
+<a class="drawer-link" href="profile.html"><span class="drawer-icon"><i class="bi bi-person"></i></span><span class="flex-grow-1">ملفي الشخصي</span></a>
+<a class="drawer-link" href="settings.html"><span class="drawer-icon"><i class="bi bi-gear"></i></span><span class="flex-grow-1">الإعدادات</span></a>
+<button class="drawer-link border-0 bg-transparent w-100 text-danger" data-logout="">
+<span class="drawer-icon"><i class="bi bi-box-arrow-right"></i></span><span class="flex-grow-1 text-end">تسجيل الخروج</span>
+</button>
+<div class="drawer-title mt-4">تبديل المساحة</div>
+<a class="drawer-link" href="../clinic/index.html"><span class="drawer-icon"><i class="bi bi-arrow-left-right"></i></span><span class="flex-grow-1">الانتقال لإدارة العيادة</span></a>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="d-none" id="doctorPatientCatalog">
+<span data-age="27 سنة" data-allergy="Penicillin" data-avatar="أخ" data-blood="O+" data-chronic="ارتفاع ضغط الدم" data-code="P-2048" data-doctor-patient-record="" data-id="ahmad" data-meds="Amlodipine" data-name="أحمد خالد" data-notes="يفضل قياس الضغط قبل الإجراءات الطويلة." data-phone="0599 000 001" data-plan="ahmad" data-plan-info="33% من الخطة الحالية • بدأت 12 سبتمبر 2026 • التكلفة التقديرية 900 ₪" data-plan-progress="33" data-plan-status="نشطة" data-plan-title="علاج جذور السن 46"></span>
+<span data-age="34 سنة" data-allergy="لا توجد حساسية مسجلة" data-avatar="رن" data-blood="A+" data-chronic="لا توجد" data-code="P-2059" data-doctor-patient-record="" data-id="reem" data-meds="لا توجد أدوية ثابتة" data-name="ريم ناصر" data-notes="متابعة علاجية مجدولة." data-phone="0599 000 004" data-plan="reem" data-plan-info="35% من الخطة الحالية • بدأت 20 أغسطس 2026 • التكلفة التقديرية 3200 ₪" data-plan-progress="35" data-plan-status="نشطة" data-plan-title="خطة تقويم الأسنان"></span>
+<span data-age="31 سنة" data-allergy="لا توجد حساسية مسجلة" data-avatar="سج" data-blood="B+" data-chronic="لا توجد" data-code="P-2013" data-doctor-patient-record="" data-id="sara" data-meds="لا توجد" data-name="سارة جميل" data-notes="لا توجد ملاحظات صحية خاصة." data-phone="0599 000 002" data-plan="" data-plan-info="يمكن إنشاء خطة جديدة من قسم خطط العلاج." data-plan-progress="0" data-plan-status="—" data-plan-title="لا توجد خطة علاج نشطة"></span>
+</div>
+<div aria-hidden="true" class="d-none" id="doctorPatientVisitsCatalog">
+<div data-doctor-visits-record="" data-patient="ahmad"><span data-action="visit" data-date="2 أكتوبر 2026" data-doctor="د. عمر ناصر" data-report="" data-service="علاج جذور" data-summary="التهاب لب — 46" data-visit=""></span><span data-action="report" data-date="12 سبتمبر 2026" data-doctor="د. عمر ناصر" data-report="rpt014" data-service="فحص ألم" data-summary="تسوس عميق — 46" data-visit=""></span><span data-action="report" data-date="22 أغسطس 2026" data-doctor="د. يوسف حماد" data-report="rpt014" data-service="تنظيف" data-summary="تنظيف دوري" data-visit=""></span></div>
+<div data-doctor-visits-record="" data-patient="reem"><span data-action="report" data-date="28 سبتمبر 2026" data-doctor="د. عمر ناصر" data-report="rpt014" data-service="متابعة" data-summary="متابعة بعد العلاج" data-visit=""></span><span data-action="report" data-date="14 سبتمبر 2026" data-doctor="د. ليان الخطيب" data-report="rpt014" data-service="تقويم" data-summary="تقييم تقدم الخطة" data-visit=""></span></div>
+<div data-doctor-visits-record="" data-patient="sara"><span data-action="report" data-date="25 سبتمبر 2026" data-doctor="د. عمر ناصر" data-report="rpt013" data-service="علاج جذور" data-summary="Necrotic pulp — 36" data-visit=""></span></div>
+</div><main class="page-shell" data-doctor-patient-details="">
+<section class="container py-4 py-lg-5">
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="patients.html">مرضاي</a></li>
+<li class="breadcrumb-item active" id="doctorPatientBreadcrumb">أحمد خالد</li>
+</ol>
+</nav>
+<div class="soft-card p-4 mb-4">
+<div class="row g-4 align-items-center">
+<div class="col-lg-7">
+<div class="d-flex gap-3 align-items-center">
+<div class="patient-avatar" id="doctorPatientAvatar" style="width: 64px; height: 64px">
+                  أخ
+                </div>
+<div>
+<h2 class="fw-bold mb-1" id="doctorPatientName">أحمد خالد</h2>
+<div class="text-secondary" id="doctorPatientMeta">P-2048 • 27 سنة • 0599 000 001</div>
+</div>
+</div>
+</div>
+<div class="col-lg-5">
+<div class="d-flex gap-2 flex-wrap justify-content-lg-end">
+<span class="alert-chip"><i class="bi bi-exclamation-triangle"></i>Penicillin</span><span class="alert-chip"><i class="bi bi-heart-pulse"></i>ضغط الدم</span>
+</div>
+</div>
+</div>
+</div>
+<div class="row g-4 mb-4">
+<div class="col-lg-12">
+<div class="soft-card p-4 h-100">
+<h5 class="fw-bold">الملخص الطبي</h5>
+<div class="medical-summary mt-3">
+<div class="summary-row">
+<span>فصيلة الدم</span><strong id="doctorPatientBlood">O+</strong>
+</div>
+<div class="summary-row">
+<span>الحساسية</span><strong class="text-danger" id="doctorPatientAllergy">Penicillin</strong>
+</div>
+<div class="summary-row">
+<span>أمراض مزمنة</span><strong id="doctorPatientChronic">ارتفاع ضغط الدم</strong>
+</div>
+<div class="summary-row">
+<span>أدوية حالية</span><strong id="doctorPatientMeds">Amlodipine</strong>
+</div>
+<div class="summary-row">
+<span>ملاحظات صحية</span><strong id="doctorPatientNotes">يفضل قياس الضغط قبل الإجراءات الطويلة.</strong>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="soft-card p-4">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<div>
+<h4 class="fw-bold mb-1">الزيارات السابقة والتقارير</h4>
+<div class="small text-secondary">
+                الزيارة المفتوحة تظهر كزيارة حالية، والزيارات المكتملة تفتح من
+                تقريرها الطبي.
+              </div>
+</div>
+<a class="btn btn-primary btn-sm" href="visit.html">بدء زيارة جديدة</a>
+</div>
+<div class="table-responsive">
+<table class="table align-middle mb-0">
+<thead class="table-light">
+<tr>
+<th>التاريخ</th>
+<th>الطبيب</th>
+<th>الخدمة</th>
+<th>التشخيص / الملخص</th>
+<th>الإجراء</th>
+</tr>
+</thead>
+<tbody id="doctorPatientVisitsBody">
+<tr>
+<td data-label="التاريخ">2 أكتوبر 2026</td>
+<td data-label="الطبيب">د. عمر ناصر</td>
+<td data-label="الخدمة">علاج جذور</td>
+<td data-label="التشخيص / الملخص">التهاب لب — 46</td>
+<td data-label="الإجراء">
+<a class="btn btn-sm btn-primary" href="visit.html">الزيارة الحالية</a>
+</td>
+</tr>
+<tr>
+<td data-label="التاريخ">12 سبتمبر 2026</td>
+<td data-label="الطبيب">د. عمر ناصر</td>
+<td data-label="الخدمة">فحص ألم</td>
+<td data-label="التشخيص / الملخص">تسوس عميق — 46</td>
+<td data-label="الإجراء">
+<a class="btn btn-sm btn-outline-primary" href="report-details.html">عرض التقرير</a>
+</td>
+</tr>
+<tr>
+<td data-label="التاريخ">22 أغسطس 2026</td>
+<td data-label="الطبيب">د. يوسف حماد</td>
+<td data-label="الخدمة">تنظيف</td>
+<td data-label="التشخيص / الملخص">تنظيف دوري</td>
+<td data-label="الإجراء">
+<a class="btn btn-sm btn-outline-primary" href="report-details.html">عرض التقرير</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="soft-card p-4 mb-4" id="treatment-plan-summary">
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3 mb-4">
+<div>
+<h4 class="fw-bold mb-1">خطة العلاج الحالية</h4>
+<div class="small text-secondary" id="doctorPatientPlanInfo">
+                خطة واحدة واضحة مرتبطة بالمريض، ويتم تحديث مراحلها وحالاتها مباشرة بدون إصدارات منفصلة.
+              </div>
+</div>
+<a class="btn btn-outline-primary btn-sm" href="treatment-plan-details.html" id="doctorPatientPlanLink">
+<i class="bi bi-box-arrow-up-left ms-1"></i>فتح صفحة الخطة
+            </a>
+</div>
+<div class="row g-3 mb-4">
+<div class="col-md-7">
+<div class="readonly-note h-100">
+<div class="d-flex justify-content-between gap-2 flex-wrap">
+<strong id="doctorPatientPlanTitle">علاج جذور السن 46</strong>
+<span class="badge text-bg-primary" id="doctorPatientPlanStatus">نشطة</span>
+</div>
+<div class="progress plan-progress mt-3"><div class="progress-bar" id="doctorPatientPlanBar" style="width: 33%"></div></div>
+<div class="small text-secondary mt-2">33% من الخطة الحالية • بدأت 12 سبتمبر 2026 • التكلفة التقديرية 900 ₪</div>
+</div>
+</div>
+<div class="col-md-5" data-plan-ahmad-detail="true">
+<div class="readonly-note h-100">
+<div><strong>الطبيب:</strong> د. عمر ناصر</div>
+<div class="mt-2"><strong>آخر تحديث:</strong> 2 أكتوبر 2026</div>
+<div class="mt-2"><strong>المرحلة التالية:</strong> حشو الجذور</div>
+</div>
+</div>
+</div>
+<div class="d-grid gap-2" data-plan-ahmad-detail="true">
+<div class="border rounded-3 p-3 d-flex justify-content-between align-items-center gap-3 flex-wrap" data-doctor-plan-step-display="1">
+<div><span class="badge text-bg-success ms-2">مكتمل</span><strong>1. فتح وتنظيف القنوات</strong><div class="small text-secondary mt-1">السن 46 • 12 سبتمبر 2026</div></div>
+<i class="bi bi-check-circle-fill text-success fs-5"></i>
+</div>
+<div class="border rounded-3 p-3 d-flex justify-content-between align-items-center gap-3 flex-wrap" data-doctor-plan-step-display="2">
+<div><span class="badge text-bg-primary ms-2">قادم</span><strong>2. حشو الجذور</strong><div class="small text-secondary mt-1">السن 46 • الموعد القادم 11 أكتوبر 2026</div></div>
+<i class="bi bi-arrow-left-circle text-primary fs-5"></i>
+</div>
+<div class="border rounded-3 p-3 d-flex justify-content-between align-items-center gap-3 flex-wrap" data-doctor-plan-step-display="3">
+<div><span class="badge text-bg-secondary ms-2">مخطط</span><strong>3. التقييم النهائي والترميم</strong><div class="small text-secondary mt-1">السن 46 • بعد إكمال حشو الجذور</div></div>
+<i class="bi bi-circle text-secondary fs-5"></i>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer mt-5">
+<div class="container py-4">
+<div class="row g-3">
+<div class="col-lg-6">
+<strong class="text-white">Smart Dental Clinic — Doctor Portal</strong>
+<div class="small mt-2">
+              واجهة الطبيب السريرية — Graduation Project Front-end Demo
+            </div>
+</div>
+<div class="col-lg-6 text-lg-start">
+<a class="ms-3" href="appointments.html">مواعيدي</a><a class="ms-3" href="patients.html">مرضاي</a><a href="reports.html">التقارير</a>
+</div>
+</div>
+<div class="footer-bottom mt-3 pt-3 d-flex justify-content-between gap-2 flex-wrap">
+<span>© <span data-year=""></span> Smart Dental</span><span>Doctor Role</span>
+</div>
+</div>
+</footer>
+<div class="toast-container position-fixed bottom-0 start-0 p-3">
+<div class="toast align-items-center text-bg-primary border-0" id="appToast">
+<div class="d-flex">
+<div class="toast-body">تمت العملية</div>
+<button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast"></button>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/app.js"></script>
+<script defer="" src="../assets/ux.js"></script>
+</body>
+</html>

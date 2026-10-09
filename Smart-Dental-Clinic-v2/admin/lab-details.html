@@ -1,0 +1,396 @@
+<!doctype html>
+
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <title>تفاصيل المختبر | Smart Dental Clinic</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/styles.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="../assets/theme.css" rel="stylesheet" />
+    <link href="../assets/responsive-v1.9.2.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar clinic-navbar bg-white border-bottom sticky-top">
+      <div class="container-fluid clinic-nav-layout px-3 px-lg-4">
+        <a class="clinic-brand clinic-brand-left" href="index.html">
+          <span class="clinic-brand-mark"
+            ><i class="bi bi-shield-check"></i
+          ></span>
+          <span class="clinic-brand-copy"
+            ><strong>إدارة Smart Dental</strong><small>Super Admin</small></span
+          >
+        </a>
+        <div class="clinic-desktop-nav d-none d-xl-flex justify-content-center">
+          <ul class="navbar-nav flex-row align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="management-center.html">مركز الإدارة</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="users.html">المستخدمون</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="doctors.html">الأطباء والتراخيص</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="approvals.html">طلبات الاعتماد</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="finance.html">المالية</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active fw-bold" href="labs.html">المختبرات</a>
+            </li>
+          </ul>
+        </div>
+        <div class="clinic-nav-actions">
+          <div class="dropdown">
+            <button
+              class="top-action mobile-compact-action"
+              data-bs-toggle="dropdown"
+              title="اللغة"
+              type="button"
+            >
+              <i class="bi bi-globe2"></i
+              ><span class="d-none d-xxl-inline">AR</span>
+            </button>
+            <ul
+              class="dropdown-menu dropdown-menu-end clean-dropdown language-menu"
+            >
+              <li>
+                <button class="dropdown-item active" data-language="ar">
+                  العربية <small class="float-start text-secondary">AR</small>
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" data-language="en">
+                  English <small class="float-start text-secondary">EN</small>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown notification-dropdown">
+            <button
+              class="top-action mobile-compact-action"
+              data-bs-display="static"
+              data-bs-toggle="dropdown"
+              title="الإشعارات"
+              type="button"
+            >
+              <i class="bi bi-bell"></i><span class="notification-dot">5</span>
+            </button>
+            <div
+              class="dropdown-menu clean-dropdown notification-menu mobile-notification-menu notification-menu-safe"
+            >
+              <div
+                class="px-3 py-2 d-flex justify-content-between align-items-center"
+              >
+                <strong>تنبيهات الإدارة</strong
+                ><span class="badge text-bg-primary rounded-pill">5</span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a class="notification-entry" href="approvals.html"
+                ><strong>3 طلبات اعتماد عيادات</strong>
+                <div class="small text-secondary">تنتظر المراجعة.</div></a
+              >
+              <a class="notification-entry" href="doctors.html"
+                ><strong>رقم ترخيص طبيب بانتظار التحقق</strong>
+                <div class="small text-secondary">رقم الترخيص يحتاج مراجعة.</div></a
+              >
+              <a class="notification-entry" href="finance.html"
+                ><strong>مبالغ متبقية على عيادات</strong>
+                <div class="small text-secondary">تحتاج متابعة مالية.</div></a
+              >
+            </div>
+          </div>
+          <div class="dropdown profile-action-dropdown">
+            <button
+              class="clinic-profile-trigger compact-profile-trigger"
+              data-bs-display="static"
+              data-bs-toggle="dropdown"
+              title="حساب الأدمن"
+              type="button"
+            >
+              <span class="clinic-avatar">A</span
+              ><i
+                class="bi bi-chevron-down small text-secondary d-none d-sm-inline"
+              ></i>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-end clean-dropdown profile-dropdown-menu"
+            >
+              <div class="px-3 py-2">
+                <strong class="d-block">مدير النظام</strong
+                ><small class="text-secondary">Super Admin</small>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="settings.html#account"
+                ><i class="bi bi-person-gear"></i>حسابي</a
+              >
+              <a class="dropdown-item" href="system-log.html"
+                ><i class="bi bi-shield-check"></i>سجل النظام</a
+              >
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item text-danger" data-logout="">
+                <i class="bi bi-box-arrow-right"></i>تسجيل الخروج
+              </button>
+            </div>
+          </div>
+          <button
+            class="btn btn-outline-primary sections-trigger mobile-sections-trigger"
+            data-bs-target="#sectionsDrawer"
+            data-bs-toggle="offcanvas"
+            title="كل الأقسام"
+            type="button"
+          >
+            <i class="bi bi-grid-3x3-gap"></i
+            ><span class="d-none d-xxl-inline me-1">كل الأقسام</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="offcanvas offcanvas-start mobile-drawer sections-drawer"
+      id="sectionsDrawer"
+      tabindex="-1"
+    >
+      <div class="drawer-header">
+        <div class="drawer-clinic">
+          <div class="drawer-avatar">A</div>
+          <div>
+            <h6 class="mb-1 fw-bold">مدير النظام</h6>
+            <small class="opacity-75">كل أقسام الإدارة</small>
+          </div>
+        </div>
+        <button class="drawer-close" data-bs-dismiss="offcanvas">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="drawer-content">
+          <div class="drawer-title mt-3">الأساسية</div>
+          <a class="drawer-link" href="index.html">
+            <span class="drawer-icon"><i class="bi bi-house-door"></i></span>
+            <span class="flex-grow-1">الرئيسية</span>
+            <i class="bi bi-chevron-left text-secondary small"></i> </a
+          ><a class="drawer-link" href="management-center.html"
+            ><span class="drawer-icon"><i class="bi bi-grid-1x2"></i></span
+            ><span class="flex-grow-1">مركز الإدارة والإضافات</span
+            ><i class="bi bi-chevron-left text-secondary small"></i></a
+          ><a class="drawer-link" href="users.html">
+            <span class="drawer-icon"><i class="bi bi-people"></i></span>
+            <span class="flex-grow-1">المستخدمون</span>
+            <i class="bi bi-chevron-left text-secondary small"></i> </a
+          ><a class="drawer-link" href="doctors.html">
+            <span class="drawer-icon"><i class="bi bi-person-badge"></i></span>
+            <span class="flex-grow-1">الأطباء والتراخيص</span>
+            <i class="bi bi-chevron-left text-secondary small"></i> </a
+          ><a class="drawer-link" href="approvals.html">
+            <span class="drawer-icon"><i class="bi bi-patch-check"></i></span>
+            <span class="flex-grow-1">طلبات اعتماد العيادات</span>
+            <i class="bi bi-chevron-left text-secondary small"></i>
+          </a>
+          <div class="drawer-title mt-3">إدارة المنصة</div>
+          <a class="drawer-link" href="specialties.html">
+            <span class="drawer-icon"><i class="bi bi-grid"></i></span>
+            <span class="flex-grow-1">التخصصات</span>
+            <i class="bi bi-chevron-left text-secondary small"></i> </a
+          ><a class="drawer-link" href="finance.html">
+            <span class="drawer-icon"><i class="bi bi-wallet2"></i></span>
+            <span class="flex-grow-1">المالية</span>
+            <i class="bi bi-chevron-left text-secondary small"></i> </a
+          ><a class="drawer-link active" href="labs.html">
+            <span class="drawer-icon"><i class="bi bi-buildings"></i></span>
+            <span class="flex-grow-1">المختبرات</span>
+            <i class="bi bi-chevron-left text-secondary small"></i>
+          </a>
+          <a class="drawer-link" href="reports.html">
+            <span class="drawer-icon"><i class="bi bi-bar-chart"></i></span>
+            <span class="flex-grow-1">التقارير</span>
+            <i class="bi bi-chevron-left text-secondary small"></i>
+          </a>
+          <div class="drawer-title mt-3">النظام</div>
+          <a class="drawer-link" href="system-log.html">
+            <span class="drawer-icon"><i class="bi bi-shield-check"></i></span>
+            <span class="flex-grow-1">سجل النظام</span>
+            <i class="bi bi-chevron-left text-secondary small"></i> </a
+          ><a class="drawer-link" href="settings.html">
+            <span class="drawer-icon"><i class="bi bi-gear"></i></span>
+            <span class="flex-grow-1">إعدادات المنصة</span>
+            <i class="bi bi-chevron-left text-secondary small"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div id="adminLabCatalog" class="d-none" aria-hidden="true">
+      <div data-admin-lab-record data-id="elite" data-clinic="C-008" data-clinic-name="عيادة الابتسامة الحديثة" data-name="Elite Dental Lab" data-phone="0599 123 456" data-address="نابلس - رفيديا" data-contact="elite.lab@example.com" data-notes="متخصص بأعمال الزيركون والتيجان." data-status="active">
+        <span data-admin-lab-case data-id="LAB-1025" data-patient="أحمد خالد" data-doctor="د. عمر ناصر" data-work="تاج Zirconia • سن 46" data-status="waiting" data-status-label="بانتظار الإرسال" data-due="10 أكتوبر" data-overdue="false"></span>
+        <span data-admin-lab-case data-id="LAB-1019" data-patient="ليلى أحمد" data-doctor="د. عمر ناصر" data-work="تاج خزفي • سن 16" data-status="sent" data-status-label="تم الإرسال" data-due="5 أكتوبر" data-overdue="true"></span>
+        <span data-admin-lab-case data-id="LAB-1016" data-patient="ريم ناصر" data-doctor="د. سارة عادل" data-work="Veneer • سن 12" data-status="received" data-status-label="تم الاستلام" data-due="8 أكتوبر" data-overdue="false"></span>
+        <span data-admin-lab-case data-id="LAB-1008" data-patient="محمد سمير" data-doctor="د. ليان الخطيب" data-work="Retainer" data-status="installed" data-status-label="تم التركيب" data-due="30 سبتمبر" data-overdue="false"></span>
+      </div>
+      <div data-admin-lab-record data-id="smile" data-clinic="C-008" data-clinic-name="عيادة الابتسامة الحديثة" data-name="Smile Lab" data-phone="0599 443 322" data-address="رام الله - البيرة" data-contact="0599 443 322" data-notes="أعمال الفينير والتيجان الخزفية." data-status="active">
+        <span data-admin-lab-case data-id="LAB-1032" data-patient="ريم ناصر" data-doctor="د. سارة عادل" data-work="Veneer • سن 12" data-status="sent" data-status-label="تم الإرسال" data-due="12 أكتوبر" data-overdue="false"></span>
+        <span data-admin-lab-case data-id="LAB-1028" data-patient="يوسف طارق" data-doctor="د. عمر ناصر" data-work="E-max Crown • سن 21" data-status="received" data-status-label="تم الاستلام" data-due="9 أكتوبر" data-overdue="false"></span>
+      </div>
+      <div data-admin-lab-record data-id="ortho" data-clinic="C-041" data-clinic-name="عيادة النخبة" data-name="Ortho Lab" data-phone="0568 122 334" data-address="جنين - وسط البلد" data-contact="ortho@example.com" data-notes="أجهزة تقويم وRetainers." data-status="active">
+        <span data-admin-lab-case data-id="LAB-1035" data-patient="محمد سمير" data-doctor="د. ليان الخطيب" data-work="Retainer" data-status="waiting" data-status-label="بانتظار الإرسال" data-due="15 أكتوبر" data-overdue="false"></span>
+        <span data-admin-lab-case data-id="LAB-1022" data-patient="سارة جميل" data-doctor="د. ليان الخطيب" data-work="Orthodontic Appliance" data-status="sent" data-status-label="تم الإرسال" data-due="11 أكتوبر" data-overdue="false"></span>
+      </div>
+      <div data-admin-lab-record data-id="classic" data-clinic="C-052" data-clinic-name="مركز سما لطب الأسنان" data-name="Classic Dental Lab" data-phone="0598 555 777" data-address="نابلس" data-contact="—" data-notes="مختبر تاريخي مؤرشف." data-status="archived">
+        <span data-admin-lab-case data-id="LAB-0870" data-patient="خالد عادل" data-doctor="د. عمر ناصر" data-work="تاج خزفي • سن 24" data-status="installed" data-status-label="تم التركيب" data-due="12 أغسطس" data-overdue="false"></span>
+      </div>
+      <div data-admin-lab-record data-id="horizon" data-clinic="C-052" data-clinic-name="مركز سما لطب الأسنان" data-name="Horizon Dental Lab" data-phone="0597 222 444" data-address="طولكرم" data-contact="horizon.lab@example.com" data-notes="مختبر جديد بدون حالات حتى الآن." data-status="active"></div>
+    </div>
+    <main class="page-shell" data-admin-lab-details-page>
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="labs.html">المختبرات</a></li><li class="breadcrumb-item active" id="adminLabBreadcrumb">تفاصيل المختبر</li></ol></nav>
+
+        <div class="soft-card p-4 mb-4">
+          <div class="d-flex flex-column flex-xl-row justify-content-between gap-3 align-items-xl-start">
+            <div class="d-flex gap-3 align-items-start">
+              <div class="icon-box flex-shrink-0"><i class="bi bi-building"></i></div>
+              <div>
+                <div class="d-flex gap-2 align-items-center flex-wrap mb-1"><h1 class="fw-bold fs-2 mb-0" id="adminLabDetailName">المختبر</h1><span class="badge" id="adminLabDetailStatus">—</span></div>
+                <div class="text-secondary" id="adminLabDetailClinic">—</div>
+                <div class="small text-secondary mt-2"><span id="adminLabDetailAddress">—</span> • <span id="adminLabDetailPhone">—</span></div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-outline-primary" id="adminEditLabBtn" data-bs-toggle="modal" data-bs-target="#adminEditLabModal"><i class="bi bi-pencil-square ms-1"></i>تعديل</button>
+              <button class="btn btn-outline-secondary" id="adminArchiveLabBtn"><i class="bi bi-archive ms-1"></i>أرشفة</button>
+              <button class="btn btn-outline-danger" id="adminDeleteLabBtn"><i class="bi bi-trash ms-1"></i>حذف</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">كل الحالات</small><div class="stat-value" id="adminLabCaseTotal">0</div></div></div>
+          <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">مفتوحة</small><div class="stat-value text-primary" id="adminLabCaseOpen">0</div></div></div>
+          <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">تم الاستلام</small><div class="stat-value text-success" id="adminLabCaseReceived">0</div></div></div>
+          <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">متأخرة</small><div class="stat-value text-danger" id="adminLabCaseOverdue">0</div></div></div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-lg-5"><div class="soft-card p-4 h-100"><h4 class="fw-bold mb-3">بيانات المختبر</h4><div class="summary-row"><span>العيادة</span><strong id="adminLabInfoClinic">—</strong></div><div class="summary-row"><span>الهاتف</span><strong id="adminLabInfoPhone">—</strong></div><div class="summary-row"><span>العنوان</span><strong id="adminLabInfoAddress">—</strong></div><div class="summary-row"><span>واتساب / بريد</span><strong id="adminLabInfoContact">—</strong></div><div class="summary-row"><span>ملاحظات</span><strong id="adminLabInfoNotes">—</strong></div></div></div>
+          <div class="col-lg-7"><div class="soft-card p-4 h-100"><div class="d-flex justify-content-between align-items-center mb-3"><div><h4 class="fw-bold mb-1">صلاحية Super Admin</h4><small class="text-secondary">إشراف إداري على كيان المختبر، وليس تشغيل حالات العيادة يوميًا.</small></div><i class="bi bi-shield-check fs-3 text-primary"></i></div><div class="alert alert-warning rounded-4 mb-0"><strong>مهم:</strong> تعديل أو أرشفة المختبر لا يحذف حالاته القديمة. الحذف النهائي متاح فقط عندما يكون عدد الحالات المرتبطة بالمختبر صفرًا.</div></div></div>
+        </div>
+
+        <div class="soft-card p-4">
+          <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3"><div><h4 class="fw-bold mb-1">الحالات المرتبطة بالمختبر</h4><small class="text-secondary">عرض رقابي للـSuper Admin. تحديث الإرسال والاستلام يبقى من مسؤولية العيادة أو الموظف المخول.</small></div><input class="form-control" style="max-width:340px" id="adminLabCaseSearch" placeholder="ابحث برقم الحالة أو المريض أو الطبيب"></div>
+          <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>الرقم</th><th>المريض</th><th>الطبيب</th><th>العمل</th><th>الحالة</th><th>التسليم المتوقع</th></tr></thead><tbody id="adminLabCasesBody"></tbody></table></div>
+          <div class="text-center py-5 d-none" id="adminLabCasesEmpty"><i class="bi bi-inbox fs-2 text-secondary"></i><div class="text-secondary mt-2">لا توجد حالات مرتبطة بهذا المختبر.</div></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal fade" id="adminEditLabModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><div><h5 class="modal-title fw-bold">تعديل بيانات المختبر</h5><small class="text-secondary">Super Admin — اكتب سببًا إداريًا واضحًا للتعديل.</small></div><button class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body"><div class="row g-3">
+          <div class="col-md-6"><label class="form-label">العيادة *</label><select class="form-select" id="adminEditLabClinic"><option value="C-008">C-008 — عيادة الابتسامة الحديثة</option><option value="C-041">C-041 — عيادة النخبة</option><option value="C-052">C-052 — مركز سما لطب الأسنان</option></select></div>
+          <div class="col-md-6"><label class="form-label">اسم المختبر *</label><input class="form-control" id="adminEditLabName"></div>
+          <div class="col-md-6"><label class="form-label">الهاتف *</label><input class="form-control" id="adminEditLabPhone"></div>
+          <div class="col-md-6"><label class="form-label">العنوان *</label><input class="form-control" id="adminEditLabAddress"></div>
+          <div class="col-md-6"><label class="form-label">واتساب / بريد</label><input class="form-control" id="adminEditLabContact"></div>
+          <div class="col-12"><label class="form-label">ملاحظات داخلية</label><textarea class="form-control" id="adminEditLabNotes" rows="3"></textarea></div>
+          <div class="col-12"><label class="form-label">سبب التعديل الإداري *</label><textarea class="form-control" id="adminEditLabReason" rows="2" placeholder="سبب واضح للتعديل الإداري"></textarea></div>
+        </div></div>
+        <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-primary" id="saveAdminLabEdit">حفظ التعديل</button></div>
+      </div></div>
+    </div>
+
+    <div class="modal fade" id="adminDeleteLabModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><h5 class="modal-title fw-bold">حذف المختبر</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body"><div id="adminDeleteLabMessage" class="alert alert-danger rounded-4"></div><label class="form-label">سبب الحذف الإداري *</label><textarea class="form-control" id="adminDeleteLabReason" rows="3"></textarea></div>
+        <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-danger" id="confirmAdminLabDelete">حذف نهائي</button></div>
+      </div></div>
+    </div>
+    <div class="modal fade" id="viewModal" tabindex="-1">
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="viewTitle"></h5>
+              <small class="text-secondary" id="viewSubtitle"></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="viewBody"></div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal">إغلاق</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sensitiveActionModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="sensitiveActionTitle">
+                تأكيد إجراء إداري
+              </h5>
+              <small
+                class="text-secondary"
+                id="sensitiveActionSubtitle"
+              ></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning rounded-4">
+              <i class="bi bi-shield-exclamation ms-1"></i>هذا إجراء حساس،
+              وسبب الإجراء مطلوب لتوضيح سبب التغيير الإداري.
+            </div>
+            <label class="form-label">سبب الإجراء الإداري *</label
+            ><textarea
+              class="form-control"
+              id="sensitiveActionReason"
+              placeholder="اكتب سببًا واضحًا..."
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal">إلغاء</button
+            ><button class="btn btn-primary" id="confirmSensitiveAction">
+              تأكيد
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div
+        class="toast align-items-center text-bg-primary border-0"
+        id="appToast"
+      >
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button
+            class="btn-close btn-close-white m-auto ms-2"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+  <script src="../assets/ux.js" defer></script>
+</body>
+</html>
