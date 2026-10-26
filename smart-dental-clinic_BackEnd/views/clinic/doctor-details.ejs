@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>ملف الطبيب والدوام | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+
+    
+    <main class="page-shell" data-clinic-doctor-details="" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="doctors">الأطباء</a></li>
+            <li class="breadcrumb-item active" id="clinicDoctorBreadcrumb">د. عمر ناصر</li>
+          </ol>
+        </nav>
+        <div class="soft-card p-4 mb-4">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-8">
+              <div class="d-flex flex-column flex-md-row align-items-md-center gap-4">
+                <img id="clinicDoctorImage" src="../assets/vendor/2fb6f2c869b1-photo-1612349317150-e413f6a5b16d.jpg" style="
+                    width: 120px;
+                    height: 120px;
+                    object-fit: cover;
+                    border-radius: 20px;
+                  " alt="د. عمر ناصر">
+                <div>
+                  <span class="badge badge-soft mb-2" id="clinicDoctorSpecialty">علاج الجذور</span>
+                  <h2 class="fw-bold" id="clinicDoctorName">د. عمر ناصر</h2>
+                  <div class="text-secondary" id="clinicDoctorMeta">7 سنوات خبرة • 3 مواعيد اليوم</div>
+                  <div class="mt-2">
+                    <span class="badge text-bg-success">الحساب نشط</span>
+                    <span class="badge text-bg-success">متاحة اليوم</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <button class="btn btn-outline-primary" data-toast="تم تحديث حالة الطبيب تجريبياً" data-ui-pending="">
+                تعطيل مؤقت
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="soft-card p-4 mb-4">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-3">
+            <div>
+              <h4 class="fw-bold mb-1">الدوام وإعدادات المواعيد</h4>
+              <div class="schedule-version-note alert alert-light border rounded-3 small mb-3" data-schedule-version="7">
+                <i class="bi bi-shield-check ms-1"></i>آخر تحديث للدوام: <strong>21 أكتوبر 2026 • 09:30</strong> بواسطة <strong id="clinicDoctorScheduleOwner">د. عمر ناصر</strong>.
+              </div>
+              <p class="text-secondary small mb-0">
+                إدارة العيادة هي المسؤولة عن تعديل جدول الطبيب وتسجيل غياباته.
+                مساحة الطبيب تعرض الجدول والغيابات للقراءة فقط.
+              </p>
+            </div>
+            <button class="btn btn-primary" data-bs-target="#absenceModal" data-bs-toggle="modal" type="button">
+              <i class="bi bi-calendar-x ms-1"></i>إضافة غياب / إجازة
+            </button>
+          </div>
+          <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+            <table class="table align-middle doctor-schedule-table responsive-stack-table system-data-table medium-data-table">
+              <thead class="table-light">
+                <tr>
+                  <th>اليوم</th>
+                  <th>الفترة</th>
+                  <th>من</th>
+                  <th>إلى</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-doctor-day="">
+                  <td data-label="اليوم" class="table-primary-cell"><strong>الأحد</strong></td>
+                  <td data-label="الفترة">1</td>
+                  <td data-label="من">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="09:00" disabled id="field-1" name="field_1" form="backend-form-12">
+                  </td>
+                  <td data-label="إلى">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="13:00" disabled id="field-2" name="field_2" form="backend-form-12">
+                  </td>
+                  <td data-label="الحالة" class="table-status-cell">
+                    <span class="badge text-bg-success">نشطة</span>
+                  </td>
+                  <td data-label="إجراء" class="table-actions-cell">
+                    <button class="btn btn-sm btn-outline-danger" data-schedule-delete="" type="button" data-ui-pending="">
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+                <tr data-doctor-day="">
+                  <td data-label="اليوم" class="table-primary-cell"><strong>الأحد</strong></td>
+                  <td data-label="الفترة">2</td>
+                  <td data-label="من">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="13:30" disabled id="field-3" name="field_3" form="backend-form-12">
+                  </td>
+                  <td data-label="إلى">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="17:00" disabled id="field-4" name="field_4" form="backend-form-12">
+                  </td>
+                  <td data-label="الحالة" class="table-status-cell">
+                    <span class="badge text-bg-success">نشطة</span>
+                  </td>
+                  <td data-label="إجراء" class="table-actions-cell">
+                    <button class="btn btn-sm btn-outline-danger" data-schedule-delete="" type="button" data-ui-pending="">
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+                <tr data-doctor-day="">
+                  <td data-label="اليوم" class="table-primary-cell"><strong>الاثنين</strong></td>
+                  <td data-label="الفترة">1</td>
+                  <td data-label="من">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="09:00" disabled id="field-5" name="field_5" form="backend-form-12">
+                  </td>
+                  <td data-label="إلى">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="17:00" disabled id="field-6" name="field_6" form="backend-form-12">
+                  </td>
+                  <td data-label="الحالة" class="table-status-cell">
+                    <span class="badge text-bg-success">نشطة</span>
+                  </td>
+                  <td data-label="إجراء" class="table-actions-cell">
+                    <button class="btn btn-sm btn-outline-danger" data-schedule-delete="" type="button" data-ui-pending="">
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+                <tr data-doctor-day="">
+                  <td data-label="اليوم" class="table-primary-cell"><strong>الأربعاء</strong></td>
+                  <td data-label="الفترة">1</td>
+                  <td data-label="من">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="10:00" disabled id="field-7" name="field_7" form="backend-form-12">
+                  </td>
+                  <td data-label="إلى">
+                    <input class="form-control form-control-sm doctor-day-input" type="time" value="18:00" disabled id="field-8" name="field_8" form="backend-form-12">
+                  </td>
+                  <td data-label="الحالة" class="table-status-cell">
+                    <span class="badge text-bg-success">نشطة</span>
+                  </td>
+                  <td data-label="إجراء" class="table-actions-cell">
+                    <button class="btn btn-sm btn-outline-danger" data-schedule-delete="" type="button" data-ui-pending="">
+                      حذف
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex flex-column flex-md-row justify-content-between gap-2 align-items-md-center mt-3">
+            <div class="small text-secondary">
+              يمكن إضافة أكثر من فترة دوام في اليوم نفسه. مدة
+              الموعد تأتي من <code>services.default_duration_minutes</code>، وأي
+              استراحة تمثل بفترتي دوام منفصلتين.
+            </div>
+            <button class="btn btn-outline-primary btn-sm" id="addSchedulePeriodBtn" data-bs-toggle="modal" data-bs-target="#schedulePeriodModal" type="button">
+              <i class="bi bi-plus-lg ms-1"></i>إضافة فترة دوام
+            </button>
+          </div>
+          <div class="small text-secondary">
+            عند تعطيل يوم معين لا تظهر أوقاته للحجز. الغياب المؤقت يلغي توفر
+            الطبيب في التاريخ المحدد.
+          </div>
+        </div>
+        <div class="soft-card p-4"><div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3"><h4 class="fw-bold mb-0">الخدمات المخصصة للطبيب داخل العيادة</h4><button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#doctorServicesModal" type="button">تخصيص الخدمات</button></div><p class="small text-secondary">تختار إدارة العيادة الخدمات من كتالوجها. هذا التخصيص خاص بعمل الطبيب في عيادة الابتسامة الحديثة.</p><div class="row g-3"><div class="col-md-6"><div class="service-card" data-record-id="S-001"><strong>علاج جذور</strong><div class="small text-secondary">60 دقيقة • 500 ₪</div></div></div></div></div>
+      </section>
+      <div class="modal fade" id="absenceModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="fw-bold mb-0">إضافة غياب / إجازة</h5>
+              <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <label class="form-label" for="field-9">من تاريخ</label><input class="form-control mb-3" type="date" value="2026-10-21" id="field-9" name="field_9" form="backend-form-13"><label class="form-label" for="field-10">إلى تاريخ</label><input class="form-control mb-3" type="date" value="2026-10-21" id="field-10" name="field_10" form="backend-form-13"><label class="form-label" for="field-11">السبب</label><input class="form-control" value="إجازة شخصية" id="field-11" name="field_11" form="backend-form-13">
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+                إلغاء</button><button class="btn btn-primary" data-bs-dismiss="modal" data-toast="تمت إضافة الغياب تجريبياً" type="button">
+                إضافة
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="schedulePeriodModal" tabindex="-1" aria-labelledby="schedulePeriodModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="fw-bold mb-0" id="schedulePeriodModalLabel">
+                إضافة فترة دوام
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger d-none" id="schedulePeriodError" role="alert"></div>
+              <div class="mb-3">
+                <label class="form-label" for="scheduleDay">اليوم</label><select class="form-select" id="scheduleDay" name="schedule_day" form="backend-form-14">
+                  <option value="الأحد" selected>الأحد</option>
+                  <option value="الاثنين">الاثنين</option>
+                  <option value="الثلاثاء">الثلاثاء</option>
+                  <option value="الأربعاء">الأربعاء</option>
+                  <option value="الخميس">الخميس</option>
+                  <option value="الجمعة">الجمعة</option>
+                  <option value="السبت">السبت</option>
+                </select>
+              </div>
+              <div class="row g-3">
+                <div class="col-6">
+                  <label class="form-label" for="scheduleStart">من</label><input class="form-control" id="scheduleStart" type="time" value="09:00" name="schedule_start" form="backend-form-14">
+                </div>
+                <div class="col-6">
+                  <label class="form-label" for="scheduleEnd">إلى</label><input class="form-control" id="scheduleEnd" type="time" value="17:00" name="schedule_end" form="backend-form-14">
+                </div>
+              </div>
+              <div class="mt-3">
+                <label class="form-label" for="scheduleStatus">الحالة</label><select class="form-select" id="scheduleStatus" name="schedule_status" form="backend-form-14">
+                  <option value="active" selected>نشطة</option>
+                  <option value="inactive">معطلة</option>
+                </select>
+              </div>
+              <div class="form-text mt-3">
+                لا يمكن إضافة فترة تتداخل مع فترة دوام أخرى للطبيب في اليوم
+                نفسه.
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" type="button" data-bs-dismiss="modal">
+                إلغاء</button><button class="btn btn-primary" type="button" id="confirmAddSchedulePeriod" data-ui-pending="">
+                إضافة الفترة
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal fade" id="doctorServicesModal" tabindex="-1" aria-labelledby="doctorServicesTitle"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="fw-bold mb-0" id="doctorServicesTitle">تخصيص خدمات العيادة للطبيب</h5><button class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق" type="button"></button></div><div class="modal-body"><p>د. عمر ناصر — عيادة الابتسامة الحديثة</p><input type="hidden" name="clinic_id" value="C-008" form="doctor-services-form"><input type="hidden" name="doctor_id" value="D-108" form="doctor-services-form"><div class="multi-doctor-box"><div class="form-check"><input class="form-check-input" id="assignedServiceRoot" name="clinic_service_ids[]" value="S-001" type="checkbox" checked form="doctor-services-form"><label class="form-check-label w-100" for="assignedServiceRoot">علاج جذور <span class="small text-secondary">— 500 ₪ • 60 دقيقة</span></label></div></div><p class="small text-secondary mt-3 mb-0">حدد الخدمات التي يقدمها الطبيب هنا. تخصصاته المهنية وخدماته في العيادات الأخرى تُدار بصورة مستقلة.</p></div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" data-ui-pending="" type="button">حفظ التخصيص</button></div></div></div></div><form id="doctor-services-form" method="post" data-ui-unbound="" data-backend-binding="clinic-doctor-services" hidden></form></main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-12" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-13" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form><form id="backend-form-14" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form></body></html>

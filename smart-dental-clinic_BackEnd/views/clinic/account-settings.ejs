@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html data-style-sections="section-4 section-7" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>إعدادات الحساب | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="mb-4">
+          <span class="badge badge-soft mb-2">Account Settings</span>
+          <h1 class="fw-bold">إعدادات الحساب</h1>
+          <p class="text-secondary mb-0">
+            إعدادات تسجيل الدخول، الأمان واللغة الخاصة بحساب العيادة.
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="profile-section mb-4">
+              <h4 class="fw-bold mb-3">بيانات تسجيل الدخول</h4>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="field-1">البريد الإلكتروني للحساب</label><input class="form-control" value="owner@example.test" id="field-1" name="field_1" form="backend-form-8">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-2">رقم الهاتف</label><input class="form-control" value="0590 000 000" id="field-2" name="phone" form="backend-form-8">
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-primary" data-ui-pending="" form="backend-form-8" type="submit">
+                    حفظ البيانات
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section mb-4">
+              <h4 class="fw-bold mb-3">تغيير كلمة المرور</h4>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label" for="field-3">كلمة المرور الحالية</label><input class="form-control" placeholder="••••••••" type="password" value="" id="field-3" name="field_3" autocomplete="current-password" form="backend-form-9">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-4">كلمة المرور الجديدة</label><input class="form-control" placeholder="••••••••" type="password" value="" id="field-4" name="field_4" autocomplete="current-password" form="backend-form-9">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-5">تأكيد كلمة المرور</label><input class="form-control" placeholder="••••••••" type="password" value="" id="field-5" name="password_confirmation" autocomplete="current-password" form="backend-form-9">
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-primary" data-toast="تم تغيير كلمة المرور تجريبياً" data-ui-pending="">
+                    تغيير كلمة المرور
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-lg-4">
+            <div class="soft-card p-4 mb-4">
+              <h5 class="fw-bold mb-3">اللغة</h5>
+              <label class="form-label" for="field-6">لغة الحساب الافتراضية</label><select class="form-select" id="field-6" name="field_6" form="backend-form-10">
+                <option selected>العربية</option>
+                <option>English</option></select><button class="btn btn-outline-primary w-100 mt-3" data-toast="تم تحديث اللغة الافتراضية تجريبياً" data-ui-pending="" form="backend-form-10" type="submit">
+                حفظ اللغة
+              </button>
+            </div>
+            <div class="soft-card p-4 mb-4">
+              <h5 class="fw-bold mb-3">الأمان</h5>
+              <div class="settings-toggle-row px-0" hidden="">
+                <div>
+                  <strong>التحقق بخطوتين</strong>
+                  <div class="small text-secondary">
+                    طبقة أمان إضافية للحساب.
+                  </div>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="field-7" name="field_7" form="backend-form-11">
+                </div>
+              </div><section id="sdcV19MFA" class="sdc-v19-card mt-3 mb-3" aria-label="التحقق بخطوتين"><div class="sdc-v19-heading"><div class="sdc-v19-icon"><i class="bi bi-shield-lock"></i></div><div><h5 class="mb-1 fw-bold">التحقق بخطوتين — حماية حسابي</h5><p class="text-secondary small mb-0">مالك / مدير العيادة · وسيلة إضافية بعد كلمة المرور</p></div></div>
+ <div class="sdc-v19-state"><div><strong>الحالة: <span data-mfa-status="">غير مفعّل</span></strong><div class="small text-secondary">يمكن إعداد تطبيق مصادقة للحساب، دون تغيير سياسات الأدوار الأخرى.</div></div><span class="badge text-bg-secondary" data-mfa-badge="">غير مفعّل</span></div>
+ <div class="d-flex flex-wrap gap-2 mt-3"><button type="button" class="btn btn-primary btn-sm" data-mfa-begin="" data-ui-reveal="#ui-mfa-setup">تفعيل التحقق بخطوتين</button><button type="button" class="btn btn-outline-danger btn-sm" data-mfa-disable="" disabled>تعطيل التحقق</button></div>
+ <div class="sdc-v19-setup" data-mfa-setup="" hidden="" id="ui-mfa-setup"><div class="alert alert-info small mb-3">معاينة فقط: الربط الحقيقي يتطلب أن يُنشئ الـBackend رمز QR وسراً مشفراً، ويتحقق من TOTP، ويُصدر رموز استرداد. <strong>لا تُخزن أي أسرار حقيقية هنا.</strong></div><ol class="small mb-3"><li>افتح تطبيق مصادقة على هاتفك.</li><li>اربط الحساب برمز QR يقدمه الخادم عند تفعيل النظام.</li><li>أدخل الرمز للتحقق قبل اعتماد التفعيل.</li></ol><label class="form-label fw-bold" for="sdcMfaCode">رمز تجريبي (للمعاينة: يصدره الخادم)</label><input class="form-control" id="sdcMfaCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="6 أرقام" value="" name="sdc_mfa_code" form="backend-form-11"><p class="small text-danger mt-2 mb-0" data-mfa-error="" role="alert"></p><div class="d-flex gap-2 mt-3"><button class="btn btn-primary btn-sm" type="submit" data-mfa-confirm="" data-ui-pending="" form="backend-form-11">تأكيد الإعداد التجريبي</button><button class="btn btn-outline-secondary btn-sm" type="button" data-mfa-cancel="" data-ui-conceal="#ui-mfa-setup">إلغاء</button></div></div>
+ <p class="small text-secondary mt-3 mb-0"><i class="bi bi-info-circle ms-1"></i>هذه الواجهة لا تحمي تسجيل الدخول فعلياً قبل تطوير المصادقة في الـBackend. استعادة الوصول وفقدان الهاتف يجب أن تتم عبر إجراء تحقق آمن.</p></section>
+              <hr>
+              <div class="small text-secondary">آخر تسجيل دخول</div>
+              <div class="fw-bold mt-1">21 أكتوبر 2026 • 8:42 م</div>
+            </div>
+            <div class="soft-card p-4">
+              <h5 class="fw-bold mb-3">الجلسات</h5>
+              <div class="mb-3">
+                <strong>Windows • Edge</strong>
+                <div class="small text-success">الجلسة الحالية</div>
+              </div>
+              <button class="btn btn-outline-danger w-100" data-ui-pending="">
+                تسجيل خروج من الأجهزة الأخرى
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-8" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-9" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-10" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-11" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form></body></html>

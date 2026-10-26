@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html data-style-sections="section-6" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>إكمال الحجز | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/patient/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="row justify-content-center">
+          <div class="col-xl-9">
+            <div class="mb-4">
+              <span class="badge badge-soft mb-2">Appointment</span>
+              <h1 class="fw-bold">إكمال الحجز</h1>
+              <p class="text-secondary mb-0">
+                العيادة والطبيب تم اختيارهما مسبقاً. تظهر فقط الأوقات التي يسمح
+                بها جدول دوام الطبيب وتوفر العيادة.
+              </p>
+            </div>
+            <div class="alert alert-primary border-0 rounded-4 d-none" id="followupBookingContext">
+              <i class="bi bi-arrow-repeat ms-2"></i><strong>حجز متابعة:</strong> تم فتح الحجز من توصية الطبيب. اختر
+              وقتاً متاحاً من جدول الطبيب.
+            </div>
+            <div class="alert alert-info border-0 rounded-4 d-none" id="aiBookingContext">
+              <i class="bi bi-stars ms-2"></i><strong>حجز مقترح بواسطة المساعد الذكي.</strong> سيتم حفظ معرّف
+              الاقتراح المختار وملخص الأعراض وسعر الخدمة وقت الحجز، وسيعاد فحص
+              توفر الموعد قبل التأكيد النهائي.
+              <div class="small mt-2" id="aiBookingMeta"></div>
+            </div>
+            <div class="soft-card p-4 mb-4">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <small class="text-secondary">العيادة المختارة</small>
+                  <div class="fw-bold fs-5" id="selectedClinicName">عيادة الابتسامة الحديثة</div>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-secondary">الطبيب المختار</small>
+                  <div class="fw-bold fs-5" id="selectedDoctorName">د. عمر ناصر</div>
+                </div>
+              </div>
+            </div>
+            <div class="soft-card p-4 p-lg-5">
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">الخدمة</label>
+                  <select class="form-select" id="serviceSelect" data-record-select="service" name="service_id" form="backend-form-1"><option data-doctor-key="omar" value="S-001" selected data-doctor-name="د. عمر ناصر" data-working-days="0,1,2,3,4,6" data-absences="" data-record-option="service">علاج جذور — 500 ₪ — 60 دقيقة</option></select><div class="small text-secondary mt-2">خدمات هذه العيادة المخصصة للطبيب المختار فقط؛ السعر والمدة من كتالوج العيادة.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">التاريخ</label>
+                  <input class="form-control" id="bookingDate" min="2026-10-21" type="date" value="2026-10-25" name="appointment_date" form="backend-form-1">
+                </div>
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label fw-bold mb-0">الأوقات</label>
+                    <div class="small text-secondary">
+                      <span class="me-3"><i class="bi bi-circle-fill text-primary small"></i>
+                        متاح</span>
+                      <span><i class="bi bi-dash-circle text-secondary"></i> غير
+                        متاح</span>
+                    </div>
+                  </div>
+                  <div aria-live="polite" class="slot-grid" data-slot-display="all" id="timeSlots"><div class="slot-choice"><input type="radio" name="appointment_time" value="09:00" id="booking-time-0-9" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-9">9:00 ص</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="10:00" id="booking-time-0-10" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-10">10:00 ص</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="11:00" id="booking-time-0-11" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-11">11:00 ص</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="12:00" id="booking-time-0-12" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-12">12:00 م</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="13:00" id="booking-time-0-13" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-13">1:00 م</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="14:00" id="booking-time-0-14" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-14">2:00 م</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="15:00" id="booking-time-0-15" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-15">3:00 م</label></div><div class="slot-choice"><input type="radio" name="appointment_time" value="16:00" id="booking-time-0-16" class="visually-hidden" required="" form="backend-form-1"><label class="time-slot available btn btn-light w-100" for="booking-time-0-16">4:00 م</label></div></div>
+                  <div class="mt-3 small text-secondary" id="bookingState">أوقات عرض تجريبية لخدمة مدتها 60 دقيقة. التوفر الفعلي يتحقق منه الخادم عند الربط.</div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-bold">ملاحظات للطبيب
+                    <span class="text-secondary fw-normal">(اختياري)</span></label>
+                  <textarea class="form-control" id="bookingNotes" placeholder="مثال: لدي ألم عند المضغ منذ يومين..." rows="4" name="notes" form="backend-form-1"></textarea>
+                  <div class="form-text">
+                    السعر الظاهر في ملخص الحجز هو سعر الخدمة المعروض وقت اختيار الموعد.
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-end gap-2 mt-4">
+                <a class="btn btn-light" href="clinic-details">رجوع</a>
+                <button class="btn btn-primary px-4" id="confirmBooking" type="submit" data-ui-pending="" form="backend-form-1">
+                  تأكيد الحجز
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="modal fade" id="bookingSuccess" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-0 rounded-4">
+            <div class="modal-body p-5 text-center">
+              <div class="icon-box mx-auto mb-3">
+                <i class="bi bi-check2-circle"></i>
+              </div>
+              <h4 class="fw-bold">تم إرسال الحجز</h4>
+              <p class="text-secondary" id="bookingSuccessText">
+                تم اختيار الموعد بنجاح.
+              </p>
+              <a class="btn btn-primary w-100" href="appointments">عرض مواعيدي</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <%- include('../partials/patient/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form></body></html>

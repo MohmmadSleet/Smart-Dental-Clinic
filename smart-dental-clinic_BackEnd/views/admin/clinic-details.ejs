@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <title>تفاصيل العيادة | Smart Dental Clinic</title>
+    <link
+      href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../assets/vendor/28667e4f82c7-bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link
+      href="../assets/vendor/8c34d74036e9-css2-fonts.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="approvals#approvedClinics">العيادات</a>
+            </li>
+            <li class="breadcrumb-item active">C-008</li>
+          </ol>
+        </nav>
+        <div
+          class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4"
+        >
+          <div>
+            <div class="d-flex gap-2 flex-wrap mb-2">
+              <span class="badge text-bg-success" id="adminPrimaryEntityStatus"
+                >مفعلة</span
+              ><span class="badge text-bg-light border" id="detailClinicCode"
+                >الكود العام: C-008</span
+              >
+            </div>
+            <h1 class="fw-bold fs-2 mb-2" id="detailClinicName">
+              عيادة الابتسامة الحديثة
+            </h1>
+            <p class="text-secondary mb-0">
+              Clinic Profile → Staff / Doctors / Services / Appointments /
+              Invoices / Jobs / Settlements.
+            </p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button
+              class="btn btn-outline-warning"
+              data-active-status-text="مفعلة"
+              data-current-detail-action=""
+              data-inactive-status-text="موقوفة"
+              data-reactivate-label="إعادة تفعيل"
+              data-sensitive-action="suspend"
+              data-sensitive-entity="C-008"
+              data-sensitive-target="#adminPrimaryEntityStatus"
+              data-sensitive-title="إيقاف العيادة"
+              data-suspend-label="إيقاف"
+              data-ui-open="#sensitiveActionModal"
+              type="button"
+            >
+              إيقاف</button
+            ><button
+              class="btn btn-outline-danger"
+              data-current-detail-action=""
+              data-sensitive-action="delete"
+              data-sensitive-entity="C-008"
+              data-sensitive-redirect="approvals#approvedClinics"
+              data-sensitive-target="#adminPrimaryEntityStatus"
+              data-sensitive-title="حذف العيادة نهائيًا"
+              data-ui-open="#sensitiveActionModal"
+              type="button"
+            >
+              حذف نهائي</button
+            ><button
+              class="btn btn-primary"
+              data-bs-target="#clinicAdminEditModal"
+              data-bs-toggle="modal"
+              type="button"
+            >
+              تعديل البيانات
+            </button>
+          </div>
+        </div>
+        <div class="alert alert-primary rounded-4 border-0">
+          <i class="bi bi-info-circle ms-2"></i>هذه شاشة Super Admin للرقابة
+          والتدخل. التشغيل اليومي للخدمات والمواعيد والموظفين يبقى مسؤولية مدير
+          العيادة.
+        </div>
+        <div class="soft-card p-4 mb-4 admin-full-control-panel">
+          <div
+            class="d-flex flex-column flex-lg-row justify-content-between gap-3"
+          >
+            <div>
+              <h4 class="fw-bold mb-1">
+                <i class="bi bi-sliders ms-2 text-primary"></i>تحكم Super Admin
+                الكامل
+              </h4>
+              <p class="text-secondary small mb-0">
+                إضافة وإدارة العناصر المرتبطة مباشرة، مع تسجيل سبب العمليات
+                الإدارية الحساسة.
+              </p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap" data-admin-control-buttons="">
+              <button
+                class="btn btn-outline-primary btn-sm"
+                data-admin-create="doctor"
+                type="button"
+                data-ui-template="#ui-form-template-0"
+                data-ui-template-slot="#adminEntitySpecificFields"
+                data-ui-open="#adminRelatedEntityModal"
+              >
+                <i class="bi bi-person-plus ms-1"></i>إضافة طبيب</button
+              ><button
+                class="btn btn-outline-primary btn-sm"
+                data-admin-create="staff"
+                type="button"
+                data-ui-template="#ui-form-template-1"
+                data-ui-template-slot="#adminEntitySpecificFields"
+                data-ui-open="#adminRelatedEntityModal"
+              >
+                <i class="bi bi-person-badge ms-1"></i>إضافة موظف</button
+              ><button
+                class="btn btn-outline-primary btn-sm"
+                data-admin-create="service"
+                type="button"
+                data-ui-template="#ui-form-template-2"
+                data-ui-template-slot="#adminEntitySpecificFields"
+                data-ui-open="#adminRelatedEntityModal"
+              >
+                <i class="bi bi-clipboard2-plus ms-1"></i>إضافة خدمة</button
+              ><button
+                class="btn btn-outline-primary btn-sm"
+                data-admin-create="appointment"
+                type="button"
+                data-ui-template="#ui-form-template-3"
+                data-ui-template-slot="#adminEntitySpecificFields"
+                data-ui-open="#adminRelatedEntityModal"
+              >
+                <i class="bi bi-calendar2-plus ms-1"></i>إضافة موعد</button
+              ><button
+                class="btn btn-outline-primary btn-sm"
+                data-admin-create="invoice"
+                type="button"
+                data-ui-template="#ui-form-template-4"
+                data-ui-template-slot="#adminEntitySpecificFields"
+                data-ui-open="#adminRelatedEntityModal"
+              >
+                <i class="bi bi-receipt ms-1"></i>إضافة فاتورة</button
+              ><button
+                class="btn btn-outline-primary btn-sm"
+                data-admin-create="job"
+                type="button"
+                data-ui-template="#ui-form-template-5"
+                data-ui-template-slot="#adminEntitySpecificFields"
+                data-ui-open="#adminRelatedEntityModal"
+              >
+                <i class="bi bi-briefcase ms-1"></i>إضافة وظيفة
+              </button>
+            </div>
+          </div>
+          <div class="mt-3 d-grid gap-2" id="adminTemporaryChanges"></div>
+        </div>
+        <ul class="nav admin-tabs mb-4" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              data-bs-target="#clinicOverview"
+              data-bs-toggle="pill"
+              aria-current="page"
+              aria-selected="true"
+              role="tab"
+              type="button"
+            >
+              نظرة عامة
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicDoctors"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              الأطباء
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicServices"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              خدمات العيادة
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicAppointments"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              الحجوزات
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicStaff"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              الموظفون
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicFinance"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              المالية
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicJobs"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              الوظائف
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-target="#clinicOperations"
+              data-bs-toggle="pill"
+              aria-selected="false"
+              tabindex="-1"
+              role="tab"
+              type="button"
+            >
+              التشغيل
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div
+            class="tab-pane fade show active"
+            id="clinicOverview"
+            role="tabpanel"
+          >
+            <div class="row g-4">
+              <div class="col-lg-8">
+                <div class="soft-card p-4">
+                  <h4 class="fw-bold mb-3">بيانات العيادة</h4>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">مدير العيادة</label
+                      ><input
+                        class="form-control"
+                        id="detailClinicManager"
+                        readonly
+                        value="د. عمر ناصر • D-108 • مالك ومدير"
+                        name="detail_clinic_manager"
+                        form="backend-form-1"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">المدينة</label
+                      ><input
+                        class="form-control"
+                        id="detailClinicCity"
+                        readonly
+                        value="نابلس"
+                        name="detail_clinic_city"
+                        form="backend-form-1"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">الهاتف</label
+                      ><input
+                        class="form-control"
+                        id="detailClinicPhone"
+                        readonly
+                        value="09-2380000"
+                        name="detail_clinic_phone"
+                        form="backend-form-1"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">البريد</label
+                      ><input
+                        class="form-control"
+                        id="detailClinicEmail"
+                        readonly
+                        value="owner@example.test"
+                        name="detail_clinic_email"
+                        form="backend-form-1"
+                      />
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label">العنوان</label
+                      ><input
+                        class="form-control"
+                        id="detailClinicAddress"
+                        readonly
+                        value="جنين — وسط المدينة"
+                        name="detail_clinic_address"
+                        form="backend-form-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="soft-card p-4 h-100">
+                  <h4 class="fw-bold mb-3">ملخص</h4>
+                  <div class="summary-row">
+                    <span>الأطباء</span><strong>5</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>الموظفون</span><strong>8</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>الخدمات</span><strong>16</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>المرضى</span><strong>1,284</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>الحجوزات هذا الشهر</span><strong>492</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            data-dynamic-clinicdoctors=""
+            id="clinicDoctors"
+            role="tabpanel"
+          >
+            <div
+              class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"
+            >
+              <table
+                class="table mb-0 admin-master-table responsive-stack-table system-data-table"
+              >
+                <thead>
+                  <tr>
+                    <th>الطبيب</th>
+                    <th>التخصص</th>
+                    <th>الترخيص</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="الطبيب" class="table-primary-cell">
+                      د. عمر ناصر
+                    </td>
+                    <td data-label="التخصص">علاج جذور</td>
+                    <td data-label="الترخيص" class="table-status-cell">
+                      <span class="badge text-bg-success">موثّق</span>
+                    </td>
+                    <td data-label="الإجراءات" class="table-actions-cell">
+                      <a
+                        class="btn btn-sm btn-outline-primary"
+                        href="doctor-details?id=D-108"
+                        >فتح</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="clinicServices" role="tabpanel">
+            <div
+              class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"
+            >
+              <table
+                class="table mb-0 admin-master-table responsive-stack-table system-data-table"
+              >
+                <thead>
+                  <tr>
+                    <th>الخدمة</th>
+                    <th>الأطباء المخصصون</th>
+                    <th>السعر</th>
+                    <th>المدة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="الخدمة" class="table-primary-cell">
+                      علاج جذور
+                    </td>
+                    <td data-label="الأطباء المخصصون">د. عمر ناصر</td>
+                    <td data-label="السعر">500 ₪</td>
+                    <td data-label="المدة">60 دقيقة</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            data-dynamic-clinicappointments=""
+            id="clinicAppointments"
+            role="tabpanel"
+          >
+            <div
+              class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"
+            >
+              <table
+                class="table mb-0 admin-master-table responsive-stack-table system-data-table medium-data-table"
+              >
+                <thead>
+                  <tr>
+                    <th>الحجز</th>
+                    <th>المريض</th>
+                    <th>الطبيب</th>
+                    <th>الموعد</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="الحجز" class="table-primary-cell">
+                      <strong>A-9021</strong>
+                    </td>
+                    <td data-label="المريض">أحمد خالد</td>
+                    <td data-label="الطبيب">د. عمر ناصر</td>
+                    <td data-label="الموعد">10:00 ص • 21 أكتوبر 2026</td>
+                    <td data-label="الحالة" class="table-status-cell">
+                      <span class="badge text-bg-success">مؤكد</span>
+                    </td>
+                    <td data-label="الإجراءات" class="table-actions-cell">
+                      <a
+                        class="btn btn-sm btn-outline-primary"
+                        href="appointment-details?id=A-9012"
+                        >فتح</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="clinicStaff" role="tabpanel">
+            <div
+              class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"
+            >
+              <table
+                class="table mb-0 admin-master-table responsive-stack-table system-data-table"
+              >
+                <thead>
+                  <tr>
+                    <th>الموظف</th>
+                    <th>الدور</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="الموظف" class="table-primary-cell">
+                      <strong>سارة أحمد</strong
+                      ><small class="d-block">U-STAFF-001</small>
+                    </td>
+                    <td data-label="الدور">منسق استقبال</td>
+                    <td data-label="الحالة" class="table-status-cell">
+                      <span class="badge text-bg-success">فعال</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            data-dynamic-clinicfinance=""
+            id="clinicFinance"
+            role="tabpanel"
+          >
+            <div class="soft-card p-4">
+              <h4 class="fw-bold mb-3">SET-001</h4>
+              <div class="summary-row">
+                <span>المطلوب</span><strong>25 ₪</strong>
+              </div>
+              <div class="summary-row">
+                <span>المستلم</span><strong class="text-success">500 ₪</strong>
+              </div>
+              <div class="summary-row">
+                <span>المتبقي</span><strong class="text-danger">0 ₪</strong>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            data-dynamic-clinicjobs=""
+            id="clinicJobs"
+            role="tabpanel"
+          >
+            <div
+              class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"
+            >
+              <table
+                class="table mb-0 admin-master-table responsive-stack-table system-data-table"
+              >
+                <thead>
+                  <tr>
+                    <th>الكود</th>
+                    <th>الوظيفة</th>
+                    <th>الحالة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="الكود" class="table-primary-cell">
+                      <strong>J-101</strong>
+                    </td>
+                    <td data-label="الوظيفة">طبيب أسنان عام</td>
+                    <td data-label="الحالة" class="table-status-cell">
+                      <span class="badge text-bg-success">منشورة</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="clinicOperations" role="tabpanel">
+            <div class="row g-4">
+              <div class="col-lg-6">
+                <div class="soft-card p-4 h-100">
+                  <h4 class="fw-bold mb-3">الجداول والغيابات</h4>
+                  <div class="summary-row">
+                    <span>د. عمر ناصر</span
+                    ><strong>الأحد/الاثنين/الأربعاء 09:00–17:00</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>غياب مؤقت</span
+                    ><strong class="text-warning">21 أكتوبر 2026</strong>
+                  </div>
+                  <button
+                    class="btn btn-sm btn-outline-primary mt-3"
+                    data-sensitive-action="override_schedule"
+                    data-sensitive-entity="D-108 • C-008"
+                    data-sensitive-title="تدخل إداري في جدول الطبيب"
+                    data-ui-open="#sensitiveActionModal"
+                    type="button"
+                  >
+                    تدخل إداري
+                  </button>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="soft-card p-4 h-100">
+                  <h4 class="fw-bold mb-3">المتابعات والمختبرات</h4>
+                  <div class="summary-row">
+                    <span>متابعات بانتظار الحجز</span><strong>4</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>متابعات محجوزة</span><strong>9</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>حالات مخبرية</span><strong>6</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>تم الاستلام</span><strong>2</strong>
+                  </div>
+                  <hr class="my-3" />
+                  <div class="summary-row">
+                    <span>مختبرات نشطة</span><strong>2</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>مختبرات مؤرشفة</span><strong>0</strong>
+                  </div>
+                  <div class="small text-secondary mb-3">
+                    Elite Dental Lab • Smile Lab
+                  </div>
+                  <a
+                    class="btn btn-sm btn-outline-primary"
+                    href="labs?clinic=smile"
+                    ><i class="bi bi-buildings ms-1"></i>عرض مختبرات العيادة</a
+                  >
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="soft-card p-4 h-100">
+                  <h4 class="fw-bold mb-3">الحجوزات والخدمات</h4>
+                  <div class="summary-row">
+                    <span>خدمات مفعلة</span><strong>8</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>حجوزات هذا الشهر</span><strong>146</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>متوسط التقييم</span
+                    ><strong class="text-warning"
+                      ><i class="bi bi-star-fill ms-1"></i>4.8</strong
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="soft-card p-4 h-100">
+                  <h4 class="fw-bold mb-3">صلاحيات الموظفين</h4>
+                  <div class="summary-row">
+                    <span>سارة أحمد • منسق استقبال</span
+                    ><strong>مواعيد + مرضى</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>سارة أحمد • محاسب</span
+                    ><strong>فواتير + دفعات</strong>
+                  </div>
+                  <button
+                    class="btn btn-sm btn-outline-primary mt-3"
+                    data-sensitive-action="override_permissions"
+                    data-sensitive-entity="Clinic C-008"
+                    data-sensitive-title="تعديل صلاحيات موظف استثنائيًا"
+                    data-ui-open="#sensitiveActionModal"
+                    type="button"
+                  >
+                    تدخل استثنائي
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <template
+        data-admin-form="doctor"
+        data-admin-help="الطبيب يحتاج ملفًا مهنيًا وترخيصًا. التحقق النهائي من الترخيص يبقى مسؤولية Super Admin."
+        data-admin-title="إضافة طبيب"
+        id="ui-form-template-0"
+      >
+        <div class="entity-form-section">
+          <div class="entity-form-section-title">
+            <i class="bi bi-person-badge"></i>الحساب والملف المهني
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">اسم الطبيب *</label
+              ><input
+                class="form-control"
+                name="full_name"
+                required=""
+                value="د. عمر ناصر"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">البريد *</label
+              ><input
+                class="form-control"
+                name="email"
+                required=""
+                type="email"
+                value="doctor@example.test"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">الهاتف *</label
+              ><input
+                class="form-control"
+                name="phone"
+                required=""
+                value="0599 111 146"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">التخصص *</label
+              ><select
+                class="form-select"
+                name="specialty"
+                required=""
+                form="backend-form-3"
+              >
+                <option>تقويم الأسنان</option>
+                <option>علاج جذور</option>
+                <option>طب أسنان عام</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">رقم الترخيص *</label
+              ><input
+                class="form-control"
+                name="license_number"
+                required=""
+                value="ORT-77103"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العيادة الحالية</label
+              ><select
+                class="form-select"
+                name="clinic"
+                data-record-select="clinic"
+                form="backend-form-3"
+              >
+                <option value="C-008">عيادة الابتسامة الحديثة</option>
+              </select>
+            </div>
+          </div>
+        </div></template
+      ><template
+        data-admin-form="staff"
+        data-admin-help="موظف تشغيل داخل عيادة محددة. الصلاحيات السريرية لا تُمنح له."
+        data-admin-title="إضافة موظف عيادة"
+        id="ui-form-template-1"
+      >
+        <div class="entity-form-section">
+          <div class="entity-form-section-title">
+            <i class="bi bi-person-gear"></i>الحساب والارتباط بالعيادة
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">الاسم الكامل *</label
+              ><input
+                class="form-control"
+                name="full_name"
+                required=""
+                value="نور علي"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">البريد *</label
+              ><input
+                class="form-control"
+                name="email"
+                required=""
+                type="email"
+                value="staff@example.test"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العيادة *</label
+              ><select
+                class="form-select"
+                name="clinic"
+                required=""
+                data-record-select="clinic"
+                form="backend-form-3"
+              >
+                <option value="C-008">عيادة الابتسامة الحديثة</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">الدور *</label
+              ><select
+                class="form-select"
+                name="staff_role"
+                required=""
+                form="backend-form-3"
+                data-role-scope="Clinic"
+              >
+                <option>منسق عيادة</option>
+                <option>منسق استقبال</option>
+                <option>محاسب</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">الصلاحيات التشغيلية</label>
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="border rounded-3 p-2 w-100"
+                    ><input
+                      checked
+                      class="form-check-input ms-2"
+                      type="checkbox"
+                      name="template_field_11"
+                      form="backend-form-3"
+                    />
+                    عرض المواعيد</label
+                  >
+                </div>
+                <div class="col-md-6">
+                  <label class="border rounded-3 p-2 w-100"
+                    ><input
+                      checked
+                      class="form-check-input ms-2"
+                      type="checkbox"
+                      name="template_field_13"
+                      form="backend-form-3"
+                    />
+                    إدارة المواعيد</label
+                  >
+                </div>
+                <div class="col-md-6">
+                  <label class="border rounded-3 p-2 w-100"
+                    ><input
+                      checked
+                      class="form-check-input ms-2"
+                      type="checkbox"
+                      name="template_field_15"
+                      form="backend-form-3"
+                    />
+                    عرض المرضى</label
+                  >
+                </div>
+                <div class="col-md-6">
+                  <label class="border rounded-3 p-2 w-100"
+                    ><input
+                      checked
+                      class="form-check-input ms-2"
+                      type="checkbox"
+                      name="template_field_17"
+                      form="backend-form-3"
+                    />
+                    عرض الفواتير</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></template
+      ><template
+        data-admin-form="service"
+        data-admin-help="الخدمة ملك للعيادة؛ تختار الإدارة أطباء هذه العيادة المخصص لهم تقديمها، دون ربطها بتخصص."
+        data-admin-title="إضافة خدمة"
+        id="ui-form-template-2"
+      >
+        <div class="entity-form-section">
+          <div class="entity-form-section-title">
+            <i class="bi bi-list-check"></i>بيانات الخدمة
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">اسم الخدمة *</label
+              ><input
+                class="form-control"
+                name="name"
+                required=""
+                value="متابعة علاج جذور"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العيادة المرتبطة بالخدمة</label
+              ><select
+                class="form-select"
+                name="clinic_id"
+                required
+                data-record-select="clinic"
+                form="backend-form-3"
+              >
+                <option value="C-008">عيادة الابتسامة الحديثة</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">السعر *</label
+              ><input
+                class="form-control"
+                name="price"
+                required=""
+                type="number"
+                value="450"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">المدة بالدقائق *</label
+              ><input
+                class="form-control"
+                name="duration"
+                required=""
+                type="number"
+                value="60"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">التقسيط</label
+              ><select
+                class="form-select"
+                name="installment"
+                form="backend-form-3"
+              >
+                <option>مسموح</option>
+                <option>غير مسموح</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">الأطباء</label
+              ><select
+                class="form-select"
+                multiple
+                name="doctor_ids[]"
+                data-record-select="doctor"
+                form="backend-form-3"
+              >
+                <option value="D-108">د. عمر ناصر</option>
+              </select>
+            </div>
+          </div>
+        </div></template
+      ><template
+        data-admin-form="appointment"
+        data-admin-help="الموعد يربط المريض والعيادة والطبيب والخدمة والتاريخ والوقت."
+        data-admin-title="إضافة موعد"
+        id="ui-form-template-3"
+      >
+        <div class="entity-form-section">
+          <div class="entity-form-section-title">
+            <i class="bi bi-calendar2-plus"></i>بيانات الموعد
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">المريض *</label
+              ><select
+                class="form-select"
+                name="patient"
+                required=""
+                data-record-select="patient"
+                form="backend-form-3"
+              >
+                <option value="P-2048">أحمد خالد</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العيادة *</label
+              ><select
+                class="form-select"
+                name="clinic"
+                required=""
+                data-record-select="clinic"
+                form="backend-form-3"
+              >
+                <option value="C-008">عيادة الابتسامة الحديثة</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">الطبيب *</label
+              ><select
+                class="form-select"
+                name="doctor"
+                required=""
+                data-record-select="doctor"
+                form="backend-form-3"
+              >
+                <option value="D-108">د. عمر ناصر</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">الخدمة *</label
+              ><select
+                class="form-select"
+                name="service"
+                required=""
+                data-record-select="service"
+                form="backend-form-3"
+              >
+                <option value="S-001">علاج جذور</option>
+              </select>
+              <div class="small text-secondary mt-2">
+                خدمات العيادة المخصصة للطبيب المختار فقط.
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">التاريخ *</label
+              ><input
+                class="form-control"
+                name="date"
+                required=""
+                type="date"
+                value="2026-10-11"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">الوقت *</label
+              ><input
+                class="form-control"
+                name="time"
+                required=""
+                type="time"
+                value="10:00"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">الحالة</label
+              ><select class="form-select" name="status" form="backend-form-3">
+                <option>مؤكد</option>
+                <option>بانتظار الموافقة</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">ملاحظات الحجز</label
+              ><textarea
+                class="form-control"
+                name="notes"
+                rows="3"
+                form="backend-form-3"
+              ></textarea>
+            </div>
+          </div></div></template
+      ><template
+        data-admin-form="invoice"
+        data-admin-help="الفاتورة مرتبطة بالمريض والعيادة ويمكن ربطها بموعد."
+        data-admin-title="إضافة فاتورة"
+        id="ui-form-template-4"
+      >
+        <div class="entity-form-section">
+          <div class="entity-form-section-title">
+            <i class="bi bi-receipt"></i>بيانات الفاتورة
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">المريض *</label
+              ><select
+                class="form-select"
+                name="patient"
+                required=""
+                data-record-select="patient"
+                form="backend-form-3"
+              >
+                <option value="P-2048">أحمد خالد</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العيادة *</label
+              ><select
+                class="form-select"
+                name="clinic"
+                required=""
+                data-record-select="clinic"
+                form="backend-form-3"
+              >
+                <option value="C-008">عيادة الابتسامة الحديثة</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">الموعد المرتبط</label
+              ><input
+                class="form-control"
+                name="appointment"
+                value="A-9012"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">الإجمالي *</label
+              ><input
+                class="form-control"
+                name="total"
+                required=""
+                type="number"
+                value="1700"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">المدفوع *</label
+              ><input
+                class="form-control"
+                name="paid"
+                required=""
+                type="number"
+                value="1350"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-12">
+              <label class="form-label">بنود الفاتورة *</label
+              ><textarea
+                class="form-control"
+                name="items"
+                required=""
+                rows="4"
+                form="backend-form-3"
+              >
+جلسة علاج جذور — 1,200 ₪\nأشعة — 200 ₪\nترميم مؤقت — 300 ₪</textarea
+              >
+            </div>
+          </div>
+        </div></template
+      ><template
+        data-admin-form="job"
+        data-admin-help="هذا المسار للوظائف الطبية فقط في النسخة الحالية."
+        data-admin-title="إضافة وظيفة"
+        id="ui-form-template-5"
+      >
+        <div class="entity-form-section">
+          <div class="entity-form-section-title">
+            <i class="bi bi-briefcase"></i>بيانات الوظيفة الطبية
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">المسمى *</label
+              ><input
+                class="form-control"
+                name="title"
+                required=""
+                value="طبيب/ة تقويم أسنان"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">العيادة *</label
+              ><select
+                class="form-select"
+                name="clinic"
+                required=""
+                data-record-select="clinic"
+                form="backend-form-3"
+              >
+                <option value="C-008">عيادة الابتسامة الحديثة</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">التخصص *</label
+              ><select
+                class="form-select"
+                name="specialty"
+                required=""
+                form="backend-form-3"
+              >
+                <option>تقويم الأسنان</option>
+                <option>علاج جذور</option>
+                <option>طب أسنان عام</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">المدينة *</label
+              ><select
+                class="form-select"
+                name="city"
+                required=""
+                form="backend-form-3"
+              >
+                <option>طولكرم</option>
+                <option>نابلس</option>
+                <option>جنين</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">نوع الدوام *</label
+              ><select
+                class="form-select"
+                name="type"
+                required=""
+                form="backend-form-3"
+              >
+                <option>دوام جزئي</option>
+                <option>دوام كامل</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">الخبرة المطلوبة</label
+              ><input
+                class="form-control"
+                name="experience"
+                type="number"
+                value="3"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">آخر موعد *</label
+              ><input
+                class="form-control"
+                name="deadline"
+                required=""
+                type="date"
+                value="2026-10-23"
+                form="backend-form-3"
+              />
+            </div>
+            <div class="col-12">
+              <label class="form-label">الوصف والمتطلبات *</label
+              ><textarea
+                class="form-control"
+                name="description"
+                required=""
+                rows="4"
+                form="backend-form-3"
+              >
+اختصاص تقويم أسنان، ترخيص ساري، وخبرة عملية لا تقل عن 3 سنوات.</textarea
+              >
+            </div>
+          </div>
+        </div></template
+      >
+      <div class="modal fade" id="clinicAdminEditModal" tabindex="-1">
+        <div
+          class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+        >
+          <div class="modal-content border-0 rounded-4">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold">تعديل إداري للعيادة</h5>
+              <button
+                class="btn-close"
+                data-bs-dismiss="modal"
+                type="button"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="entity-form-summary mb-3">
+                جميع بيانات العيادة الأساسية والتشغيلية في نموذج واحد.
+              </div>
+              <div class="entity-form-section mb-3">
+                <div class="entity-form-section-title">
+                  <i class="bi bi-hospital"></i>بيانات العيادة
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label is-required">اسم العيادة *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditName"
+                      required=""
+                      value="عيادة الابتسامة الحديثة"
+                      name="clinic_detail_edit_name"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label is-required">المدينة *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditCity"
+                      required=""
+                      value="نابلس"
+                      name="clinic_detail_edit_city"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">الحالة</label
+                    ><select
+                      class="form-select"
+                      id="clinicDetailEditStatus"
+                      value="active"
+                      name="clinic_detail_edit_status"
+                      form="backend-form-2"
+                    >
+                      <option value="active" selected>مفعلة</option>
+                      <option value="suspended">موقوفة</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label is-required"
+                      >العنوان الكامل *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditAddress"
+                      required=""
+                      value="جنين — وسط المدينة"
+                      name="clinic_detail_edit_address"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label is-required">الهاتف *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditPhone"
+                      required=""
+                      value="09-2380000"
+                      name="clinic_detail_edit_phone"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label is-required">البريد الرسمي *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditEmail"
+                      required=""
+                      type="email"
+                      value="owner@example.test"
+                      name="clinic_detail_edit_email"
+                      autocomplete="email"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label is-required"
+                      >رقم ترخيص المنشأة *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditLicense"
+                      required=""
+                      value="CLINIC-008-2026"
+                      name="clinic_detail_edit_license"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">تحديث وثيقة الترخيص</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditLicenseFile"
+                      type="file"
+                      name="clinic_detail_edit_license_file"
+                      form="backend-form-2"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">الحجز الإلكتروني</label
+                    ><select
+                      class="form-select"
+                      id="clinicDetailEditOnline"
+                      value="enabled"
+                      data-record-select="clinic"
+                      name="clinic_detail_edit_online"
+                      form="backend-form-2"
+                    >
+                      <option
+                        value="C-008"
+                        selected
+                        data-record-option="clinic"
+                      >
+                        عيادة الابتسامة الحديثة
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="entity-form-section mb-3">
+                <div class="entity-form-section-title">
+                  <i class="bi bi-person-badge"></i>مدير / مالك العيادة
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label is-required">المدير *</label
+                    ><input
+                      class="form-control"
+                      id="clinicDetailEditManager"
+                      required=""
+                      value="د. عمر ناصر • D-108 • مالك ومدير"
+                      name="clinic_detail_edit_manager"
+                      form="backend-form-2"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="entity-form-section">
+                <label class="form-label">ملاحظات الإدارة</label
+                ><textarea
+                  class="form-control mb-3"
+                  id="clinicDetailEditNotes"
+                  rows="3"
+                  value="عيادة متعددة التخصصات."
+                  name="clinic_detail_edit_notes"
+                  form="backend-form-2"
+                ></textarea
+                ><label class="form-label">سبب التعديل الإداري *</label
+                ><textarea
+                  class="form-control"
+                  id="clinicDetailAdminReason"
+                  required=""
+                  rows="3"
+                  name="clinic_detail_admin_reason"
+                  form="backend-form-2"
+                ></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-light"
+                data-bs-dismiss="modal"
+                type="button"
+              >
+                إلغاء</button
+              ><button
+                class="btn btn-primary"
+                id="saveClinicAdminEdit"
+                data-ui-pending=""
+                form="backend-form-2"
+                type="submit"
+              >
+                حفظ جميع التعديلات
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="modal fade" id="viewModal" tabindex="-1">
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="viewTitle"></h5>
+              <small class="text-secondary" id="viewSubtitle"></small>
+            </div>
+            <button
+              class="btn-close"
+              data-bs-dismiss="modal"
+              type="button"
+            ></button>
+          </div>
+          <div class="modal-body" id="viewBody"></div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+              إغلاق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="adminRelatedEntityModal" tabindex="-1">
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="adminRelatedEntityTitle">
+                إضافة
+              </h5>
+              <small class="text-secondary"
+                >سيتم ربط العنصر تلقائيًا بالعيادة المفتوحة حاليًا.</small
+              >
+            </div>
+            <button
+              class="btn-close"
+              data-bs-dismiss="modal"
+              type="button"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input
+              id="adminRelatedEntityType"
+              type="hidden"
+              value=""
+              name="admin_related_entity_type"
+              form="backend-form-3"
+            />
+            <div
+              class="entity-form-summary mb-3"
+              id="adminEntityFormIntro"
+            ></div>
+            <div class="d-grid gap-3" id="adminEntitySpecificFields"></div>
+            <div class="entity-form-section mt-3">
+              <label class="form-label">سبب الإضافة *</label
+              ><textarea
+                class="form-control"
+                id="adminRelatedEntityReason"
+                rows="3"
+                name="admin_related_entity_reason"
+                form="backend-form-3"
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+              إلغاء</button
+            ><button
+              class="btn btn-primary"
+              id="saveAdminRelatedEntity"
+              data-ui-pending=""
+              form="backend-form-3"
+              type="submit"
+            >
+              حفظ داخل العيادة
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sensitiveActionModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="sensitiveActionTitle">
+                تأكيد إجراء إداري
+              </h5>
+              <small
+                class="text-secondary"
+                id="sensitiveActionSubtitle"
+              ></small>
+            </div>
+            <button
+              class="btn-close"
+              data-bs-dismiss="modal"
+              type="button"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning rounded-4">
+              <i class="bi bi-shield-exclamation ms-1"></i>هذا إجراء حساس، وسبب
+              الإجراء مطلوب لتوضيح سبب التغيير الإداري.
+            </div>
+            <label class="form-label">سبب الإجراء الإداري *</label
+            ><textarea
+              class="form-control"
+              id="sensitiveActionReason"
+              placeholder="اكتب سببًا واضحًا..."
+              rows="4"
+              name="sensitive_action_reason"
+              form="backend-form-4"
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+              إلغاء</button
+            ><button
+              class="btn btn-primary"
+              id="confirmSensitiveAction"
+              data-ui-pending=""
+              form="backend-form-4"
+              type="submit"
+            >
+              تأكيد
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div
+        class="toast align-items-center text-bg-primary border-0"
+        id="appToast"
+      >
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button
+            class="btn-close btn-close-white m-auto ms-2"
+            data-bs-dismiss="toast"
+            type="button"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+
+    Resource. --&gt;
+    <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+    <script src="assets/app.js"></script>
+
+    <button type="button" class="ux-top" aria-label="العودة للأعلى">
+      <i class="bi bi-arrow-up"></i>
+    </button>
+    <div class="modal fade" id="relatedEntityEditModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="relatedEntityEditTitle">
+                تعديل عنصر
+              </h5>
+              <small class="text-secondary" id="relatedEntityEditCode"></small>
+            </div>
+            <button
+              class="btn-close"
+              data-bs-dismiss="modal"
+              type="button"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <label class="form-label">القيمة / الاسم</label
+            ><input
+              class="form-control"
+              id="relatedEntityEditValue"
+              value=""
+              name="related_entity_edit_value"
+              form="backend-form-5"
+            /><label class="form-label mt-3">سبب التعديل الإداري *</label
+            ><textarea
+              class="form-control"
+              id="relatedEntityEditReason"
+              rows="3"
+              name="related_entity_edit_reason"
+              form="backend-form-5"
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+              إلغاء</button
+            ><button
+              class="btn btn-primary"
+              id="saveRelatedEntityEdit"
+              data-ui-pending=""
+              form="backend-form-5"
+              type="submit"
+            >
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div
+        id="backendPendingNotice"
+        class="toast align-items-center text-bg-secondary border-0"
+        role="status"
+        aria-live="polite"
+      >
+        <div class="d-flex">
+          <div class="toast-body">
+            هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white m-auto ms-2"
+            data-bs-dismiss="toast"
+            aria-label="إغلاق"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <form
+      id="backend-form-1"
+      method="post"
+      data-ui-unbound=""
+      data-backend-binding="section"
+      hidden=""
+    ></form>
+    <form
+      id="backend-form-2"
+      method="post"
+      data-ui-unbound=""
+      data-backend-binding="modal"
+      hidden=""
+    ></form>
+    <form
+      id="backend-form-3"
+      method="post"
+      data-ui-unbound=""
+      data-backend-binding="modal"
+      hidden=""
+    ></form>
+    <form
+      id="backend-form-4"
+      method="post"
+      data-ui-unbound=""
+      data-backend-binding="modal"
+      hidden=""
+    ></form>
+    <form
+      id="backend-form-5"
+      method="post"
+      data-ui-unbound=""
+      data-backend-binding="modal"
+      hidden=""
+    ></form>
+    <%- include('../partials/admin/footer') %>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>الخدمات والأسعار | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">Services &amp; Pricing</span>
+            <h1 class="fw-bold">الخدمات والأسعار</h1>
+            <p class="text-secondary mb-0">
+              تدير العيادة خدماتها وأسعارها ومددها، وتخصص كل خدمة لطبيب أو أكثر من أطبائها. تخصص الطبيب مستقل عن الخدمة.
+            </p>
+          </div>
+          <button class="btn btn-primary" data-bs-target="#serviceModal" data-bs-toggle="modal" type="button">
+            <i class="bi bi-plus-lg ms-1"></i>إضافة خدمة
+          </button>
+        </div>
+        <div class="filter-panel mb-4">
+          <div class="row g-3">
+            <div class="col-md-7">
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input class="form-control" id="serviceSearch" placeholder="ابحث باسم الخدمة" value="" data-ui-unbound-control="" name="service_search" form="backend-form-5">
+              </div>
+            </div>
+            <div class="col-md-5">
+              <select class="form-select" id="serviceStatus" name="service_status" form="backend-form-5" aria-label="حالة الخدمة" data-ui-unbound-control=""><option value="all" selected>كل الحالات</option><option value="active">متاحة</option><option value="inactive">معطلة</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="row g-4">
+          
+          <div class="col-md-6 col-xl-4 service-item" data-name="علاج جذور" data-clinic-id="C-008" data-status="active" data-record-id="S-001">
+            <div class="service-card">
+              <div class="d-flex justify-content-between">
+                <span class="badge badge-soft">خدمة العيادة</span><span class="badge text-bg-success">متاحة</span>
+              </div>
+              <h5 class="fw-bold mt-3">علاج جذور</h5>
+              <div class="service-price">500 ₪</div>
+              <div class="small text-secondary mb-3">60 دقيقة </div>
+              <div class="mb-3">
+                <small class="text-secondary d-block mb-2">الأطباء الذين يقدمونها</small><span class="doctor-chip">د. عمر ناصر</span>
+                
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm flex-fill" data-bs-target="#serviceModal" data-bs-toggle="modal" type="button">
+                  تعديل</button><button class="btn btn-light btn-sm flex-fill" data-toast="تم تعطيل الخدمة تجريبياً" data-ui-pending="">
+                  تعطيل
+                </button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      <div class="modal fade" id="serviceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="fw-bold mb-0">بيانات الخدمة</h5>
+              <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-md-6"><label class="form-label" for="catalogServiceId">الخدمة من الكتالوج الموحّد *</label><select class="form-select" id="catalogServiceId" name="service_id" required form="backend-form-6"><option value="S-001">علاج جذور</option><option value="__new__">إضافة خدمة جديدة للكتالوج</option></select><div class="mt-2" data-new-service hidden><label class="form-label" for="newCatalogServiceName">اسم الخدمة الجديدة *</label><input class="form-control" id="newCatalogServiceName" name="new_service_name" form="backend-form-6" disabled><small class="text-secondary">ابحث عن الخدمة قبل إضافتها؛ الإضافة متاحة للأدمن والعيادة.</small></div></div>
+                <div class="col-md-6"><label class="form-label" for="serviceClinic">إعدادات العيادة الحالية</label><select class="form-select" id="serviceClinic" name="clinic_id" form="backend-form-6" disabled aria-label="العيادة الحالية"><option value="C-008" selected>عيادة الابتسامة الحديثة</option></select></div>
+                <div class="col-md-4">
+                  <label class="form-label" for="field-2">سعر الخدمة داخل العيادة ₪</label><input class="form-control" inputmode="decimal" value="500" id="field-2" name="field_2" form="backend-form-6" type="number" min="0" step="0.01" required="">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="field-3">المدة</label><input class="form-control" inputmode="numeric" value="60" id="field-3" name="field_3" form="backend-form-6" type="number" min="1" step="1" required="">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="field-4">التقسيط</label><select class="form-select" id="field-4" name="field_4" form="backend-form-6"><option value="true" selected>نعم</option><option value="false">لا</option></select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label fw-bold">الأطباء الذين يقدمون الخدمة</label>
+                  <div class="multi-doctor-box">
+                    <div class="form-check service-doctor-option" data-clinic-doctor-id="D-108">
+                      <input checked class="form-check-input" id="doc1" type="checkbox" name="doctor_ids[]" value="D-108" form="backend-form-6"><label class="form-check-label w-100" for="doc1">د. عمر ناصر
+                        <span class="text-secondary small">— علاج الجذور</span></label>
+                    </div>
+                    
+                    
+                    
+                  </div>
+                  <div class="small text-secondary mt-2">
+                    تظهر قائمة أطباء هذه العيادة، وتختار الإدارة من يقدم هذه الخدمة داخلها. لا يعتمد الاختيار على ربط الخدمة بتخصص.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+                إلغاء</button><button class="btn btn-primary" type="submit" form="backend-form-6">
+                حفظ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-5" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><form id="backend-form-6" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form></body></html>

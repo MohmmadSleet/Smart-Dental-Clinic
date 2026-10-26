@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>إنشاء حساب | Smart Dental Clinic</title>
+    <link href="../../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="../assets/styles.css">
+  <link href="../../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body>
+    <div class="auth-page">
+      <div class="container">
+        <div class="auth-card">
+          <div class="row g-0">
+            <div class="col-lg-5">
+              <div class="auth-side h-100">
+                <a class="brand text-white mb-5" href="../../index"><span class="brand-mark bg-white text-primary"><i class="bi bi-heart-pulse"></i></span><span class="brand-copy"><strong>Smart Dental Clinic</strong><small class="text-white-50">رعاية أسنان أذكى وأسهل</small></span></a>
+                <h2 class="mt-5">ابدأ مع Smart Dental</h2>
+                <p class="mt-3">
+                  اختَر نوع الحساب الذي تريد إنشاءه. حسابات العيادات لا تُنشأ
+                  مباشرة من هنا؛ الطبيب ينشئ حسابه أولًا ثم يختار إنشاء عيادة.
+                </p>
+                <div class="auth-benefit">
+                  <i class="bi bi-calendar2-check"></i>
+                  <div>
+                    <strong>مواعيد منظمة</strong><small>حجز ومتابعة وتغيير بسهولة.</small>
+                  </div>
+                </div>
+                <div class="auth-benefit">
+                  <i class="bi bi-file-medical"></i>
+                  <div>
+                    <strong>بياناتك في مكان واحد</strong><small>تقارير وخطط علاج وفواتير.</small>
+                  </div>
+                </div>
+                <div class="auth-benefit">
+                  <i class="bi bi-shield-check"></i>
+                  <div>
+                    <strong>صلاحيات حسب الدور</strong><small>كل حساب يصل فقط لما يناسب مسؤوليته.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div class="auth-form-wrap">
+                <a class="small text-secondary" href="../../index"><i class="bi bi-arrow-right ms-1"></i>العودة للرئيسية</a>
+                <h1 class="mt-4 mb-2">إنشاء حساب جديد</h1>
+                <p>من أنت؟ سنعرض لك الحقول المناسبة فقط.</p>
+                <input id="accountType" type="hidden" value="" name="account_type">
+                <div class="role-choice mt-4">
+                  <a class="role-option active text-decoration-none" data-href="patient" data-role="patient" href="patient">
+                    <i class="bi bi-person-heart"></i><strong>مريض</strong><small>أريد حجز المواعيد ومتابعة علاجي.</small>
+                  </a>
+                  <a class="role-option text-decoration-none" data-href="doctor" data-role="doctor" href="doctor">
+                    <i class="bi bi-person-badge"></i><strong>طبيب أسنان</strong><small>أريد إنشاء عيادة أو التقدم إلى وظيفة.</small>
+                  </a>
+                </div>
+                <a class="btn btn-primary w-100 mt-4 py-2" href="patient" id="roleNext">متابعة</a>
+                <div class="auth-divider">لديك حساب بالفعل؟</div>
+                <a class="btn btn-light border w-100" href="../login">تسجيل الدخول</a>
+                <p class="text-center mt-4 mb-0">
+                  <small>حساب Super Admin لا يمكن إنشاؤه من التسجيل العام.</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="../../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+      
+    </div>
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="../assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div>
+        <!-- زر الدعم الفني العائم -->
+        <button class="floating-chat-btn" id="chatToggleBtn" title="تواصل مع الدعم الفني">
+            <i class="bi bi-chat-dots-fill"></i>
+        </button>
+
+        <!-- نافذة الشات المنبثقة -->
+        <div class="chat-window" id="chatWindow">
+            <div class="p-3 bg-primary text-white d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-headset fs-5"></i>
+                    <div>
+                        <h6 class="mb-0 fw-bold text-white">الدعم الفني للحسابات</h6>
+                        <small class="text-white-50" style="font-size: 0.75rem;">متواجدون لمساعدتك</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" id="chatCloseBtn"></button>
+            </div>
+            <div class="p-3 bg-light" style="height: 230px; overflow-y: auto; font-size: 0.9rem;">
+                <div class="bg-white p-2.5 rounded-3 border mb-2 shadow-sm text-dark" style="max-width: 85%;">
+                    أهلاً بك! كيف يمكننا مساعدتك في حل مشكلة تسجيل الدخول أو حسابك اليوم؟
+                </div>
+            </div>
+            <div class="p-2 border-top bg-white">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="اكتب رسالتك هنا..." value="" id="field-1" name="field_1">
+                    <button class="btn btn-primary btn-sm" type="button" data-ui-pending=""><i class="bi bi-send"></i></button>
+                </div>
+            </div>
+        </div>
+    </div><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div></body></html>

@@ -1,0 +1,19 @@
+{
+  "name": "smart-dental-clinic-ejs-ssr-ready",
+  "version": "1.1.0",
+  "private": true,
+  "description": "UI-preserving EJS/Express SSR starter with clean routes and legacy redirects",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node tests/verify-structure.js && node tests/verify-routing-contract.js && node tests/verify-unified-layouts.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html data-style-sections="section-7" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>أطباء العيادة | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5"><section class="soft-card p-3 mb-3"><h6 class="fw-bold">ربط طبيب مسجّل</h6><p class="small text-secondary mb-2">اختر حساب الطبيب المعتمد، ثم اضبط تاريخ العمل والحالة والخدمات داخل العيادة. بيانات الحساب من ملف الطبيب.</p></section><div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">Doctors</span>
+            <h1 class="fw-bold">أطباء العيادة</h1>
+            <p class="text-secondary mb-0">
+              إدارة أطباء العيادة وحالة التوفر والدوام، وتخصيص الخدمات من ملف الطبيب.
+            </p>
+          </div>
+          <button class="btn btn-primary" data-bs-target="#addDoctorModal" data-bs-toggle="modal" type="button">
+            <i class="bi bi-person-plus ms-1"></i>إضافة طبيب
+          </button>
+        </div>
+        <div class="filter-panel mb-4">
+          <div class="row g-3">
+            <div class="col-md-5">
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input class="form-control" id="doctorSearch" placeholder="ابحث باسم الطبيب أو التخصص" value="" data-ui-unbound-control="" name="doctor_search" form="backend-form-1">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="doctorSpecialty" name="doctor_specialty" form="backend-form-1">
+                <option value="all" selected>كل التخصصات</option>
+                <option value="orthodontics">تقويم</option>
+                <option value="endodontics">جذور</option>
+                <option value="cosmetic">تجميل</option>
+                <option value="general">طب عام</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select class="form-select" id="doctorAvailability" data-record-select="doctor" name="doctor_availability" form="backend-form-1"><option value="all" selected>كل الحالات</option><option value="D-108" data-record-option="doctor">د. عمر ناصر</option></select>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-light w-100" id="clearDoctorFilters" data-ui-pending="">
+                إعادة ضبط
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="small text-secondary mb-3" id="doctorCount">طبيب واحد</div>
+        <div class="doctors-responsive-grid">
+          
+          <div class="doctor-item" data-availability="available" data-name="د. عمر ناصر" data-specialty="endodontics" data-specialty-name="علاج الجذور" data-record-id="D-108">
+            <div class="doctor-card">
+              <img class="doctor-card-img" src="../assets/vendor/2fb6f2c869b1-photo-1612349317150-e413f6a5b16d.jpg" alt="د. عمر ناصر">
+              <div class="p-3">
+                <div class="d-flex justify-content-between">
+                  <span class="badge badge-soft">جذور</span><span class="badge text-bg-success">متاح</span>
+                </div>
+                <h5 class="fw-bold mt-3">د. عمر ناصر</h5>
+                <div class="doctor-meta">
+                  <span>6 سنوات</span><span>3 مواعيد اليوم</span>
+                </div>
+                <div class="small text-warning mt-2">
+                  <i class="bi bi-calendar-x ms-1"></i>غياب مسجل: 21 أكتوبر 2026
+                </div>
+                <a class="btn btn-outline-primary w-100 mt-3" href="doctor-details?doctor=omar">الملف والدوام</a>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <div class="empty-state d-none" id="doctorEmpty">
+          <i class="bi bi-person-x fs-1"></i>
+          <h5 class="fw-bold mt-3">لا يوجد أطباء مطابقون</h5>
+        </div>
+      </section>
+      <div class="modal fade" id="addDoctorModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="fw-bold mb-0">إضافة طبيب للعيادة</h5>
+              <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <div class="entity-form-summary mb-3">اربط حساب طبيب مسجّل ومعتمد بالعيادة. بياناته المهنية تُعرض من ملفه ولا تُعدل هنا.</div>
+              <div class="entity-form-section mb-3">
+                <div class="entity-form-section-title">
+                  <i class="bi bi-link-45deg"></i>طريقة إضافة الطبيب
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6" id="existingDoctorWrap">
+                    <label class="form-label entity-form-required">الطبيب المسجل</label>
+                    <select class="form-select" id="clinicExistingDoctor" data-record-select="doctor" name="doctor_id" form="backend-form-2" required="" data-existing-doctor=""><option value="" selected>اختر الطبيب...</option><option data-license="ORT-77103" value="D-108" data-record-option="doctor" data-name="د. عمر ناصر" data-email="doctor@example.test" data-phone="0599 111 146" data-specialty="تقويم الأسنان" disabled>د. عمر ناصر — مرتبط بالعيادة بالفعل</option><option value="D-109" data-license="DEN-109" data-name="د. ليان حسن" data-email="layan.doctor@example.test" data-phone="0599 000 109" data-specialty="طب أسنان عام">د. ليان حسن — ترخيص معتمد</option></select>
+                  </div>
+                </div>
+              </div>
+              <div class="entity-form-section mb-3">
+                <div class="entity-form-section-title">
+                  <i class="bi bi-person-badge"></i>البيانات المهنية
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label entity-form-required">اسم الطبيب</label>
+                    <input class="form-control" id="clinicDoctorName" placeholder="سيتم تعبئته من حساب الطبيب" value="" name="clinic_doctor_name" form="backend-form-2" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label entity-form-required">التخصص</label>
+                    <input class="form-control" id="clinicDoctorSpecialty" name="doctor_specialty_display" value="علاج الجذور" readonly form="backend-form-2" aria-describedby="doctorSpecialtySource"><div class="small text-secondary mt-2" id="doctorSpecialtySource">من الملف المهني للطبيب؛ يتم تخصيص خدمات العيادة بعد ربط الطبيب بالعيادة.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label entity-form-required">رقم الترخيص</label>
+                    <input class="form-control" id="clinicDoctorLicense" placeholder="سيتم التحقق من الترخيص الموجود" value="" name="clinic_doctor_license" form="backend-form-2" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input class="form-control" id="clinicDoctorEmail" placeholder="doctor@example.test" type="email" value="" name="clinic_doctor_email" autocomplete="email" form="backend-form-2" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">رقم الهاتف</label>
+                    <input class="form-control" id="clinicDoctorPhone" placeholder="0599 000 000" value="" name="clinic_doctor_phone" form="backend-form-2" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="entity-form-section">
+                <div class="entity-form-section-title">
+                  <i class="bi bi-calendar-week"></i>الربط التشغيلي
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label entity-form-required">تاريخ بدء العمل</label>
+                    <input class="form-control" id="clinicDoctorStartDate" type="date" value="2026-10-21" name="clinic_doctor_start_date" form="backend-form-2" required="">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">حالة الطبيب داخل العيادة</label>
+                    <select class="form-select" id="clinicDoctorStatus" name="clinic_doctor_status" form="backend-form-2"><option value="active" selected>فعال</option><option value="suspended">معلق</option></select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">ملاحظات إدارية</label>
+                    <textarea class="form-control" id="clinicDoctorNotes" placeholder="ملاحظات عن الربط أو الدوام..." rows="3" name="clinic_doctor_notes" form="backend-form-2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+                إلغاء</button><button class="btn btn-primary" id="saveClinicDoctorBtn" form="backend-form-2" type="submit">
+                إضافة / ربط الطبيب
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><form id="backend-form-2" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form></body></html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>سجل النظام | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">Audit &amp; Activity</span>
+            <h1 class="fw-bold fs-2 mb-2">سجل النظام</h1>
+            <p class="text-secondary mb-0">
+              مسار زمني واضح لكل الأحداث: من قام بالفعل، على أي كيان، متى، وما
+              نوع العملية.
+            </p>
+          </div>
+          <button class="btn btn-outline-primary" id="exportLogBtn" data-ui-pending="">
+            <i class="bi bi-download"></i>تصدير CSV
+          </button>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">أحداث اليوم</small>
+              <div class="stat-value">1</div>
+              <small>كل الأدوار</small>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">إجراءات حساسة</small>
+              <div class="stat-value text-warning">1</div>
+              <small>تعديل / تعليق / حذف</small>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">أحداث سريرية</small>
+              <div class="stat-value">1</div>
+              <small>طبيب وتقارير</small>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">أحداث أمنية</small>
+              <div class="stat-value">1</div>
+              <small class="text-success">لا يوجد تنبيه حرج</small>
+            </div>
+          </div>
+        </div>
+        <div class="filter-panel mb-4">
+          <div class="row g-3 align-items-end">
+            <div class="col-lg-4">
+              <label class="form-label small text-secondary">بحث</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input class="form-control" id="logSearch" placeholder="العملية، المستخدم، الكود..." value="" data-ui-unbound-control="" name="log_search" form="backend-form-1">
+              </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+              <label class="form-label small text-secondary">نوع الحدث</label><select class="form-select" id="logType" name="log_type" form="backend-form-1">
+                <option value="" selected>كل الأنواع</option>
+                <option value="create">إضافة</option>
+                <option value="edit">تعديل</option>
+                <option value="delete">حذف</option>
+                <option value="suspend">تعليق / إعادة تفعيل</option>
+                <option value="approval">اعتماد</option>
+                <option value="finance">مالية</option>
+                <option value="login">أمان وتسجيل دخول</option>
+                <option value="domain">أحداث النظام</option>
+              </select>
+            </div>
+            <div class="col-md-4 col-lg-3">
+              <label class="form-label small text-secondary">التاريخ</label><input class="form-control" id="logDate" type="date" value="2026-10-21" name="log_date" form="backend-form-1">
+            </div>
+            <div class="col-md-4 col-lg-2">
+              <button class="btn btn-light w-100" id="resetLogFilters" data-ui-pending="">
+                إعادة الضبط
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h3 class="section-title mb-0">الأربعاء، 21 أكتوبر 2026</h3>
+          <span class="small text-secondary">آخر تحديث 17:30</span>
+        </div>
+        <div class="audit-log-list">
+          <div class="audit-log-card" data-date="2026-10-21" data-log-row="" data-search="اعتماد عيادة Super Admin C-008" data-type="approval">
+            <span class="audit-time">10:14</span><span class="audit-actor">Super Admin</span><span class="audit-icon success"><i class="bi bi-patch-check"></i></span>
+            <div class="audit-main">
+              <strong>اعتماد عيادة</strong><small>Clinic • C-008 • عيادة الابتسامة الحديثة</small>
+              <p>تمت مراجعة طلب الإنشاء والوثائق ثم تفعيل العيادة.</p>
+            </div>
+            <span class="badge text-bg-success">اعتماد</span><button class="btn btn-sm btn-light" data-log-view="اعتماد عيادة|C-008|actor: Super Admin\nreason: الوثائق مكتملة\nresult: clinic activated" data-ui-pending="">
+              تفاصيل
+            </button>
+          </div>
+          
+          
+          
+          
+          
+        </div>
+        <div class="empty-state d-none" id="logEmpty">
+          لا توجد سجلات مطابقة للفلاتر.
+        </div>
+      </section>
+    </main>
+    <div class="modal fade" id="viewModal" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="viewTitle"></h5>
+              <small class="text-secondary" id="viewSubtitle"></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body" id="viewBody"></div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">إغلاق</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sensitiveActionModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="sensitiveActionTitle">
+                تأكيد إجراء إداري
+              </h5>
+              <small class="text-secondary" id="sensitiveActionSubtitle"></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning rounded-4">
+              <i class="bi bi-shield-exclamation ms-1"></i>هذا إجراء حساس،
+              وسبب الإجراء مطلوب لتوضيح سبب التغيير الإداري.
+            </div>
+            <label class="form-label">سبب الإجراء الإداري *</label><textarea class="form-control" id="sensitiveActionReason" placeholder="اكتب سببًا واضحًا..." rows="4" name="sensitive_action_reason" form="backend-form-2"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" id="confirmSensitiveAction" data-ui-pending="" form="backend-form-2" type="submit">
+              تأكيد
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="modal fade" id="relatedEntityEditModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4"><div class="modal-header"><div><h5 class="modal-title fw-bold" id="relatedEntityEditTitle">تعديل عنصر</h5><small class="text-secondary" id="relatedEntityEditCode"></small></div><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div><div class="modal-body"><label class="form-label">القيمة / الاسم</label><input class="form-control" id="relatedEntityEditValue" value="" name="related_entity_edit_value" form="backend-form-3"><label class="form-label mt-3">سبب التعديل الإداري *</label><textarea class="form-control" id="relatedEntityEditReason" rows="3" name="related_entity_edit_reason" form="backend-form-3"></textarea></div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" id="saveRelatedEntityEdit" data-ui-pending="" form="backend-form-3" type="submit">حفظ</button></div></div></div></div><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><form id="backend-form-2" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form><form id="backend-form-3" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form><%- include('../partials/admin/footer') %></body></html>

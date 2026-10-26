@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html data-style-sections="section-5" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>بدء الزيارة | Smart Dental Doctor</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/doctor/header') %>
+    
+    <main class="page-shell" id="main-content" data-visit-id="V-002" data-booking-id="A-9022" data-visit-status="draft">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-end mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">Clinical Visit Workspace</span>
+            <h1 class="fw-bold">زيارة أحمد خالد — علاج جذور</h1>
+            <p class="text-secondary mb-0">
+              موعد 23 أكتوبر 2026 • 11:30 ص • السن 46
+            </p>
+          </div>
+          <div>
+            <a class="btn btn-outline-primary" href="patient-details">فتح ملف المريض</a>
+          </div>
+        </div>
+        <div class="visit-layout">
+          <div>
+            <div class="clinical-card clinical-section mb-4" id="patient-info">
+              <div class="clinical-head">
+                <span class="clinical-number">1</span>
+                <div>
+                  <h4 class="fw-bold mb-1">معلومات المريض</h4>
+                  <div class="text-secondary small">
+                    المعلومات الأساسية والتنبيهات المهمة قبل العلاج.
+                  </div>
+                </div>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <small class="text-secondary">الاسم</small>
+                  <div class="fw-bold">أحمد خالد</div>
+                </div>
+                <div class="col-md-4">
+                  <small class="text-secondary">العمر</small>
+                  <div class="fw-bold">27 سنة</div>
+                </div>
+                <div class="col-md-4">
+                  <small class="text-secondary">الهاتف</small>
+                  <div class="fw-bold">0599 000 001</div>
+                </div>
+              </div>
+              <div class="patient-alert danger mt-3">
+                <i class="bi bi-exclamation-triangle ms-1"></i><strong>حساسية من Penicillin</strong>
+              </div>
+              <div class="patient-alert mt-2">
+                <i class="bi bi-heart-pulse ms-1"></i>ارتفاع ضغط الدم — تحت
+                السيطرة حسب ملف المريض.
+              </div>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="complaint">
+              <div class="clinical-head">
+                <span class="clinical-number">2</span>
+                <div>
+                  <h4 class="fw-bold mb-1">سبب الزيارة / Chief Complaint</h4>
+                  <div class="text-secondary small">
+                    سجل شكوى المريض بكلماته قبل التشخيص.
+                  </div>
+                </div>
+              </div>
+              <textarea class="form-control" rows="3" id="field-1" name="chief_complaint" form="backend-form-57">ألم شديد ومستمر في الضرس السفلي الأيمن منذ ثلاثة أيام مع حساسية عند المضغ.</textarea>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="exam">
+              <div class="clinical-head">
+                <span class="clinical-number">3</span>
+                <div>
+                  <h4 class="fw-bold mb-1">الفحص السريري</h4>
+                  <div class="text-secondary small">نتائج الفحص داخل الفم.</div>
+                </div>
+              </div>
+              <div class="exam-grid mb-3">
+                <label class="exam-check" for="field-8"><input checked class="form-check-input ms-2" type="checkbox" id="field-2" name="field_2" form="backend-form-58">
+                  وجود تسوس</label><label class="exam-check"><input checked class="form-check-input ms-2" type="checkbox" id="field-3" name="field_3" form="backend-form-58">
+                  ألم عند الضغط</label><label class="exam-check"><input class="form-check-input ms-2" type="checkbox" id="field-4" name="field_4" form="backend-form-58">
+                  تورم</label><label class="exam-check"><input class="form-check-input ms-2" type="checkbox" id="field-5" name="field_5" form="backend-form-58"> حركة
+                  في السن</label><label class="exam-check"><input class="form-check-input ms-2" type="checkbox" id="field-6" name="field_6" form="backend-form-58"> نزف
+                  لثوي</label><label class="exam-check"><input checked class="form-check-input ms-2" type="checkbox" id="field-7" name="field_7" form="backend-form-58">
+                  حساسية حرارية</label>
+              </div>
+              <label class="form-label">ملاحظات الفحص</label><textarea class="form-control" rows="3" id="field-8" name="examination_notes" form="backend-form-58">نخر عميق في السن 46 مع ألم واضح عند القرع، دون تورم ظاهر.</textarea>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="odontogram">
+              <div class="clinical-head">
+                <span class="clinical-number">4</span>
+                <div>
+                  <h4 class="fw-bold mb-1">مخطط الأسنان — Odontogram</h4>
+                  <div class="text-secondary small">
+                    اضغط على السن ثم اختر حالته. واجهة تجريبية تفاعلية.
+                  </div>
+                </div>
+              </div>
+              <div class="odontogram">
+                <div class="text-center small text-secondary mb-1">
+                  الفك العلوي
+                </div>
+                <div class="teeth-row">
+                  <button class="tooth" data-state="healthy" data-tooth="18" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>18</span></button><button class="tooth" data-state="healthy" data-tooth="17" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>17</span></button><button class="tooth" data-state="caries" data-tooth="16" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🟠</span><span>16</span></button><button class="tooth" data-state="healthy" data-tooth="15" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>15</span></button><button class="tooth" data-state="healthy" data-tooth="14" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>14</span></button><button class="tooth" data-state="healthy" data-tooth="13" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>13</span></button><button class="tooth" data-state="healthy" data-tooth="12" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>12</span></button><button class="tooth" data-state="healthy" data-tooth="11" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>11</span></button><button class="tooth" data-state="healthy" data-tooth="21" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>21</span></button><button class="tooth" data-state="healthy" data-tooth="22" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>22</span></button><button class="tooth" data-state="healthy" data-tooth="23" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>23</span></button><button class="tooth" data-state="healthy" data-tooth="24" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>24</span></button><button class="tooth" data-state="healthy" data-tooth="25" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>25</span></button><button class="tooth" data-state="healthy" data-tooth="26" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>26</span></button><button class="tooth" data-state="healthy" data-tooth="27" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>27</span></button><button class="tooth" data-state="healthy" data-tooth="28" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>28</span>
+                  </button>
+                </div>
+                <hr>
+                <div class="text-center small text-secondary mb-1">
+                  الفك السفلي
+                </div>
+                <div class="teeth-row">
+                  <button class="tooth" data-state="healthy" data-tooth="48" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>48</span></button><button class="tooth" data-state="healthy" data-tooth="47" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>47</span></button><button class="tooth" data-state="root" data-tooth="46" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🔵</span><span>46</span></button><button class="tooth" data-state="healthy" data-tooth="45" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>45</span></button><button class="tooth" data-state="healthy" data-tooth="44" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>44</span></button><button class="tooth" data-state="healthy" data-tooth="43" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>43</span></button><button class="tooth" data-state="healthy" data-tooth="42" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>42</span></button><button class="tooth" data-state="healthy" data-tooth="41" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>41</span></button><button class="tooth" data-state="healthy" data-tooth="31" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>31</span></button><button class="tooth" data-state="healthy" data-tooth="32" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>32</span></button><button class="tooth" data-state="healthy" data-tooth="33" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>33</span></button><button class="tooth" data-state="healthy" data-tooth="34" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>34</span></button><button class="tooth" data-state="healthy" data-tooth="35" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>35</span></button><button class="tooth" data-state="filling" data-tooth="36" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🟢</span><span>36</span></button><button class="tooth" data-state="healthy" data-tooth="37" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>37</span></button><button class="tooth" data-state="healthy" data-tooth="38" type="button" data-ui-pending="">
+                    <span class="tooth-icon">🦷</span><span>38</span>
+                  </button>
+                </div>
+                <div class="tooth-state-panel">
+                  <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center">
+                    <div>
+                      السن المحدد: <strong id="selectedTooth">—</strong> •
+                      الحالة: <strong id="selectedToothState">—</strong>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                      <button class="state-btn" data-icon="🦷" data-tooth-state="healthy" type="button" data-ui-pending="">
+                        سليم</button><button class="state-btn" data-icon="🟠" data-tooth-state="caries" type="button" data-ui-pending="">
+                        تسوس</button><button class="state-btn" data-icon="🟢" data-tooth-state="filling" type="button" data-ui-pending="">
+                        حشوة</button><button class="state-btn" data-icon="🔵" data-tooth-state="root" type="button" data-ui-pending="">
+                        علاج جذور</button><button class="state-btn" data-icon="🟣" data-tooth-state="crown" type="button" data-ui-pending="">
+                        تاج</button><button class="state-btn" data-icon="✕" data-tooth-state="missing" type="button" data-ui-pending="">
+                        مفقود
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <section class="sdc-panel sdc-panel--integrated" id="sdcToothSurface" aria-label="تحديد سطح السن (اختياري)"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-bullseye"></i></span><div class="sdc-panel-head-copy"><h5>تحديد سطح السن (اختياري)</h5><p>يحفظ سطح السن منفصلاً عندما يكون الإجراء على جزء من السن، مع بقاء حالة السن الكاملة.</p></div></div><div class="sdc-panel-body"><div class="sdc-grid three"><label class="sdc-field" for="field-9"><span>السن المختار</span><input class="form-control" data-field="tooth" type="text" value="46" readonly id="field-9" name="tooth" form="backend-form-59"></label><label class="sdc-field" for="field-10"><span>السطح</span><select class="form-select" data-field="surface" id="field-10" name="surface" form="backend-form-59"><option value="" selected>كامل السن</option><option value="M">Mesial</option><option value="D">Distal</option><option value="O">Occlusal</option><option value="B">Buccal</option><option value="L">Lingual</option></select></label><label class="sdc-field" for="field-11"><span>ملاحظة السطح</span><input class="form-control" data-field="surfaceNote" type="text" value="" id="field-11" name="surfaceNote" form="backend-form-59"></label></div></div></section></div>
+            <div class="clinical-card clinical-section mb-4" id="diagnosis">
+              <div class="clinical-head">
+                <span class="clinical-number">5</span>
+                <div>
+                  <h4 class="fw-bold mb-1">التشخيص</h4>
+                  <div class="text-secondary small">
+                    يمكن تسجيل أكثر من تشخيص لأكثر من سن.
+                  </div>
+                </div>
+              </div>
+              <div id="diagnosisList">
+                <div class="dynamic-list-item">
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <label class="form-label small" for="field-12">السن</label><input class="form-control" value="46" id="field-12" name="diagnoses[0][tooth_number]" form="backend-form-60" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-9">
+                      <label class="form-label small" for="field-13">التشخيص</label><input class="form-control" value="التهاب لب غير قابل للعكس / Irreversible pulpitis" id="field-13" name="diagnoses[0][diagnosis_text]" form="backend-form-60" data-medication-field="dosage">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-outline-primary btn-sm mt-3" id="addDiagnosis" type="button" data-ui-add-template="#ui-empty-addDiagnosis" data-ui-add-slot="#diagnosisList">
+                <i class="bi bi-plus-lg ms-1"></i>إضافة تشخيص
+              </button>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="procedure">
+              <div class="clinical-head">
+                <span class="clinical-number">6</span>
+                <div>
+                  <h4 class="fw-bold mb-1">الإجراءات التي تمت خلال الزيارة</h4>
+                  <div class="text-secondary small">
+                    ما قام به الطبيب فعلياً خلال الجلسة الحالية.
+                  </div>
+                </div>
+              </div>
+              
+            <section class="sdc-panel sdc-panel--integrated" id="sdcProcedure" aria-label="الإجراءات المسجلة"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-clipboard2-pulse"></i></span><div class="sdc-panel-head-copy"><h5>الإجراءات المسجلة</h5><p>سجّل كل إجراء على حدة، وحدد السن والكمية والسعر والمرحلة العلاجية عند الحاجة.</p></div></div><div class="sdc-panel-body"><div id="sdcProcedureItems"><div class="sdc-items" data-kind="procedures" id="ui-slot-sdcAddProcedure"><div class="sdc-item"><div class="sdc-item-caption"><span class="sdc-item-number">إجراء 1</span><span class="sdc-item-count">عنصر واحد</span><button type="button" class="btn btn-link text-danger btn-sm" data-remove="" aria-label="إزالة إجراء 1" data-ui-pending=""><i class="bi bi-trash3" aria-hidden="true"></i> <span>إزالة</span></button></div><div class="sdc-grid four"><label class="sdc-field" for="field-14"><span>الخدمة</span><select class="form-select" data-field="work" data-new-value="حشوة" data-record-select="service" id="field-14" name="work" form="backend-form-61"><option value="S-001" selected data-record-option="service">علاج جذور — 500 ₪ — 60 دقيقة</option></select></label><label class="sdc-field" for="field-15"><span>السن</span><input class="form-control" data-field="tooth" type="text" value="46" data-new-value="46" id="field-15" name="tooth" form="backend-form-61"></label><label class="sdc-field" for="field-16"><span>الكمية</span><input class="form-control" data-field="quantity" type="number" value="1" min="1" step="1" data-new-value="1" id="field-16" name="quantity" form="backend-form-61" data-procedure-quantity=""></label><label class="sdc-field" for="field-17"><span>سعر الوحدة ₪</span><input class="form-control" data-field="price" type="number" value="500" min="0" step="0.01" data-new-value="500" id="field-17" name="price" form="backend-form-61" data-procedure-price=""></label></div><div class="sdc-grid three mt-2"><label class="sdc-field" for="field-18"><span>حالة الإجراء</span><select class="form-select" data-field="status" id="field-18" name="status" form="backend-form-61"><option value="completed" selected>منفذ</option><option value="in_progress">قيد التنفيذ</option><option value="stopped">متوقف</option></select></label><label class="sdc-field" for="field-19"><span>بند خطة العلاج</span><select class="form-select" data-field="planItem" data-new-value="" id="field-19" name="treatment_stage_id" form="backend-form-61"><option value="">غير مرتبط</option><option value="plan-step-1" selected>المرحلة 1 — فتح وتنظيف القنوات</option><option value="plan-step-2">المرحلة 2 — حشو الجذور</option></select></label><label class="sdc-field" for="field-20"><span>تفاصيل / ملاحظات</span><input class="form-control" data-field="notes" type="text" value="" id="field-20" name="notes" form="backend-form-61"></label></div></div></div></div><button class="btn btn-outline-primary btn-sm mt-2" id="sdcAddProcedure" type="button" data-ui-add-template="#ui-empty-sdcAddProcedure" data-ui-add-slot="#ui-slot-sdcAddProcedure"><i class="bi bi-plus-lg" aria-hidden="true"></i> إضافة إجراء آخر</button><div id="sdcProcedureTotal" class="small mt-2 fw-bold">مجموع الإجراءات قبل الخصومات: 500 ₪</div></div></section></div>
+            <div class="clinical-card clinical-section mb-4" id="attachments">
+              <div class="clinical-head">
+                <span class="clinical-number">7</span>
+                <div>
+                  <h4 class="fw-bold mb-1">الأشعة والمرفقات</h4>
+                  <div class="text-secondary small">
+                    X-Ray، Panoramic، صور داخل الفم أو ملفات أخرى.
+                  </div>
+                </div>
+              </div>
+              <div class="attachment-item d-flex justify-content-between gap-2">
+                <div>
+                  <i class="bi bi-image ms-2 text-primary"></i><strong>xray_tooth_46_before.jpg</strong>
+                  <div class="small text-secondary">
+                    أشعة قبل العلاج • 23 أكتوبر 2026
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-primary" data-toast="فتح الأشعة تجريبي" data-ui-pending="">
+                  عرض
+                </button>
+              </div>
+              <div id="attachmentList"></div>
+              <label class="btn btn-outline-primary mt-3"><i class="bi bi-upload ms-1"></i>إرفاق ملف<input class="d-none" id="attachmentInput" multiple type="file" name="attachment_input" form="backend-form-62" accept="image/*,.pdf,.doc,.docx"></label>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="plan">
+              <div class="clinical-head">
+                <span class="clinical-number">8</span>
+                <div>
+                  <h4 class="fw-bold mb-1">خطة العلاج — Treatment Plan</h4>
+                  <div class="text-secondary small">
+                    خطوات العلاج التي تمت والمتبقية.
+                  </div>
+                </div>
+              </div>
+              <div class="alert alert-light border rounded-3 small mt-3 mb-3" data-plan-update-note="">
+                <i class="bi bi-clock-history ms-1"></i>
+                <strong>الخطة الحالية:</strong> علاج جذور السن 46 • آخر تعديل 21 أكتوبر 2026 بواسطة د. عمر ناصر.
+                التعديلات هنا تحدث نفس الخطة مباشرة، ويمكن متابعة الخطة كاملة من قسم «خطط العلاج».
+                <a class="alert-link me-1" href="treatment-plan-details">فتح الخطة</a>
+              </div>
+              <div class="plan-step-help alert alert-light border rounded-3 py-2 px-3 small mt-3 mb-3">
+                كل مرحلة موجودة يمكن تعديلها أو حذفها بشكل مستقل. اضغط «تعديل»
+                لفتح الحقول ثم «حفظ» لتثبيت التغيير.
+              </div>
+              <div class="d-grid gap-2" id="planSteps">
+                <div class="dynamic-list-item plan-step-item" data-plan-step="" data-step-saved="true" data-step-editing="false" id="ui-plan-form-0">
+                  <div class="row g-2">
+                    <div class="col-md-2">
+                      <label class="form-label small" for="field-21">السن</label><input class="form-control" data-step-field="" readonly value="46" id="field-21" name="field_21" form="backend-form-63" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-5">
+                      <label class="form-label small" for="field-22">المرحلة</label><input class="form-control" data-step-field="" readonly value="فتح وتنظيف القنوات" id="field-22" name="field_22" form="backend-form-63" data-medication-field="dosage">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small" for="field-23">الحالة</label><select class="form-select" data-step-field="" disabled id="field-23" name="status" form="backend-form-63">
+                        <option>مخطط</option>
+                        <option>قادم</option>
+                        <option selected>مكتمل</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3" data-step-actions="">
+                      <label class="form-label small d-block">الإجراءات</label>
+                      <div class="d-grid grid-template-columns-2 gap-2 plan-step-actions">
+                        <button class="btn btn-sm btn-outline-primary" data-step-edit="" type="button" data-ui-edit="#ui-plan-form-0"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-pending="">
+                          <i class="bi bi-trash3 ms-1"></i>حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dynamic-list-item plan-step-item" data-plan-step="" data-step-saved="true" data-step-editing="false" id="ui-plan-form-1">
+                  <div class="row g-2">
+                    <div class="col-md-2">
+                      <label class="form-label small" for="field-24">السن</label><input class="form-control" data-step-field="" readonly value="46" id="field-24" name="field_24" form="backend-form-63" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-5">
+                      <label class="form-label small" for="field-25">المرحلة</label><input class="form-control" data-step-field="" readonly value="حشو القنوات" id="field-25" name="field_25" form="backend-form-63" data-medication-field="dosage">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small" for="field-26">الحالة</label><select class="form-select" data-step-field="" disabled id="field-26" name="status" form="backend-form-63">
+                        <option selected>مخطط</option>
+                        <option>قادم</option>
+                        <option>مكتمل</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3" data-step-actions="">
+                      <label class="form-label small d-block">الإجراءات</label>
+                      <div class="d-grid grid-template-columns-2 gap-2 plan-step-actions">
+                        <button class="btn btn-sm btn-outline-primary" data-step-edit="" type="button" data-ui-edit="#ui-plan-form-1"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-pending="">
+                          <i class="bi bi-trash3 ms-1"></i>حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-outline-primary btn-sm mt-3" id="addPlanStep" type="button" data-ui-add-template="#ui-empty-addPlanStep" data-ui-add-slot="#planSteps">
+                <i class="bi bi-plus-lg ms-1"></i>إضافة مرحلة
+              </button>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="prescription">
+              <div class="clinical-head">
+                <span class="clinical-number">9</span>
+                <div>
+                  <h4 class="fw-bold mb-1">الوصفات الطبية</h4>
+                  <div class="text-secondary small">
+                    الأدوية يحددها الطبيب فقط.
+                  </div>
+                </div>
+              </div>
+              <div class="patient-alert danger mb-3">
+                <strong>تنبيه:</strong> المريض لديه حساسية من Penicillin.
+              </div>
+              <div data-prescription-card class="border rounded-3 p-3 mb-3" data-prescription-id="RX-DRAFT-1"><h6 class="fw-bold" data-rx-title>وصفة 1 — مسودة</h6><div id="medicationList">
+                <div class="dynamic-list-item" data-sdc-enriched="1">
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <label class="form-label small" for="field-27">الدواء</label><input class="form-control" value="" id="field-27" name="field_27" form="backend-form-64" data-rx-required="" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small" for="field-28">الجرعة</label><input class="form-control" value="" id="field-28" name="field_28" form="backend-form-64" data-rx-required="" data-medication-field="dosage">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small" for="field-29">التكرار</label><input class="form-control" value="" id="field-29" name="field_29" form="backend-form-64" data-rx-required="" data-medication-field="frequency">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small" for="field-30">المدة</label><input class="form-control" value="" id="field-30" name="field_30" form="backend-form-64" data-rx-required="" data-medication-field="duration">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                      <button class="btn btn-outline-danger w-100" data-remove="" type="button" data-remove-medication="">
+                        حذف
+                      </button>
+                    </div>
+                  <div class="col-12"><div class="sdc-grid two"><label class="sdc-field" for="field-31"><span>طريق الاستعمال (route)</span><input class="form-control" data-field="route" type="text" value="" id="field-31" name="route" form="backend-form-64" data-rx-required="" data-medication-field="route"></label><label class="sdc-field" for="field-32"><span>تعليمات منفصلة لكل دواء</span><input class="form-control" data-field="instructions" type="text" value="" id="field-32" name="instructions" form="backend-form-64" data-medication-field="instructions"></label></div></div></div>
+                </div>
+              </div>
+              <button class="btn btn-outline-primary btn-sm mt-3" id="addMedication" type="button" data-ui-add-template="#ui-empty-addMedication" data-ui-add-slot="#medicationList">
+                <i class="bi bi-plus-lg ms-1"></i>إضافة دواء
+              </button>
+            <section class="sdc-panel sdc-panel--integrated" id="sdcPrescriptionLifecycle" aria-label="حالة الوصفة الطبية"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-capsule"></i></span><div class="sdc-panel-head-copy"><h5>حالة الوصفة الطبية</h5><p>يمكن إعداد الوصفة كمسودة قبل إصدارها. بعد الإصدار، تُحمى من التعديل غير الموثق.</p></div></div><div class="sdc-panel-body"><label class="sdc-field" for="field-33"><span>حالة الوصفة المقصودة</span><select class="form-select" data-field="prescriptionStatus" id="field-33" name="prescriptionStatus" form="backend-form-64" data-rx-status=""><option value="draft" selected>مسودة</option><option value="issued">إصدار الوصفة</option><option value="voided">إبطال بسبب موثق</option></select></label><div class="mt-2"><label class="sdc-field" for="field-34"><span>سبب الإبطال (عند الحاجة)</span><input class="form-control" data-field="voidReason" type="text" value="" id="field-34" name="voidReason" form="backend-form-64"></label></div><p class="small text-muted mt-2">الإصدار والإبطال يتطلبان صلاحية طبيب وتحقق خادم. هذا اختيار تخطيطي وليس إصداراً حقيقياً.</p></div></section><button class="btn btn-primary btn-sm mt-2" type="submit" form="backend-form-64">حفظ الوصفة / إرسال الإصدار</button></div><div id="additionalPrescriptions"></div><button type="button" class="btn btn-outline-primary" data-add-prescription>إضافة وصفة مستقلة</button></div>
+            <div class="clinical-card clinical-section mb-4" id="lab">
+              <div class="clinical-head">
+                <span class="clinical-number">10</span>
+                <div>
+                  <h4 class="fw-bold mb-1">الحالة المخبرية</h4>
+                  <div class="text-secondary small">
+                    الطبيب يحدد الحاجة للعمل المخبري والمعلومات السريرية،
+                    والعيادة تتابع الإرسال والاستلام.
+                  </div>
+                </div>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" id="needsLab" type="checkbox" data-ui-check-target="#labFields" name="needs_lab" form="backend-form-65"><label class="form-check-label fw-bold" for="needsLab">الحالة تحتاج عملاً مخبرياً</label>
+              </div>
+              <div class="d-none" id="labFields"><div class="sdc-grid three"><label class="sdc-field" for="field-35"><span>المختبر</span><select class="form-select" data-field="lab" data-record-select="lab" id="field-35" name="lab" form="backend-form-65"><option value="LAB-001" selected data-record-option="lab">Elite Dental Lab</option></select></label><label class="sdc-field" for="field-36"><span>التسليم المتوقع</span><input class="form-control" data-field="due" type="date" value="2026-10-28" id="field-36" name="due" form="backend-form-65"></label><label class="sdc-field" for="field-37"><span>ملاحظات الطلب العامة</span><input class="form-control" data-field="labNotes" type="text" value="" id="field-37" name="labNotes" form="backend-form-65"></label></div><div class="mt-2"><label class="sdc-field" for="field-38"><span>مرفق طلب (اختياري)</span><input class="form-control" data-field="labFile" type="file" value="" id="field-38" name="labFile" form="backend-form-65"></label></div><div class="sdc-subsection-title"><span><i class="bi bi-layers me-1"></i> الأعمال المطلوبة داخل الطلب</span><small>يمكن إضافة أكثر من عمل</small></div><div id="sdcLabItems"><div class="sdc-items" data-kind="lab_order_items" id="ui-slot-sdcAddLab"><div class="sdc-item"><div class="sdc-item-caption"><span class="sdc-item-number">عمل مخبري 1</span><span class="sdc-item-count">عنصر واحد</span><button type="button" class="btn btn-link text-danger btn-sm" data-remove="" aria-label="إزالة عمل مخبري 1" data-ui-pending=""><i class="bi bi-trash3" aria-hidden="true"></i> <span>إزالة</span></button></div><div class="sdc-grid four"><label class="sdc-field" for="field-39"><span>نوع العمل</span><select class="form-select" data-field="work_type" id="field-39" name="work_type" form="backend-form-65"><option value="تاج Zirconia" selected>تاج Zirconia</option><option value="جسر">جسر</option><option value="Veneer">Veneer</option><option value="Retainer">Retainer</option><option value="طقم">طقم</option><option value="عمل آخر">عمل آخر</option></select></label><label class="sdc-field" for="field-40"><span>السن</span><input class="form-control" data-field="tooth_code" type="text" value="46" data-new-value="46" id="field-40" name="tooth_code" form="backend-form-65"></label><label class="sdc-field" for="field-41"><span>المنطقة / مجموعة الأسنان</span><input class="form-control" data-field="area_text" type="text" value="" id="field-41" name="area_text" form="backend-form-65"></label><label class="sdc-field" for="field-42"><span>الكمية</span><input class="form-control" data-field="quantity" type="number" value="1" min="1" step="1" id="field-42" name="quantity" form="backend-form-65"></label></div><div class="sdc-grid three mt-2"><label class="sdc-field" for="field-43"><span>المادة</span><input class="form-control" data-field="material" type="text" value="Zirconia" data-new-value="Zirconia" id="field-43" name="material" form="backend-form-65"></label><label class="sdc-field" for="field-44"><span>درجة اللون</span><input class="form-control" data-field="shade" type="text" value="A2" data-new-value="A2" id="field-44" name="shade" form="backend-form-65"></label><label class="sdc-field" for="field-45"><span>تعليمات العمل</span><input class="form-control" data-field="instructions" type="text" value="" id="field-45" name="instructions" form="backend-form-65"></label></div></div></div></div><button id="sdcAddLab" class="btn btn-outline-primary btn-sm mt-2" type="button" data-ui-add-template="#ui-empty-sdcAddLab" data-ui-add-slot="#ui-slot-sdcAddLab"><i class="bi bi-plus-lg" aria-hidden="true"></i> إضافة عمل مخبري</button><p class="small text-secondary mb-2">إرسال الطلب واستلامه يتمان على مستوى الطلب كاملًا. التركيب السريري يُسجل لكل عمل مخبري بشكل مستقل.</p> </div>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="followup">
+              <div class="clinical-head">
+                <span class="clinical-number">11</span>
+                <div>
+                  <h4 class="fw-bold mb-1">المتابعة</h4>
+                  <div class="text-secondary small">
+                    الطبيب يوصي بالمتابعة ويحدد التاريخ المقترح؛ الحجز تديره
+                    العيادة أو المريض.
+                  </div>
+                </div>
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input checked class="form-check-input" id="needsFollowup" type="checkbox" data-ui-check-target="#followupFields" name="needs_followup" form="backend-form-66"><label class="form-check-label fw-bold" for="needsFollowup">يحتاج المريض متابعة</label>
+              </div>
+              <div id="followupFields">
+                <div class="row g-3">
+                  <div class="col-md-5">
+                    <label class="form-label" for="field-46">نوع المتابعة</label><input class="form-control" value="علاج جذور" id="field-46" name="follow_up_type" form="backend-form-66">
+                  </div>
+                  <div class="col-md-5">
+                    <label class="form-label" for="field-47">الموعد المقترح</label><input class="form-control" type="date" value="2026-10-21" id="field-47" name="suggested_date" form="backend-form-66">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="field-48">ملاحظة</label><input class="form-control" value="يفضل خلال أسبوع لاستكمال حشو الجذور." id="field-48" name="follow_up_notes" form="backend-form-66">
+                  </div>
+                </div>
+                <div class="readonly-note mt-3">
+                  عند إنهاء الزيارة ستظهر هذه تلقائياً في قائمة متابعة العيادة
+                  بحالة <strong>بانتظار الحجز</strong>. إذا حجز المريض أو
+                  العيادة تتحول إلى <strong>تم الحجز</strong>.
+                </div>
+              </div>
+            </div>
+            <div class="clinical-card clinical-section mb-4" id="report">
+              <div class="clinical-head">
+                <span class="clinical-number">12</span>
+                <div>
+                  <h4 class="fw-bold mb-1">التقرير الطبي</h4>
+                  <div class="text-secondary small">
+                    لا حاجة لإعادة كتابة التقرير من الصفر؛ النظام يجمع بيانات
+                    الزيارة ويكوّن التقرير.
+                  </div>
+                </div>
+              </div>
+              <div class="readonly-note">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <strong>سيتضمن التقرير:</strong>
+                    <ul class="mb-0 mt-2">
+                      <li>سبب الزيارة والفحص</li>
+                      <li>التشخيص والأسنان المعالجة</li>
+                      <li>الإجراءات والخطة العلاجية</li>
+                    </ul>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>وكذلك:</strong>
+                    <ul class="mb-0 mt-2">
+                      <li>الوصفة والمرفقات</li>
+                      <li>التوصيات</li>
+                      <li>المتابعة المقترحة</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3 small text-secondary">
+                <i class="bi bi-shield-lock ms-1"></i>بعد اعتماد التقرير تستطيع
+                العيادة والمريض مشاهدته، لكن العيادة لا تستطيع تعديل المحتوى
+                الطبي.
+              </div>
+            <section class="sdc-panel sdc-panel--integrated" id="sdcReportAttachments" aria-label="ملفات التقرير الرسمي"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-paperclip"></i></span><div class="sdc-panel-head-copy"><h5>ملفات التقرير الرسمي</h5><p>حدّد الملفات الداخلة في نسخة التقرير المعتمدة؛ تبقى بقية الملفات ضمن مرفقات الزيارة.</p></div></div><div class="sdc-panel-body"><label class="sdc-check"><input type="checkbox" data-report-file="xray_tooth_46_before.jpg" checked id="field-49" name="field_49" form="backend-form-67"> تضمين أشعة السن 46 في التقرير المعتمد</label><p class="small text-muted mt-2">بعد الاعتماد لا يجوز تغيير هذه القائمة عبر عمليات التعديل المعتادة.</p></div></section><div class="mt-3"><label class="form-label" for="visitRecommendations">تعليمات عامة بعد الزيارة</label><textarea id="visitRecommendations" name="recommendations" class="form-control" rows="3" form="backend-form-67" placeholder="مثل تجنب المضغ على السن المعالج"></textarea><p class="small text-secondary mt-2">عند الاعتماد تُحفظ نسخة PDF ثابتة مع تاريخ الاعتماد والمرفقات المختارة.</p></div></div>
+            <div class="clinical-card clinical-section mb-4" id="doctorInvoiceCard">
+              <div class="clinical-head">
+                <span class="clinical-number">13</span>
+                <div>
+                  <h4 class="fw-bold mb-1">فاتورة الزيارة</h4>
+                  <div class="text-secondary small">تُصدر فاتورة واحدة كحد أقصى للزيارة من إدارة العيادة بعد مراجعة الإجراءات.</div>
+                </div>
+              </div>
+              
+              
+              
+            <section class="soft-card p-3 mb-3"><h6 class="fw-bold">مسودة الفاتورة لدى إدارة العيادة</h6><p class="small text-secondary mb-2">تُجهّز المسودة من الإجراءات المسجلة. إدارة العيادة تراجع البنود وتصدر الفاتورة وتحصّل الدفعات. هذه المساحة لعرض الملخص فقط.</p><div class="d-flex flex-wrap gap-3"><span>قيمة الإجراءات: <strong data-clinical-total>500.00 ₪</strong></span><span class="badge text-bg-secondary">بانتظار إصدار الإدارة</span></div></section></div>
+            <div class="visit-actions d-flex flex-column flex-sm-row justify-content-between gap-2">
+              <button class="btn btn-light" id="saveVisitDraft" type="button" data-ui-pending="">
+                <i class="bi bi-save ms-1"></i>حفظ كمسودة</button><button class="btn btn-primary" id="finishVisit" type="button" data-ui-pending="">
+                <i class="bi bi-check2-circle ms-1"></i>إنهاء الزيارة وإنشاء
+                التقرير
+              </button>
+            </div>
+          </div>
+          <aside class="visit-sidebar">
+            <div class="soft-card p-3 mb-3">
+              <h6 class="fw-bold">ملخص المريض</h6>
+              <div class="medical-summary mt-3">
+                <div class="summary-row">
+                  <span class="text-secondary">المريض</span><strong>أحمد خالد</strong>
+                </div>
+                <div class="summary-row">
+                  <span class="text-secondary">رقم الملف</span><strong>P-2048</strong>
+                </div>
+                <div class="summary-row">
+                  <span class="text-secondary">فصيلة الدم</span><strong>O+</strong>
+                </div>
+                <div class="summary-row">
+                  <span class="text-secondary">الحساسية</span><strong class="text-danger">حساسية من Penicillin</strong>
+                </div>
+                <div class="summary-row">
+                  <span class="text-secondary">مرض مزمن</span><strong>ضغط</strong>
+                </div>
+                <div class="summary-row">
+                  <span class="text-secondary">أدوية حالية</span><strong>دواء ضغط الدم حسب وصف الطبيب</strong>
+                </div>
+                <div class="summary-row">
+                  <span class="text-secondary">ملاحظات صحية</span><strong>تُراجع الحالة الصحية قبل بدء العلاج.</strong>
+                </div>
+              </div>
+            </div>
+            <div class="soft-card p-3">
+              <h6 class="fw-bold">التنقل داخل الزيارة</h6>
+              <div class="d-grid gap-1 mt-2 small">
+                <a class="btn btn-light text-start" href="#patient-info">1. معلومات المريض</a><a class="btn btn-light text-start" href="#complaint">2. سبب الزيارة</a><a class="btn btn-light text-start" href="#exam">3. الفحص السريري</a><a class="btn btn-light text-start" href="#odontogram">4. مخطط الأسنان</a><a class="btn btn-light text-start" href="#diagnosis">5. التشخيص</a><a class="btn btn-light text-start" href="#procedure">6. الإجراء</a><a class="btn btn-light text-start" href="#attachments">7. الأشعة</a><a class="btn btn-light text-start" href="#plan">8. خطة العلاج</a><a class="btn btn-light text-start" href="#prescription">9. الوصفة</a><a class="btn btn-light text-start" href="#lab">10. المختبر</a><a class="btn btn-light text-start" href="#followup">11. المتابعة</a><a class="btn btn-light text-start" href="#report">12. التقرير</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+      <div class="modal fade" id="finishVisitModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="fw-bold mb-0">إنهاء الزيارة وإنشاء التقرير</h5>
+              <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-success border-0">
+                <i class="bi bi-check-circle ms-1"></i>سيتم اعتبار الزيارة
+                مكتملة وتجميع البيانات السريرية في تقرير واحد.
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <small class="text-secondary">التشخيص الرئيسي</small>
+                  <div class="fw-bold">التهاب لب غير قابل للعكس — 46</div>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-secondary">الإجراء</small>
+                  <div class="fw-bold">علاج جذور — جلسة أولى</div>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-secondary">المتابعة المقترحة</small>
+                  <div class="fw-bold">23 أكتوبر 2026</div>
+                </div>
+                <div class="col-md-6">
+                  <small class="text-secondary">خطة العلاج</small>
+                  <div class="fw-bold">مرحلة مكتملة + مرحلة قادمة</div>
+                </div>
+              </div>
+              <div class="readonly-note mt-3">
+                بعد الاعتماد: يظهر التقرير في ملف المريض، صفحة التقارير، وحساب
+                المريض. العيادة تشاهده Read-only.
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+                عودة للمراجعة</button><a class="btn btn-outline-primary" href="report-current-visit">معاينة قبل الاعتماد</a><button class="btn btn-primary" type="button" data-ui-pending data-action="approve-visit-report">اعتماد وإنشاء التقرير</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <%- include('../partials/doctor/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="clean-dropdown notification-menu doctor-popover doctor-notification-popover" id="doctorNotifications">
+              <div class="px-3 py-2 fw-bold">الإشعارات</div>
+              <div class="dropdown-divider"></div>
+              <a class="notification-entry" href="appointments"><strong>المريض أحمد وصل</strong>
+                <div class="small text-secondary">
+                  موعد 11:30 جاهز لبدء الزيارة.
+                </div></a>
+              
+              
+            </div><div class="clean-dropdown profile-menu doctor-popover doctor-profile-popover" id="doctorProfile">
+              <a class="dropdown-item" href="profile"><i class="bi bi-person ms-2"></i>ملفي الشخصي</a>
+              <a class="dropdown-item" href="settings"><i class="bi bi-gear ms-2"></i>الإعدادات</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-primary fw-bold" href="../clinic/index"><i class="bi bi-arrow-left-right ms-2"></i>تبديل لإدارة
+                العيادة</a>
+              <div class="px-3 py-2 bg-light rounded-3 mx-2 mb-2">
+                <small class="text-secondary d-block">الحساب الحالي</small>
+                <strong class="small">د. عمر ناصر • مالك ومدير العيادة</strong>
+              </div>
+              <button class="dropdown-item text-danger" data-logout="" data-ui-pending="">
+                <i class="bi bi-box-arrow-right ms-2"></i>تسجيل الخروج
+              </button>
+            </div><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><template id="ui-empty-sdcAddProcedure"><div class="sdc-item" data-ui-draft=""><div class="sdc-item-caption"><span class="sdc-item-number">بند جديد</span><span class="sdc-item-count">غير محفوظ</span><button type="button" class="btn btn-link text-danger btn-sm" data-remove="" aria-label="إزالة إجراء 1" data-ui-remove-draft="" form="backend-form-61"><i class="bi bi-trash3" aria-hidden="true"></i> <span>إزالة</span></button></div><div class="sdc-grid four"><label class="sdc-field"><span>الخدمة</span><select class="form-select" data-field="work" name="service_id" form="backend-form-61" required=""><option value="S-001">علاج جذور — 500 ₪ — 60 دقيقة</option></select></label><label class="sdc-field"><span>السن</span><input class="form-control" data-field="tooth" type="text" name="tooth" form="backend-form-61"></label><label class="sdc-field"><span>الكمية</span><input class="form-control" data-field="quantity" type="number" min="1" step="1" name="quantity" form="backend-form-61"></label><label class="sdc-field"><span>سعر الوحدة ₪</span><input class="form-control" data-field="price" type="number" min="0" step="0.01" name="price" form="backend-form-61"></label></div><div class="sdc-grid three mt-2"><label class="sdc-field"><span>حالة الإجراء</span><select class="form-select" data-field="status" name="status" form="backend-form-61"><option value="completed">منفذ</option><option value="in_progress">قيد التنفيذ</option><option value="stopped">متوقف</option></select></label><label class="sdc-field"><span>بند خطة العلاج</span><select class="form-select" data-field="planItem" name="treatment_stage_id" form="backend-form-61"><option value="">غير مرتبط</option><option value="plan-step-1">المرحلة 1 — فتح وتنظيف القنوات</option><option value="plan-step-2">المرحلة 2 — حشو الجذور</option></select></label><label class="sdc-field"><span>تفاصيل / ملاحظات</span><input class="form-control" data-field="notes" type="text" name="notes" form="backend-form-61"></label></div></div></template><template id="ui-empty-sdcAddLab"><div class="sdc-item" data-ui-draft=""><div class="sdc-item-caption"><span class="sdc-item-number">بند جديد</span><span class="sdc-item-count">غير محفوظ</span><button type="button" class="btn btn-link text-danger btn-sm" data-remove="" aria-label="إزالة عمل مخبري 1" data-ui-remove-draft="" form="backend-form-65"><i class="bi bi-trash3" aria-hidden="true"></i> <span>إزالة</span></button></div><div class="sdc-grid four"><label class="sdc-field"><span>نوع العمل</span><select class="form-select" data-field="work_type" name="work_type" form="backend-form-65"><option value="تاج Zirconia">تاج Zirconia</option><option value="جسر">جسر</option><option value="Veneer">Veneer</option><option value="Retainer">Retainer</option><option value="طقم">طقم</option><option value="عمل آخر">عمل آخر</option></select></label><label class="sdc-field"><span>السن</span><input class="form-control" data-field="tooth_code" type="text" name="tooth_code" form="backend-form-65"></label><label class="sdc-field"><span>المنطقة / مجموعة الأسنان</span><input class="form-control" data-field="area_text" type="text" name="area_text" form="backend-form-65"></label><label class="sdc-field"><span>الكمية</span><input class="form-control" data-field="quantity" type="number" min="1" step="1" name="quantity" form="backend-form-65"></label></div><div class="sdc-grid three mt-2"><label class="sdc-field"><span>المادة</span><input class="form-control" data-field="material" type="text" name="material" form="backend-form-65"></label><label class="sdc-field"><span>درجة اللون</span><input class="form-control" data-field="shade" type="text" name="shade" form="backend-form-65"></label><label class="sdc-field"><span>تعليمات العمل</span><input class="form-control" data-field="instructions" type="text" name="instructions" form="backend-form-65"></label></div></div></template><template id="ui-empty-addMedication"><div class="dynamic-list-item" data-sdc-enriched="1" data-ui-draft="">
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <label class="form-label small">الدواء</label><input class="form-control" name="template_field_15" form="backend-form-64" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small">الجرعة</label><input class="form-control" name="template_field_17" form="backend-form-64" data-medication-field="dosage">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small">التكرار</label><input class="form-control" name="template_field_19" form="backend-form-64" data-medication-field="frequency">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small">المدة</label><input class="form-control" name="template_field_21" form="backend-form-64" data-medication-field="duration">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                      <button class="btn btn-outline-danger w-100" data-remove="" type="button" data-ui-remove-draft="" form="backend-form-64">
+                        حذف
+                      </button>
+                    </div>
+                  <div class="col-12"><div class="sdc-grid two"><label class="sdc-field"><span>طريق الاستعمال (route)</span><input class="form-control" data-field="route" type="text" name="route" form="backend-form-64" data-medication-field="route"></label><label class="sdc-field"><span>تعليمات منفصلة لكل دواء</span><input class="form-control" data-field="instructions" type="text" name="instructions" form="backend-form-64" data-medication-field="instructions"></label></div></div></div>
+                </div></template><template id="ui-empty-addDiagnosis"><div class="dynamic-list-item" data-ui-draft="">
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <label class="form-label small">السن</label><input class="form-control" name="template_field_25" form="backend-form-60" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-9">
+                      <label class="form-label small">التشخيص</label><input class="form-control" name="template_field_27" form="backend-form-60" data-medication-field="dosage">
+                    </div>
+                  </div>
+                </div></template><template id="ui-empty-addPlanStep"><div class="dynamic-list-item plan-step-item" data-plan-step="" data-step-editing="false" data-ui-draft="">
+                  <div class="row g-2">
+                    <div class="col-md-2">
+                      <label class="form-label small">السن</label><input class="form-control" data-step-field="" name="template_field_29" form="backend-form-63" data-medication-field="medication_name">
+                    </div>
+                    <div class="col-md-5">
+                      <label class="form-label small">المرحلة</label><input class="form-control" data-step-field="" name="template_field_31" form="backend-form-63" data-medication-field="dosage">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label small">الحالة</label><select class="form-select" data-step-field="" name="status" form="backend-form-63">
+                        <option>مخطط</option>
+                        <option>قادم</option>
+                        <option>مكتمل</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3" data-step-actions="">
+                      <label class="form-label small d-block">الإجراءات</label>
+                      <div class="d-grid grid-template-columns-2 gap-2 plan-step-actions">
+                        <button class="btn btn-sm btn-outline-primary" data-step-edit="" type="button" data-ui-remove-draft="" form="backend-form-63"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-remove-draft="" form="backend-form-63">
+                          <i class="bi bi-trash3 ms-1"></i>حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div></template><form id="backend-form-57" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-58" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-59" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-60" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-61" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-62" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-63" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-64" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-65" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-66" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-67" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form><form id="backend-form-68" method="post" data-ui-unbound="" data-backend-binding="section" hidden="" data-visit-id="V-002"></form></body></html>

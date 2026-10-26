@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>طلب اعتماد العيادة | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="approvals">طلبات اعتماد العيادات</a>
+            </li>
+            <li class="breadcrumb-item active" id="applicationBreadcrumb">
+              CA-001
+            </li>
+          </ol>
+        </nav>
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+          <div>
+            <div class="d-flex gap-2 flex-wrap mb-2">
+              <span class="badge text-bg-warning" id="applicationStateBadge">بانتظار المراجعة</span><span class="badge text-bg-light border" id="applicationCodeBadge">رقم الطلب: CA-001</span>
+            </div>
+            <h1 class="fw-bold fs-2 mb-2" id="applicationTitle">
+              طلب اعتماد عيادة الابتسامة الحديثة
+            </h1>
+            <p class="text-secondary mb-0">
+              هذه البيانات هي نفسها التي أدخلها الطبيب في نموذج إنشاء العيادة،
+              بدون إضافة أطباء أو خدمات أو تخصصات غير موجودة بعد.
+            </p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-outline-secondary" data-application-state="needs_info" data-ui-open="#applicationReasonModal" type="button">
+              طلب استكمال</button><button class="btn btn-outline-danger" data-application-state="rejected" data-ui-open="#applicationReasonModal" type="button">
+              رفض</button><button class="btn btn-success" data-application-state="approved" data-ui-open="#applicationReasonModal" type="button">
+              اعتماد وإنشاء العيادة
+            </button>
+          </div>
+        </div>
+        <div class="alert alert-primary rounded-4 border-0">
+          <i class="bi bi-info-circle ms-2"></i><strong>مرحلة ما قبل الإنشاء:</strong> لا يوجد حتى الآن أطباء أو
+          خدمات أو تخصصات أو مرضى تابعون للعيادة. هذه الأشياء تُعد بعد موافقة
+          Super Admin وتفعيل Clinic.
+        </div>
+        <div class="d-none alert rounded-4 border-0 mb-4" id="applicationDecisionResult"></div>
+        <div class="admin-workflow-steps mb-4">
+          <div class="admin-workflow-step done">
+            <span>1</span>
+            <div>
+              <strong>إرسال الطلب</strong><small id="applicationSubmittedAt">21 أكتوبر 2026 • 16:42</small>
+            </div>
+          </div>
+          <div class="admin-workflow-step active">
+            <span>2</span>
+            <div>
+              <strong>مراجعة البيانات والوثائق</strong><small>Super Admin</small>
+            </div>
+          </div>
+          <div class="admin-workflow-step">
+            <span>3</span>
+            <div>
+              <strong>القرار</strong><small>اعتماد / استكمال / رفض</small>
+            </div>
+          </div>
+          <div class="admin-workflow-step">
+            <span>4</span>
+            <div>
+              <strong>تفعيل العيادة</strong><small>السجل محفوظ منذ التقديم؛ التشغيل بعد الاعتماد</small>
+            </div>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-xl-8">
+            <div class="soft-card p-4 mb-4">
+              <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div>
+                  <h4 class="fw-bold mb-1">بيانات إنشاء العيادة</h4>
+                  <small class="text-secondary">مطابقة لنموذج الطبيب
+                    onboarding/doctor/clinic/create</small>
+                </div>
+                <span class="badge badge-soft">Read only</span>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">مقدم الطلب</label><input class="form-control" id="appApplicant" readonly value="د. عمر ناصر" name="app_applicant" form="backend-form-3">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">اسم العيادة *</label><input class="form-control" id="appClinicName" readonly value="عيادة الابتسامة الحديثة" name="app_clinic_name" form="backend-form-3">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">المدينة *</label><input class="form-control" id="appCity" readonly value="جنين" name="app_city" form="backend-form-3">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">رقم الهاتف *</label><input class="form-control" id="appPhone" readonly value="0599 220 440" name="app_phone" form="backend-form-3">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">البريد الرسمي</label><input class="form-control" id="appEmail" readonly value="owner@example.test" name="app_email" form="backend-form-3">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">العنوان *</label><input class="form-control" id="appAddress" readonly value="جنين — وسط المدينة" name="app_address" form="backend-form-3">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">ملاحظات إضافية</label><textarea class="form-control" id="appNotes" readonly rows="3" name="app_notes" form="backend-form-3">أرغب بإنشاء عيادة أسنان جديدة تخدم المنطقة، وسيتم إعداد الأطباء والخدمات بعد الاعتماد.</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="soft-card p-4">
+              <h4 class="fw-bold mb-3">ملاحظات Super Admin</h4>
+              <textarea class="form-control" id="applicationAdminNotes" placeholder="ملاحظات المراجعة الإدارية..." rows="4" name="application_admin_notes" form="backend-form-4"></textarea><button class="btn btn-sm btn-primary mt-3" data-temp-action="تم حفظ الملاحظة مؤقتًا." data-ui-pending="" form="backend-form-4" type="submit">
+                حفظ الملاحظات
+              </button>
+            </div>
+          </div>
+          <div class="col-xl-4">
+            <div class="soft-card p-4 mb-4">
+              <h4 class="fw-bold mb-3">المرفقات التي رفعها مقدم الطلب</h4>
+              <div class="action-row">
+                <span class="icon-box"><i class="bi bi-file-earmark-check"></i></span>
+                <div class="flex-grow-1">
+                  <strong>ترخيص المنشأة</strong><small class="d-block text-secondary" id="appLicenseFile">clinic-license-pearl.pdf</small>
+                </div>
+                <button class="btn btn-sm btn-light" data-temp-action="تم فتح ترخيص المنشأة تجريبيًا." data-ui-pending="">
+                  عرض
+                </button>
+              </div>
+              <div class="action-row">
+                <span class="icon-box"><i class="bi bi-person-vcard"></i></span>
+                <div class="flex-grow-1">
+                  <strong>هوية / وثيقة المدير</strong><small class="d-block text-secondary" id="appManagerFile">manager-id-rawan.jpg</small>
+                </div>
+                <button class="btn btn-sm btn-light" data-temp-action="تم فتح وثيقة المدير تجريبيًا." data-ui-pending="">
+                  عرض
+                </button>
+              </div>
+            </div>
+            <div class="soft-card p-4">
+              <h4 class="fw-bold mb-3">قائمة التحقق</h4>
+              <label class="admin-check-row"><span>اسم العيادة والمدينة</span><input checked type="checkbox" id="field-1" name="field_1" form="backend-form-5"></label>
+              <label class="admin-check-row"><span>بيانات التواصل والعنوان</span><input checked type="checkbox" id="field-2" name="field_2" form="backend-form-5"></label>
+              <label class="admin-check-row"><span>ترخيص المنشأة</span><input checked id="checkLicense" type="checkbox" name="check_license" form="backend-form-5"></label>
+              <label class="admin-check-row"><span>هوية / وثيقة المدير</span><input checked id="checkManagerId" type="checkbox" name="check_manager_id" form="backend-form-5"></label>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="modal fade" id="applicationReasonModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-0 rounded-4">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold" id="applicationReasonTitle">
+                قرار الطلب
+              </h5>
+              <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <label class="form-label">السبب / الملاحظة *</label><textarea class="form-control" id="applicationReasonText" rows="4" name="application_reason_text" form="backend-form-6"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+                إلغاء</button><button class="btn btn-primary" id="confirmApplicationDecision" data-ui-pending="" form="backend-form-6" type="submit">
+                تأكيد
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="modal fade" id="viewModal" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="viewTitle"></h5>
+              <small class="text-secondary" id="viewSubtitle"></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body" id="viewBody"></div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">إغلاق</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sensitiveActionModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="sensitiveActionTitle">
+                تأكيد إجراء إداري
+              </h5>
+              <small class="text-secondary" id="sensitiveActionSubtitle"></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning rounded-4">
+              <i class="bi bi-shield-exclamation ms-1"></i>هذا إجراء حساس،
+              وسبب الإجراء مطلوب لتوضيح سبب التغيير الإداري.
+            </div>
+            <label class="form-label">سبب الإجراء الإداري *</label><textarea class="form-control" id="sensitiveActionReason" placeholder="اكتب سببًا واضحًا..." rows="4" name="sensitive_action_reason" form="backend-form-7"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" id="confirmSensitiveAction" data-ui-pending="" form="backend-form-7" type="submit">
+              تأكيد
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="modal fade" id="relatedEntityEditModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4"><div class="modal-header"><div><h5 class="modal-title fw-bold" id="relatedEntityEditTitle">تعديل عنصر</h5><small class="text-secondary" id="relatedEntityEditCode"></small></div><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div><div class="modal-body"><label class="form-label">القيمة / الاسم</label><input class="form-control" id="relatedEntityEditValue" value="" name="related_entity_edit_value" form="backend-form-8"><label class="form-label mt-3">سبب التعديل الإداري *</label><textarea class="form-control" id="relatedEntityEditReason" rows="3" name="related_entity_edit_reason" form="backend-form-8"></textarea></div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" id="saveRelatedEntityEdit" data-ui-pending="" form="backend-form-8" type="submit">حفظ</button></div></div></div></div><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-3" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-4" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-5" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-6" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form><form id="backend-form-7" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form><form id="backend-form-8" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form><%- include('../partials/admin/footer') %></body></html>

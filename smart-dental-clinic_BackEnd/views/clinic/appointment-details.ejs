@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html data-style-sections="section-4" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تفاصيل الموعد | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  </head>
+  <body data-default-appointment-date="2026-10-21" data-default-appointment-time="16:00" data-reschedule-patient="أحمد خالد"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="appointments">المواعيد</a>
+            </li>
+            <li class="breadcrumb-item active" id="appointmentDetailsCrumb">A-9021</li>
+          </ol>
+        </nav>
+        <div id="newBookingDetails"><div id="sdcClinicAIContext" class="d-none alert alert-info rounded-4 mb-3"></div>
+          <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-start mb-4">
+            <div>
+              <span class="badge text-bg-warning mb-2">بانتظار الموافقة</span>
+              <h1 class="fw-bold fs-2">موعد أحمد خالد</h1>
+              <p class="text-secondary mb-0">
+                راجع معلومات الموعد ثم اقبل الطلب أو ارفضه.
+              </p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-primary" data-bs-target="#clinicEditAppointmentModal" data-bs-toggle="modal" type="button">
+                تعديل الموعد</button><button class="btn btn-success" data-toast="تم قبول الموعد تجريبياً" data-ui-pending="">
+                قبول الموعد</button><button class="btn btn-outline-danger" data-toast="تم رفض الموعد تجريبياً" data-ui-pending="">
+                رفض
+              </button>
+            </div>
+          </div>
+          <div class="d-none alert alert-info rounded-4 mb-4" id="clinicPendingChangePreview">
+            <div class="d-flex justify-content-between gap-3 flex-wrap">
+              <div>
+                <strong>طلب تغيير موعد أنشأته العيادة — بانتظار التأكيد</strong>
+                <div class="small mt-1">
+                  الموعد الحالي بقي كما هو ولم يتم استبداله.
+                </div>
+              </div>
+              <span class="badge text-bg-info">pending</span>
+            </div>
+            <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <small class="text-secondary">الموعد الحالي</small>
+                <div class="fw-bold" id="clinicPendingOldDateTime"></div>
+              </div>
+              <div class="col-md-6">
+                <small class="text-secondary">الموعد المطلوب</small>
+                <div class="fw-bold" id="clinicPendingNewDateTime"></div>
+              </div>
+            </div>
+          </div>
+          <div class="soft-card p-4 mb-4">
+            <h4 class="fw-bold mb-4">معلومات الموعد</h4>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <small class="text-secondary">المريض</small>
+                <div class="fw-bold" id="clinicApptPatientText">أحمد خالد</div>
+                <div class="small text-secondary">
+                  Patient #P-2048 • 0599 000 001
+                </div>
+              </div>
+              <div class="col-md-6">
+                <small class="text-secondary">الطبيب</small>
+                <div class="fw-bold" id="clinicApptDoctorText">د. عمر ناصر</div>
+                <div class="small text-secondary">تقويم الأسنان</div>
+              </div>
+              <div class="col-md-6">
+                <small class="text-secondary">الخدمة</small>
+                <div class="fw-bold" id="clinicApptServiceText">علاج جذور</div>
+                <div class="small text-secondary">500 ₪ • 30 دقيقة</div>
+              </div>
+              <div class="col-md-6">
+                <small class="text-secondary">التاريخ والوقت المطلوب</small>
+                <div class="fw-bold" id="clinicApptDateTimeText">21 أكتوبر 2026 • 10:00 ص</div>
+              </div>
+              <div class="col-md-6">
+                <small class="text-secondary">نوع الطلب</small>
+                <div class="fw-bold">حجز جديد</div>
+              </div>
+              <div class="col-md-6">
+                <small class="text-secondary">حالة الموعد</small>
+                <div>
+                  <span class="badge text-bg-success" id="clinicApptStatusBadge">مكتمل</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="soft-card p-4 mb-4">
+            <h4 class="fw-bold mb-3">ملاحظات المريض</h4>
+            <p class="text-secondary mb-0">
+              أعاني من عدم انتظام بسيط في الأسنان وأرغب باستشارة حول التقويم
+              الشفاف.
+            </p>
+          </div>
+        </div>
+        <div class="d-none" id="rescheduleRequestDetails">
+          <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-start mb-4">
+            <div>
+              <span class="badge text-bg-info mb-2">طلب تغيير قيد المراجعة</span>
+              <h1 class="fw-bold fs-2">طلب تغيير موعد أحمد خالد</h1>
+              <p class="text-secondary mb-0">
+                الموعد الأصلي يبقى مؤكداً حتى توافق العيادة على الموعد الجديد.
+              </p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-outline-primary" data-bs-target="#clinicEditAppointmentModal" data-bs-toggle="modal" type="button">
+                تعديل الموعد الحالي</button><button class="btn btn-success" data-toast="تم قبول طلب التغيير وتحديث الموعد للمريض والطبيب" data-ui-pending="">
+                قبول التغيير</button><button class="btn btn-outline-danger" data-toast="تم رفض طلب التغيير وبقي الموعد الأصلي مؤكداً" data-ui-pending="">
+                رفض التغيير
+              </button>
+            </div>
+          </div>
+          <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+              <div class="soft-card p-4 h-100 border-success-subtle">
+                <div class="d-flex justify-content-between gap-2 mb-3">
+                  <h4 class="fw-bold mb-0">الموعد الحالي</h4>
+                  <span class="badge text-bg-success">يبقى فعالاً</span>
+                </div>
+                <div class="summary-row">
+                  <span>الطبيب</span><strong id="clinicRescheduleDoctorText">د. عمر ناصر</strong>
+                </div>
+                <div class="summary-row">
+                  <span>الخدمة</span><strong id="clinicRescheduleServiceText">علاج جذور</strong>
+                </div>
+                <div class="summary-row">
+                  <span>التاريخ</span><strong id="clinicRescheduleDateText">21 أكتوبر 2026</strong>
+                </div>
+                <div class="summary-row">
+                  <span>الوقت</span><strong id="clinicRescheduleTimeText">4:00 م</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="soft-card p-4 h-100 border-info-subtle">
+                <div class="d-flex justify-content-between gap-2 mb-3">
+                  <h4 class="fw-bold mb-0">الموعد المطلوب</h4>
+                  <span class="badge text-bg-info">طلب جديد</span>
+                </div>
+                <div class="summary-row">
+                  <span>الطبيب</span><strong>د. عمر ناصر</strong>
+                </div>
+                <div class="summary-row">
+                  <span>الخدمة</span><strong>علاج جذور</strong>
+                </div>
+                <div class="summary-row">
+                  <span>التاريخ</span><strong>21 أكتوبر 2026</strong>
+                </div>
+                <div class="summary-row">
+                  <span>الوقت</span><strong>5:30 م</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="soft-card p-4 mb-4">
+            <h4 class="fw-bold mb-3">سبب طلب التغيير</h4>
+            <p class="mb-0">تعارض دوام المريض مع الموعد الحالي.</p>
+          </div>
+          <div class="alert alert-light border rounded-4 mb-4">
+            <i class="bi bi-info-circle text-primary ms-2"></i>عند
+            <strong>القبول</strong> يتم اعتماد الموعد الجديد وإظهاره للطبيب
+            والمريض. عند <strong>الرفض</strong> لا يتغير الموعد الأصلي.
+          </div>
+        </div>
+        <div class="privacy-box">
+          <div class="d-flex gap-3">
+            <i class="bi bi-shield-lock fs-3 text-primary"></i>
+            <div>
+              <strong>خصوصية المحتوى الطبي</strong>
+              <p class="text-secondary mb-0 mt-1">
+                التشخيص، الوصفة والتقرير الطبي يديرها الطبيب من حسابه، بينما
+                العيادة تدير الموعد والإجراءات الإدارية.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="modal fade" id="clinicEditAppointmentModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold">تعديل الموعد من العيادة</h5>
+              <small class="text-secondary">تعديل الطبيب/الخدمة إداري مباشر. تغيير التاريخ أو الوقت ينشئ
+                طلب تغيير ويحافظ على الموعد الحالي حتى تأكيد التغيير، مع إشعار
+                المريض والطبيب.</small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-info rounded-3 small" id="clinicDateTimePolicyNote">
+              <i class="bi bi-info-circle ms-1"></i>إذا تغير التاريخ أو الوقت،
+              سيُعامل التعديل كـ <strong>Appointment Change Request</strong> بدل
+              الكتابة فوق الموعد المؤكد مباشرة.
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">المريض</label>
+                <input class="form-control" id="clinicEditPatient" readonly value="أحمد خالد" name="clinic_edit_patient" form="backend-form-1">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">الطبيب *</label>
+                <select class="form-select" id="clinicEditDoctor" data-record-select="doctor" name="doctor_id" form="backend-form-1"><option selected value="D-108" data-record-option="doctor">د. عمر ناصر</option></select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">الخدمة *</label>
+                <select class="form-select" id="clinicEditService" data-record-select="service" name="service_id" form="backend-form-1"><option selected value="S-001" data-record-option="service">علاج جذور — 500 ₪ — 60 دقيقة</option></select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">التاريخ *</label>
+                <input class="form-control" id="clinicEditDate" type="date" value="2026-10-21" name="appointment_date" form="backend-form-1">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">الوقت *</label>
+                <input class="form-control" id="clinicEditTime" type="time" value="11:30" name="appointment_time" form="backend-form-1">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">حالة الموعد</label>
+                <select class="form-select" id="clinicEditStatus" name="clinic_edit_status" form="backend-form-1">
+                  <option value="pending" selected>بانتظار الموافقة</option>
+                  <option value="confirmed">مؤكد</option>
+                  <option value="completed">مكتمل</option>
+                  <option value="cancelled">ملغى</option>
+                  <option value="no_show">لم يحضر</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">سبب التعديل *</label>
+                <input class="form-control" id="clinicEditReason" placeholder="مثال: تغيير جدول الطبيب" value="" name="reason" form="backend-form-1">
+              </div>
+              <div class="col-12">
+                <label class="form-label">ملاحظات العيادة</label>
+                <textarea class="form-control" id="clinicEditNotes" placeholder="ملاحظات إدارية تظهر ضمن سجل الموعد" rows="3" name="clinic_edit_notes" form="backend-form-1"></textarea>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input checked class="form-check-input" id="clinicEditNotify" type="checkbox" name="clinic_edit_notify" form="backend-form-1">
+                  <label class="form-check-label" for="clinicEditNotify">إرسال إشعار للمريض والطبيب بالتعديل</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button>
+            <button class="btn btn-primary" id="saveClinicAppointmentEdit" data-ui-pending="" form="backend-form-1" type="submit">
+              حفظ التعديل
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form></body></html>

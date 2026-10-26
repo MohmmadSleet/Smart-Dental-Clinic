@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>مواعيدي | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+    <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+    
+  
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <!-- شريط التنقل العلوي -->
+    <%- include('../partials/patient/header') %>
+
+    <!-- القائمة الجانبية للموبايل -->
+    
+
+    <!-- المحتوى الرئيسي -->
+    <main class="page-shell" id="main-content"><section class="container py-4 py-lg-5"><nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="appointments">مواعيدي</a></li><li class="breadcrumb-item active" aria-current="page">تفاصيل الحجز</li></ol></nav>
+    <div class="soft-card p-4 mt-3"><span class="badge text-bg-info mb-2">بيانات حجز تجريبية</span><h1 class="fw-bold h3 mb-2">تفاصيل الموعد <span id="sdcPatientBookingId">A-9021</span></h1><p class="text-secondary">تظهر تفاصيل الحجز حسب مصدره وحالته، ولا تعني وجود تقرير طبي معتمد.</p><div id="sdcPatientBookingBody" class="sdc-v19-data-grid mt-3"><div><small>المريض</small><strong>أحمد خالد</strong></div><div><small>الطبيب</small><strong>د. عمر ناصر</strong></div><div><small>الخدمة</small><strong>علاج جذور</strong></div><div><small>تاريخ الموعد</small><strong>21 أكتوبر 2026</strong></div><div><small>الوقت</small><strong>10:00 ص</strong></div><div><small>مصدر الحجز</small><strong>التشخيص الذكي</strong></div><div><small>الحالة</small><strong>بانتظار موافقة العيادة</strong></div></div><div class="alert alert-info mt-3" id="sdcPatientBookingAI">ملخص التقييم الذكي الأولي: ألم نابض في الضرس مع حساسية عند المضغ — معلومات إرشادية فقط لا تشكّل تقريراً طبياً معتمداً.</div><a href="appointments" class="btn btn-outline-primary mt-3">رجوع لمواعيدي</a></div></section></main>
+    <%- include('../partials/patient/footer') %>
+
+    <!-- التوست (Toast) -->
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0 shadow" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- السكريبتات -->
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+  
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div></body></html>

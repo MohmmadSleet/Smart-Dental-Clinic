@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>المواعيد | Clinic Staff</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  </head>
+  <body data-page-permission="appointments.view" data-staff-account-status="active" data-staff-permissions="appointments.view appointments.manage patients.view_admin patients.create invoices.view payments.record lab_orders.view lab_orders.update_delivery" data-staff-user-id="U-STAFF-001" data-rendered-clinic-id="C-008" data-active-clinic-id="C-008" data-staff-clinic-role="منسق استقبال"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/staff/header') %>
+    
+    <main class="page-shell" id="main-content" data-staff-workspace="">
+      <div class="container pt-3"><label class="form-label small fw-bold" for="activeClinicContext">العيادة الحالية</label><select class="form-select mb-3" id="activeClinicContext" name="active_clinic_id" data-context-switcher="" aria-describedby="staffClinicContextHelp"><option value="C-008" data-membership-status="active" data-clinic-role="منسق استقبال" data-clinic-permissions="appointments.view appointments.manage patients.view_admin patients.create invoices.view payments.record lab_orders.view lab_orders.update_delivery">عيادة الابتسامة الحديثة</option></select><div class="d-flex flex-wrap align-items-center gap-2 mb-2"><a class="btn btn-outline-primary btn-sm" href="choose-clinic" data-choose-clinic-link>اختيار أو تبديل العيادة</a><small class="text-secondary" id="staffClinicContextHelp">تظهر بيانات وصلاحيات العيادة المختارة فقط.</small></div></div><section class="container py-4 py-lg-5" data-clinic-content="">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+          <div>
+            <h1 class="fw-bold fs-2 mb-2">المواعيد</h1>
+            <p class="text-secondary mb-0">
+              إدارة المواعيد ضمن الصلاحيات التشغيلية الممنوحة لك.
+            </p>
+          </div>
+          <button class="btn btn-primary" data-requires-permission="appointments.manage" data-toast="تم فتح نموذج موعد تجريبيًا" data-ui-pending="">
+            <i class="bi bi-calendar2-plus"></i>إضافة موعد
+          </button>
+        </div>
+        <div class="filter-panel mb-4">
+          <div class="row g-3">
+            <div class="col-lg-5">
+              <input class="form-control" placeholder="المريض أو الطبيب أو الخدمة" value="" id="field-1" name="field_1" form="backend-form-3">
+            </div>
+            <div class="col-lg-3">
+              <select class="form-select" id="field-2" name="field_2" form="backend-form-3">
+                <option selected>كل الحالات</option>
+                <option>بانتظار الموافقة</option>
+                <option>مؤكد</option>
+                <option>مكتمل</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+          <table class="table align-middle mb-0 responsive-stack-table system-data-table">
+            <thead>
+              <tr>
+                <th>المريض</th>
+                <th>الطبيب / الخدمة</th>
+                <th>الموعد</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+<tr data-sdc-ai-appointment="" data-status="pending">
+<td data-label="المريض" class="table-primary-cell">أحمد خالد</td>
+<td data-label="الطبيب / الخدمة" class="table-status-cell">د. عمر ناصر<br><small>علاج جذور · <span class="badge text-bg-info">تشخيص ذكي</span></small></td>
+<td data-label="الموعد">10:00 ص • 21 أكتوبر 2026</td>
+<td data-label="الحالة" class="table-status-cell">مكتمل</td>
+<td data-label="الإجراءات" class="table-actions-cell"><div class="d-flex flex-wrap gap-1 table-action-grid">
+<button type="button" class="btn btn-outline-primary btn-sm" data-sdc-ai-details="staff" data-ui-pending="">التفاصيل</button>
+<button type="button" class="btn btn-outline-secondary btn-sm" data-sdc-ai-edit="" data-requires-permission="appointments.manage" data-ui-pending="">تعديل</button>
+<button type="button" class="btn btn-success btn-sm" data-sdc-appointment-decision="confirmed" data-requires-permission="appointments.manage" data-ui-pending="">قبول</button>
+<button type="button" class="btn btn-outline-danger btn-sm" data-sdc-appointment-decision="rejected" data-requires-permission="appointments.manage" data-ui-pending="">رفض</button>
+</div></td></tr>
+              
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    <section class="container py-4" id="staffScopeNotice" hidden><div class="soft-card p-4 text-center"><i class="bi bi-building-lock fs-1 text-primary"></i><h3 class="fw-bold mt-3" id="staffScopeTitle">اختر العيادة للمتابعة</h3><p class="text-secondary" id="staffScopeMessage">حدد عيادة لديك عضوية فعّالة فيها لعرض بياناتها وصلاحياتك.</p><a href="choose-clinic" class="btn btn-primary">اختيار العيادة</a></div></section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><span hidden="" id="sdcV19StaffMarker"></span><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-3" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><%- include('../partials/staff/footer') %></body></html>

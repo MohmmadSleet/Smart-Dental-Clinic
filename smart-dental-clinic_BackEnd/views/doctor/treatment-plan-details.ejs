@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html data-style-sections="section-5" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تفاصيل خطة العلاج | Smart Dental Doctor</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#treatmentPlanDetailPage">تخطي إلى المحتوى</a>
+    <%- include('../partials/doctor/header') %>
+    
+    <main class="page-shell" id="treatmentPlanDetailPage" data-current-doctor="د. عمر ناصر">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="treatment-plans">خطط العلاج</a></li><li class="breadcrumb-item"><a id="planPatientBreadcrumbLink" href="patient-details?patient=ahmad"><span id="planPatientBreadcrumb">أحمد خالد</span></a></li><li class="breadcrumb-item active" id="planBreadcrumbTitle">خطة علاج جذور السن 46</li></ol></nav>
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3 mb-4">
+          <div><span class="badge badge-soft mb-2">Treatment Plan</span><h1 class="fw-bold mb-1" id="planTitle">خطة علاج جذور السن 46</h1><p class="text-secondary mb-0" id="planSubtitle">خطة المريض أحمد خالد • P-2048 • د. عمر ناصر</p></div>
+          <div class="d-flex gap-2 flex-wrap"><a class="btn btn-outline-primary" id="planPatientLink" href="patient-details?patient=ahmad"><i class="bi bi-person ms-1"></i>ملف المريض</a><a class="btn btn-primary" href="visit#plan"><i class="bi bi-pencil-square ms-1"></i>تعديل من الزيارة</a></div>
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3"><div class="soft-card p-3 h-100"><small class="text-secondary">الحالة</small><div class="mt-2"><span class="badge text-bg-primary fs-6" id="planStatusBadge">نشطة</span></div></div></div>
+          <div class="col-6 col-lg-3"><div class="soft-card p-3 h-100"><small class="text-secondary">التقدم</small><div class="fs-3 fw-bold" id="planProgressValue">33%</div></div></div>
+          <div class="col-6 col-lg-3"><div class="soft-card p-3 h-100"><small class="text-secondary">بدأت</small><div class="fw-bold mt-2" id="planStartDate">21 أكتوبر 2026</div></div></div>
+          <div class="col-6 col-lg-3"><div class="soft-card p-3 h-100"><small class="text-secondary">التكلفة التقديرية</small><div class="fs-4 fw-bold mt-1" id="planEstimatedCost">500 ₪</div></div></div>
+        </div>
+        <div class="soft-card p-4 mb-4"><div class="d-flex justify-content-between gap-3 flex-wrap mb-2"><div><h4 class="fw-bold mb-1">تقدم الخطة</h4><div class="small text-secondary" id="planProgressNote">التقدم محسوب حسب إنجاز مراحل الخطة الحالية.</div></div><strong class="text-primary" id="planProgressStrong">33%</strong></div><div class="progress plan-progress" style="height:10px"><div class="progress-bar" id="planProgressBar" style="width:33%"></div></div></div>
+        <div class="soft-card p-4 mb-4"><div class="d-flex justify-content-between align-items-center gap-3 flex-wrap mb-3"><div><h4 class="fw-bold mb-1">مراحل العلاج</h4><div class="small text-secondary">يمكن للطبيب تعديل كل مرحلة مباشرة، بدون إنشاء إصدارات منفصلة للخطة.</div></div><button class="btn btn-primary btn-sm" id="addPlanStep" type="button" data-ui-add-template="#ui-empty-addPlanStep" data-ui-add-slot="#planSteps"><i class="bi bi-plus-lg ms-1"></i>إضافة مرحلة</button></div><div class="d-grid gap-2" id="planSteps"><div class="dynamic-list-item plan-step-item" data-plan-step="" data-step-saved="true" id="ui-plan-form-0">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-2"><label class="form-label small" for="field-1">السن</label><input class="form-control" data-step-field="" readonly value="46" id="field-1" name="field_1" form="backend-form-10"></div>
+        <div class="col-md-5"><label class="form-label small" for="field-2">المرحلة / العلاج</label><input class="form-control" data-step-field="" readonly value="فتح وتنظيف القنوات" id="field-2" name="field_2" form="backend-form-10"></div>
+        <div class="col-md-2"><label class="form-label small" for="field-3">الحالة</label><select class="form-select" data-step-field="" disabled id="field-3" name="status" form="backend-form-10"><option>مخطط</option><option>قادم</option><option selected>مكتمل</option></select></div>
+        <div class="col-md-3" data-step-actions=""><label class="form-label small d-block">الإجراءات</label><div class="d-grid grid-template-columns-2 gap-2 plan-step-actions"><button class="btn btn-outline-primary btn-sm" data-step-edit="" type="button" data-ui-edit="#ui-plan-form-0"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-pending=""><i class="bi bi-trash3 ms-1"></i>حذف</button></div></div>
+      </div></div><div class="dynamic-list-item plan-step-item" data-plan-step="" data-step-saved="true" id="ui-plan-form-1">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-2"><label class="form-label small" for="field-4">السن</label><input class="form-control" data-step-field="" readonly value="46" id="field-4" name="field_4" form="backend-form-10"></div>
+        <div class="col-md-5"><label class="form-label small" for="field-5">المرحلة / العلاج</label><input class="form-control" data-step-field="" readonly value="حشو القنوات" id="field-5" name="field_5" form="backend-form-10"></div>
+        <div class="col-md-2"><label class="form-label small" for="field-6">الحالة</label><select class="form-select" data-step-field="" disabled id="field-6" name="status" form="backend-form-10"><option selected>مخطط</option><option>قادم</option><option>مكتمل</option></select></div>
+        <div class="col-md-3" data-step-actions=""><label class="form-label small d-block">الإجراءات</label><div class="d-grid grid-template-columns-2 gap-2 plan-step-actions"><button class="btn btn-outline-primary btn-sm" data-step-edit="" type="button" data-ui-edit="#ui-plan-form-1"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-pending=""><i class="bi bi-trash3 ms-1"></i>حذف</button></div></div>
+      </div></div><div class="dynamic-list-item plan-step-item" data-plan-step="" data-step-saved="true" id="ui-plan-form-2">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-2"><label class="form-label small" for="field-7">السن</label><input class="form-control" data-step-field="" readonly value="46" id="field-7" name="field_7" form="backend-form-10"></div>
+        <div class="col-md-5"><label class="form-label small" for="field-8">المرحلة / العلاج</label><input class="form-control" data-step-field="" readonly value="تقييم الترميم النهائي" id="field-8" name="field_8" form="backend-form-10"></div>
+        <div class="col-md-2"><label class="form-label small" for="field-9">الحالة</label><select class="form-select" data-step-field="" disabled id="field-9" name="status" form="backend-form-10"><option selected>مخطط</option><option>قادم</option><option>مكتمل</option></select></div>
+        <div class="col-md-3" data-step-actions=""><label class="form-label small d-block">الإجراءات</label><div class="d-grid grid-template-columns-2 gap-2 plan-step-actions"><button class="btn btn-outline-primary btn-sm" data-step-edit="" type="button" data-ui-edit="#ui-plan-form-2"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-pending=""><i class="bi bi-trash3 ms-1"></i>حذف</button></div></div>
+      </div></div></div></div>
+        <div class="row g-4"><div class="col-lg-7"><div class="soft-card p-4 h-100"><h5 class="fw-bold">ملاحظات الخطة</h5><textarea class="form-control mt-3" rows="4" id="planNotes" name="plan_notes" form="backend-form-11">متابعة الألم بعد المرحلة الثانية، ثم تقييم الحاجة إلى تاج نهائي حسب كمية النسج المتبقية.</textarea><button class="btn btn-outline-primary btn-sm mt-3" data-ui-pending="" form="backend-form-11" type="submit">حفظ الملاحظات</button></div></div><div class="col-lg-5"><div class="soft-card p-4 h-100"><h5 class="fw-bold">المتابعة</h5><div class="readonly-note mt-3"><strong>آخر موعد</strong><div class="small text-secondary mt-1" id="planNextAppointment">لا يوجد موعد آخر مسجل</div></div><div class="small text-secondary mt-3"><i class="bi bi-clock-history ms-1"></i><span id="planLastUpdate">آخر تعديل: 21 أكتوبر 2026 بواسطة د. عمر ناصر.</span></div></div></div></div>
+
+        
+      </section>
+    </main>
+    <%- include('../partials/doctor/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="clean-dropdown notification-menu doctor-popover doctor-notification-popover" id="doctorNotifications">
+              <div class="px-3 py-2 fw-bold">الإشعارات</div>
+              <div class="dropdown-divider"></div>
+              <a class="notification-entry" href="appointments"><strong>المريض أحمد وصل</strong>
+                <div class="small text-secondary">
+                  موعد 11:30 جاهز لبدء الزيارة.
+                </div></a>
+              
+              
+            </div><div class="clean-dropdown profile-menu doctor-popover doctor-profile-popover" id="doctorProfile">
+              <a class="dropdown-item" href="profile"><i class="bi bi-person ms-2"></i>ملفي الشخصي</a>
+              <a class="dropdown-item" href="settings"><i class="bi bi-gear ms-2"></i>الإعدادات</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item text-primary fw-bold" href="../clinic/index"><i class="bi bi-arrow-left-right ms-2"></i>تبديل لإدارة
+                العيادة</a>
+              <div class="px-3 py-2 bg-light rounded-3 mx-2 mb-2">
+                <small class="text-secondary d-block">الحساب الحالي</small>
+                <strong class="small">د. عمر ناصر • مالك ومدير العيادة</strong>
+              </div>
+              <button class="dropdown-item text-danger" data-logout="" data-ui-pending="">
+                <i class="bi bi-box-arrow-right ms-2"></i>تسجيل الخروج
+              </button>
+            </div><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><template id="ui-empty-addPlanStep"><div class="dynamic-list-item plan-step-item" data-plan-step="" data-ui-draft="">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-2"><label class="form-label small">السن</label><input class="form-control" data-step-field="" name="template_field_1" form="backend-form-10"></div>
+        <div class="col-md-5"><label class="form-label small">المرحلة / العلاج</label><input class="form-control" data-step-field="" name="template_field_3" form="backend-form-10"></div>
+        <div class="col-md-2"><label class="form-label small">الحالة</label><select class="form-select" data-step-field="" name="status" form="backend-form-10"><option>مخطط</option><option>قادم</option><option>مكتمل</option></select></div>
+        <div class="col-md-3" data-step-actions=""><label class="form-label small d-block">الإجراءات</label><div class="d-grid grid-template-columns-2 gap-2 plan-step-actions"><button class="btn btn-outline-primary btn-sm" data-step-edit="" type="button" data-ui-remove-draft="" form="backend-form-10"><i class="bi bi-pencil-square ms-1"></i>تعديل</button><button class="btn btn-outline-danger btn-sm" data-step-delete="" type="button" data-ui-remove-draft="" form="backend-form-10"><i class="bi bi-trash3 ms-1"></i>حذف</button></div></div>
+      </div></div></template><form id="backend-form-10" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-11" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form></body></html>

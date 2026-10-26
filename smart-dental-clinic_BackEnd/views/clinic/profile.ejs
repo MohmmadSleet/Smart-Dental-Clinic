@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html data-style-sections="section-7" dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>ملف العيادة والإعدادات | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+    
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="mb-4">
+          <span class="badge badge-soft mb-2">Clinic Profile</span>
+          <h1 class="fw-bold">ملف العيادة والإعدادات</h1>
+          <p class="text-secondary mb-0">
+            بيانات العيادة، الموقع الجغرافي، ساعات العمل، والحجز الإلكتروني.
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="profile-section mb-4">
+              <h4 class="fw-bold mb-3">بيانات العيادة</h4>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="field-1">اسم العيادة</label><input class="form-control" value="عيادة الابتسامة الحديثة" id="field-1" name="clinic_name" form="backend-form-35">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-2">الهاتف</label><input class="form-control" value="0590 000 000" id="field-2" name="phone" form="backend-form-35">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-3">البريد الإلكتروني</label><input class="form-control" value="owner@example.test" id="field-3" name="email" form="backend-form-35">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-4">المدينة</label><select class="form-select" id="field-4" name="city" form="backend-form-35">
+                    <option selected>جنين</option>
+                    <option>نابلس</option>
+                    <option>رام الله والبيرة</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-5">المنطقة</label><select class="form-select" id="field-5" name="field_5" form="backend-form-35">
+                    <option selected>وسط المدينة</option>
+                    <option>الحي الغربي</option>
+                    <option>شارع الجامعة</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">العنوان النصي</label><input id="clinicAddressInput" class="form-control" value="جنين — وسط المدينة" name="clinic_address_input" form="backend-form-35">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Latitude</label><input id="clinicLatInput" class="form-control" inputmode="decimal" value="32.45960" name="clinic_lat_input" form="backend-form-35">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Longitude</label><input id="clinicLngInput" class="form-control" inputmode="decimal" value="35.30090" name="clinic_lng_input" form="backend-form-35">
+                </div>
+                <div class="col-12">
+                  <div class="location-preview-card">
+                    <div>
+                      <i class="bi bi-geo-alt-fill text-primary ms-2"></i><strong>موقع العيادة المعتمد للتوصيات</strong>
+                      <div class="small text-secondary mt-1">
+                        يُستخدم لحساب المسافة في اقتراحات المساعد الذكي والفلترة
+                        حسب القرب.
+                      </div>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm" id="openClinicMap" data-bs-toggle="modal" data-bs-target="#clinicMapModal" type="button">
+                      تحديد على الخريطة
+                    </button>
+                  <div class="small text-success mt-2"></div></div>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="field-6">وصف العيادة</label><textarea class="form-control" rows="4" id="field-6" name="field_6" form="backend-form-35">عيادة متعددة التخصصات تقدم خدمات طب الأسنان الوقائي والعلاجي والتجميلي.</textarea>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-primary" data-ui-pending="" form="backend-form-38" type="submit">
+                    حفظ البيانات
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section mb-4" id="settings">
+              <div class="mb-3">
+                <h4 class="fw-bold mb-1">ساعات وأيام عمل العيادة</h4>
+                <p class="text-secondary mb-0 small">
+                  حدد فترات عمل العيادة لكل يوم. يمكن إضافة أكثر من فترة لليوم
+                  نفسه بدون تداخل، وتُستخدم هذه الساعات مع جدول الطبيب لحساب
+                  Slots الحجز.
+                </p>
+              </div>
+              <div class="working-hours-editor" id="clinicWorkingHoursEditor">
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="6">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>السبت</strong>
+                    <div class="form-check form-switch m-0">
+                      <input checked class="form-check-input working-day-toggle" type="checkbox" id="field-7" name="field_7" form="backend-form-36"><label class="form-check-label small" for="field-7">يوم عمل</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-8">من</label><input class="form-control working-period-input" type="time" value="09:00" id="field-8" name="field_8" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-9">إلى</label><input class="form-control working-period-input" type="time" value="20:00" id="field-9" name="field_9" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" type="button" data-ui-pending="">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="0">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>الأحد</strong>
+                    <div class="form-check form-switch m-0">
+                      <input checked class="form-check-input working-day-toggle" type="checkbox" id="field-10" name="field_10" form="backend-form-36"><label class="form-check-label small" for="field-10">يوم عمل</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-11">من</label><input class="form-control working-period-input" type="time" value="09:00" id="field-11" name="field_11" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-12">إلى</label><input class="form-control working-period-input" type="time" value="13:00" id="field-12" name="field_12" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-13">من</label><input class="form-control working-period-input" type="time" value="14:00" id="field-13" name="field_13" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-14">إلى</label><input class="form-control working-period-input" type="time" value="20:00" id="field-14" name="field_14" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" type="button" data-ui-pending="">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="1">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>الاثنين</strong>
+                    <div class="form-check form-switch m-0">
+                      <input checked class="form-check-input working-day-toggle" type="checkbox" id="field-15" name="field_15" form="backend-form-36"><label class="form-check-label small" for="field-15">يوم عمل</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-16">من</label><input class="form-control working-period-input" type="time" value="09:00" id="field-16" name="field_16" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-17">إلى</label><input class="form-control working-period-input" type="time" value="20:00" id="field-17" name="field_17" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" type="button" data-ui-pending="">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="2">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>الثلاثاء</strong>
+                    <div class="form-check form-switch m-0">
+                      <input checked class="form-check-input working-day-toggle" type="checkbox" id="field-18" name="field_18" form="backend-form-36"><label class="form-check-label small" for="field-18">يوم عمل</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-19">من</label><input class="form-control working-period-input" type="time" value="09:00" id="field-19" name="field_19" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-20">إلى</label><input class="form-control working-period-input" type="time" value="20:00" id="field-20" name="field_20" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" type="button" data-ui-pending="">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="3">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>الأربعاء</strong>
+                    <div class="form-check form-switch m-0">
+                      <input checked class="form-check-input working-day-toggle" type="checkbox" id="field-21" name="field_21" form="backend-form-36"><label class="form-check-label small" for="field-21">يوم عمل</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-22">من</label><input class="form-control working-period-input" type="time" value="09:00" id="field-22" name="field_22" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-23">إلى</label><input class="form-control working-period-input" type="time" value="20:00" id="field-23" name="field_23" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" type="button" data-ui-pending="">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="4">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>الخميس</strong>
+                    <div class="form-check form-switch m-0">
+                      <input checked class="form-check-input working-day-toggle" type="checkbox" id="field-24" name="field_24" form="backend-form-36"><label class="form-check-label small" for="field-24">يوم عمل</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="row g-2 align-items-end working-period-row mb-2">
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-25">من</label><input class="form-control working-period-input" type="time" value="09:00" id="field-25" name="field_25" form="backend-form-36">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label small" for="field-26">إلى</label><input class="form-control working-period-input" type="time" value="18:00" id="field-26" name="field_26" form="backend-form-36">
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-outline-danger w-100 remove-working-period" type="button" data-ui-pending="">
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" type="button" data-ui-pending="">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+                <div class="border rounded-4 p-3 mb-3 working-day-card" data-working-day="5">
+                  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <strong>الجمعة</strong>
+                    <div class="form-check form-switch m-0">
+                      <input class="form-check-input working-day-toggle" type="checkbox" id="field-27" name="field_27" form="backend-form-36"><label class="form-check-label small" for="field-27">مغلق</label>
+                    </div>
+                  </div>
+                  <div class="working-periods">
+                    <div class="small text-secondary working-day-empty">
+                      لا توجد فترات عمل لهذا اليوم.
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-primary btn-sm mt-2 add-working-period" disabled type="button">
+                    <i class="bi bi-plus-lg ms-1"></i>إضافة فترة
+                  </button>
+                </div>
+              </div>
+              <div class="alert alert-light border small">
+                كل فترة تحفظ كسجل مستقل في <code>clinic_working_hours</code>.
+                لا يسمح النظام بتداخل فترات الدوام في اليوم نفسه.
+              </div>
+              <button class="btn btn-primary" data-toast="تم تحديث فترات عمل العيادة تجريبياً" type="submit" data-ui-pending="" form="backend-form-38">
+                حفظ ساعات العمل
+              </button>
+            <section class="sdc-panel sdc-panel--integrated" id="sdcClinicExceptions" aria-label="استثناءات دوام العيادة"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-calendar2-week"></i></span><div class="sdc-panel-head-copy"><h5>استثناءات دوام العيادة</h5><p>أضف أيام الإغلاق والساعات الخاصة دون تغيير جدول الدوام الأسبوعي.</p></div></div><div class="sdc-panel-body"><div id="sdcExceptionItems"><div class="sdc-items" data-kind="schedule_exceptions" id="ui-slot-sdcAddException"><div class="sdc-item"><div class="sdc-item-caption"><span class="sdc-item-number">بند 1</span><span class="sdc-item-count">عنصر واحد</span><button type="button" class="btn btn-link text-danger btn-sm" data-remove="" aria-label="إزالة بند 1" data-ui-pending=""><i class="bi bi-trash3" aria-hidden="true"></i> <span>إزالة</span></button></div><div class="sdc-grid four"><label class="sdc-field" for="field-28"><span>التاريخ</span><input class="form-control" data-field="date" type="date" value="2026-10-21" data-new-value="2026-10-21" id="field-28" name="date" form="backend-form-36"></label><label class="sdc-field" for="field-29"><span>النوع</span><select class="form-select" data-field="mode" data-new-value="special" id="field-29" name="mode" form="backend-form-36"><option value="closed" selected>إغلاق كامل</option><option value="special">ساعات استثنائية</option></select></label><label class="sdc-field" for="field-30"><span>بداية الفترة</span><input class="form-control" data-field="start" type="time" value="09:00" disabled id="field-30" name="start" form="backend-form-36"></label><label class="sdc-field" for="field-31"><span>نهاية الفترة</span><input class="form-control" data-field="end" type="time" value="13:00" disabled id="field-31" name="end" form="backend-form-36"></label></div><div class="mt-2"><label class="sdc-field" for="field-32"><span>السبب</span><input class="form-control" data-field="reason" type="text" value="" id="field-32" name="reason" form="backend-form-36"></label></div></div></div></div><button type="button" class="btn btn-outline-primary btn-sm mt-2" id="sdcAddException" data-ui-add-template="#ui-empty-sdcAddException" data-ui-add-slot="#ui-slot-sdcAddException">+ إضافة إغلاق / فترة استثنائية</button><div class="small text-secondary mt-2">إغلاق كامل لليوم يختلف عن ساعات استثنائية. لا يجوز جمع الإغلاق والفترات في اليوم نفسه.</div></div></section></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="soft-card p-4 mb-4">
+              <h5 class="fw-bold">حالة الحجز الإلكتروني</h5>
+              <p class="small text-secondary">
+                يمكنك إيقاف استقبال حجوزات جديدة مؤقتاً بدون إغلاق حساب العيادة.
+              </p>
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                  <strong>الحجز الإلكتروني</strong>
+                  <div class="small text-secondary">
+                    استقبال طلبات الحجز من المرضى
+                  </div>
+                </div>
+                <div class="form-check form-switch m-0">
+                  <input checked class="form-check-input fs-5" type="checkbox" id="field-33" name="field_33" form="backend-form-37">
+                </div>
+              </div>
+              <button class="btn btn-outline-primary w-100 mt-4" data-toast="تم تحديث حالة الحجز الإلكتروني تجريبياً" data-ui-pending="" form="backend-form-38" type="submit">
+                حفظ الحالة
+              </button>
+            </div>
+            <div class="soft-card p-4 mb-4">
+              <h5 class="fw-bold">ملخص العيادة</h5>
+              <div class="d-flex justify-content-between py-2">
+                <span>الأطباء</span><strong>5</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>تخصصات الأطباء</span><strong>1</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>الخدمات</span><strong>8</strong>
+              </div>
+              <div class="d-flex justify-content-between py-2">
+                <span>مواعيد اليوم</span><strong>12</strong>
+              </div>
+            </div>
+            <div class="privacy-box">
+              <strong>حدود صلاحية العيادة</strong>
+              <p class="small text-secondary mb-0 mt-2">
+                إدارة العيادة لا تعدّل تشخيص الطبيب أو الوصفات والملاحظات
+                السريرية. هذه البيانات يديرها الطبيب من حسابه.
+              </p>
+            </div>
+          </div>
+        </div>
+      <section class="sdc-panel sdc-panel--standalone" id="sdcClinicFileVersions" aria-label="سجل مستندات العيادة"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-file-earmark-check"></i></span><div class="sdc-panel-head-copy"><h5>سجل مستندات العيادة</h5><p>اعرض النسخة الحالية واحتفظ بالإصدارات السابقة للرجوع إليها عند الحاجة.</p></div></div><div class="sdc-panel-body"><div class="table-responsive mobile-stack-wrapper table-ui-shell"><table class="table table-sm responsive-stack-table system-data-table"><thead><tr><th>المستند</th><th>الإصدار</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody><tr><td data-label="المستند" class="table-primary-cell">ترخيص العيادة</td><td data-label="الإصدار">V2</td><td data-label="الحالة" class="table-status-cell"><span class="badge text-bg-success">الحالي</span></td><td data-label="التاريخ">21/10/2026</td></tr></tbody></table></div><label class="sdc-field" for="field-34"><span>رفع إصدار جديد للمراجعة</span><input class="form-control" data-field="newLicense" type="file" value="" accept=".pdf,.png,.jpg,.jpeg" id="field-34" name="newLicense" form="backend-form-38"></label><p class="small text-secondary mt-2">المثال أعلاه بيانات وهمية؛ اعتماد نسخة جديدة وتحديث current يتمان في معاملة خادم واحدة.</p></div></section></section>
+    </main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    <!-- v1.6: clinic map picker, coordinates editable even offline -->
+    <div class="modal fade" id="clinicMapModal" tabindex="-1" aria-labelledby="clinicMapLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+          <div class="modal-header"><h5 class="modal-title fw-bold" id="clinicMapLabel"><i class="bi bi-geo-alt text-primary ms-2"></i>تحديد موقع العيادة</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+          <div class="modal-body">
+            <div class="input-group mb-3"><input id="clinicMapSearch" class="form-control" placeholder="ابحث عن مدينة أو شارع أو عنوان" aria-label="بحث عن عنوان" value="" data-ui-unbound-control="" name="clinic_map_search" form="backend-form-39">
+              <button id="clinicMapSearchBtn" class="btn btn-outline-primary" type="button" data-ui-pending=""><i class="bi bi-search"></i> بحث</button></div>
+            <div id="clinicMapCanvas" class="rounded-3 border bg-light" style="height:360px;min-height:260px" aria-label="خريطة تفاعلية لتحديد موقع العيادة" hidden=""></div>
+            <div id="clinicMapFallback" class="border rounded-3 bg-light p-4 text-center" style="min-height:220px" role="status">
+              <div class="rounded-circle bg-white border d-inline-flex justify-content-center align-items-center mb-3" style="height:56px;width:56px"><i class="bi bi-map fs-3 text-primary"></i></div>
+              <h6 class="fw-bold">تعذر عرض الخريطة حالياً</h6>
+              <p class="text-secondary small mx-auto" style="max-width:650px" id="clinicMapFallbackDetail">يمكنك متابعة تحديد الموقع بالإحداثيات يدوياً.</p>
+              <div class="small text-secondary">حقول خط العرض والطول بالأسفل تعمل دون الخريطة. لتشغيل خريطة الشوارع افتح الموقع عبر <strong dir="ltr">http://localhost</strong> بدلاً من فتح HTML مباشرة.</div>
+            </div>
+            <div class="small text-secondary mt-2">حدد نقطة من الخريطة عند توفرها أو أدخل الإحداثيات مباشرة. الخريطة تحتاج إنترنت وتشغيل الموقع عبر localhost أو HTTPS.</div>
+            <div class="row g-3 mt-1">
+              <div class="col-md-6"><label class="form-label small fw-bold" for="clinicMapLat">Latitude — خط العرض</label><input id="clinicMapLat" type="number" step="any" min="-90" max="90" class="form-control" dir="ltr" value="" name="clinic_map_lat" form="backend-form-39"></div>
+              <div class="col-md-6"><label class="form-label small fw-bold" for="clinicMapLng">Longitude — خط الطول</label><input id="clinicMapLng" type="number" step="any" min="-180" max="180" class="form-control" dir="ltr" value="" name="clinic_map_lng" form="backend-form-39"></div>
+            </div>
+            <div id="clinicMapFeedback" class="small mt-3 text-secondary" role="status">اختر مكان العيادة ثم أكد الإحداثيات.</div>
+          </div>
+          <div class="modal-footer"><button type="button" class="btn btn-light border" data-bs-dismiss="modal">إلغاء</button>
+            <button type="submit" class="btn btn-primary" id="confirmClinicMap" data-ui-pending="" form="backend-form-39"><i class="bi bi-check2-circle ms-1"></i>تأكيد الموقع</button></div>
+        </div>
+      </div>
+    </div>
+
+    
+    
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><template id="ui-empty-sdcAddException"><div class="sdc-item" data-ui-draft=""><div class="sdc-item-caption"><span class="sdc-item-number">بند جديد</span><span class="sdc-item-count">غير محفوظ</span><button type="button" class="btn btn-link text-danger btn-sm" data-remove="" aria-label="إزالة بند 1" data-ui-remove-draft="" form="backend-form-36"><i class="bi bi-trash3" aria-hidden="true"></i> <span>إزالة</span></button></div><div class="sdc-grid four"><label class="sdc-field"><span>التاريخ</span><input class="form-control" data-field="date" type="date" name="date" form="backend-form-36"></label><label class="sdc-field"><span>النوع</span><select class="form-select" data-field="mode" name="mode" form="backend-form-36"><option value="closed">إغلاق كامل</option><option value="special">ساعات استثنائية</option></select></label><label class="sdc-field"><span>بداية الفترة</span><input class="form-control" data-field="start" type="time" name="start" form="backend-form-36"></label><label class="sdc-field"><span>نهاية الفترة</span><input class="form-control" data-field="end" type="time" name="end" form="backend-form-36"></label></div><div class="mt-2"><label class="sdc-field"><span>السبب</span><input class="form-control" data-field="reason" type="text" name="reason" form="backend-form-36"></label></div></div></template><form id="backend-form-35" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-36" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-37" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-38" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-39" method="post" data-ui-unbound="" data-backend-binding="modal" hidden=""></form></body></html>

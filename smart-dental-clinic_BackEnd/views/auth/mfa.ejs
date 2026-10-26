@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>التحقق بخطوتين | Smart Dental Clinic</title>
+    <link href="../assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  </head>
+  <body>
+    <div class="auth-page">
+      <div class="container">
+        <div class="auth-card mx-auto" style="max-width: 620px">
+          <div class="auth-form-wrap">
+            <a class="small text-secondary" href="login">العودة لتسجيل الدخول</a><h1 class="mt-4">التحقق بخطوتين</h1><p>أدخل رمز التحقق من تطبيق المصادقة. أكمل التحقق للوصول إلى حسابك.</p><form id="mfaForm" data-ui-unbound method="post"><label class="form-label" for="mfaCode">رمز التحقق</label><input id="mfaCode" name="code" class="form-control mb-3" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required><button type="submit" class="btn btn-primary w-100">تحقق وتابع</button></form><div id="authFlowMessage" class="alert alert-info mt-3" role="status" hidden></div></div>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div>
+        <!-- زر الدعم الفني العائم -->
+        <button class="floating-chat-btn" id="chatToggleBtn" title="تواصل مع الدعم الفني">
+            <i class="bi bi-chat-dots-fill"></i>
+        </button>
+
+        <!-- نافذة الشات المنبثقة -->
+        <div class="chat-window" id="chatWindow">
+            <div class="p-3 bg-primary text-white d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-headset fs-5"></i>
+                    <div>
+                        <h6 class="mb-0 fw-bold text-white">الدعم الفني للحسابات</h6>
+                        <small class="text-white-50" style="font-size: 0.75rem;">متواجدون لمساعدتك</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" id="chatCloseBtn"></button>
+            </div>
+            <div class="p-3 bg-light" style="height: 230px; overflow-y: auto; font-size: 0.9rem;">
+                <div class="bg-white p-2.5 rounded-3 border mb-2 shadow-sm text-dark" style="max-width: 85%;">
+                    أهلاً بك! كيف يمكننا مساعدتك في حل مشكلة تسجيل الدخول أو حسابك اليوم؟
+                </div>
+            </div>
+            <div class="p-2 border-top bg-white">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="اكتب رسالتك هنا..." value="" id="field-2" name="field_2">
+                    <button class="btn btn-primary btn-sm" type="button" data-ui-pending=""><i class="bi bi-send"></i></button>
+                </div>
+            </div>
+        </div>
+    </div><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div></body></html>
