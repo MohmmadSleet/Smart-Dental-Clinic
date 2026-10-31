@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>كتالوج الخدمات | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">الخدمات</span></nav>
+      <div class="d-flex flex-wrap justify-content-between gap-3 mb-4"><div><span class="badge badge-soft">Services Catalog</span><h1 class="fw-bold mt-2">كتالوج الخدمات الموحّد</h1><p class="text-secondary">الخدمة تُعرّف مرة واحدة؛ كل عيادة تضبط سعرها ومدتها وتخصصها لأطبائها.</p></div>
+      <button class="btn btn-primary align-self-start" type="button" data-bs-toggle="modal" data-bs-target="#addCatalogServiceModal" data-catalog-service-new>إضافة خدمة عامة</button></div>
+      <% const catalogMessages = {"created": "تم إنشاء السجل وتوثيق العملية.", "updated": "تم حفظ التعديل وتوثيق العملية.", "deleted": "تم حذف السجل غير المستخدم.", "invalid": "المدخلات غير صالحة. تحقق من الأسماء وسبب الإجراء.", "duplicate": "يوجد سجل آخر بنفس الاسم العربي أو الإنجليزي.", "reserved": "هذا تخصص معتمد في تسجيل الأطباء؛ لا يمكن تغيير اسمه الإنجليزي الأساسي أو حذفه.", "in_use": "لا يمكن حذف سجل مرتبط ببيانات قائمة.", "history": "لا يمكن تغيير اسم خدمة مستخدمة في تاريخ الحجوزات أو العلاجات.", "unchanged": "لم تتغير البيانات.", "failed": "تعذّر إتمام العملية. راجع سجلات الخادم.", "schema": "هناك اختلاف في مخطط قاعدة البيانات. راجع سجلات الخادم.", "permission": "ليس لديك صلاحية لتنفيذ هذا الإجراء.", "constraint": "رفضت قاعدة البيانات العملية بسبب ارتباطات أو قيود حماية."}; %>
+    <% if (catalogNotice && catalogMessages[catalogNotice]) { %><div class="alert <%= ['created','updated','deleted'].includes(catalogNotice)?'alert-success':'alert-warning' %> rounded-4" role="status"><%= catalogMessages[catalogNotice] %></div><% } %>
+      <div class="filter-panel mb-4"><div class="row g-3"><div class="col-lg-5"><input class="form-control" id="catalogSearch" placeholder="ابحث عن الخدمة..." aria-label="ابحث عن الخدمة"></div></div></div>
+      <div class="soft-card p-4"><div class="table-responsive"><table class="table responsive-stack-table system-data-table"><thead><tr><th>المعرّف</th><th>اسم الخدمة</th><th>إعدادات العيادات</th><th>الإجراءات</th></tr></thead>
+      <tbody id="catalogServicesBody"><% services.forEach(s => { %>
+      <tr data-catalog-service-row data-search="<%= s.name %>"><td data-label="المعرّف">S-<%= s.id %></td><td data-label="اسم الخدمة"><strong><%= s.name %></strong></td>
+      <td data-label="إعدادات العيادات"><% if(s.first_clinic_id){ %><a href="/admin/clinic-details?id=<%= s.first_clinic_id %>"><%= sdcT("إعدادات") %> <%= s.clinics %> <%= sdcT("عيادات") %></a><% }else{ %><span class="text-secondary">لم تعتمدها أي عيادة بعد</span><% } %></td>
+      <td data-label="الإجراءات"><div class="d-flex gap-1 table-action-grid">
+        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addCatalogServiceModal" data-catalog-service-edit data-id="<%= s.id %>" data-name="<%= s.name %>" <%= Number(s.bookings)+Number(s.procedures)+Number(s.recommendations)>0?'disabled title="الاسم مستخدم في سجلات تاريخية"':'' %>>تعديل</button>
+        <button class="btn btn-sm btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#catalogSensitiveModal" data-catalog-sensitive data-kind="service" data-action="delete" data-id="<%= s.id %>" data-name="<%= s.name %>" <%= Number(s.clinics)+Number(s.assignments)+Number(s.bookings)+Number(s.procedures)+Number(s.recommendations)>0?'disabled title="السجل مستخدم في عيادة أو بيانات تاريخية"':'' %>>حذف</button>
+
+      </div></td></tr><% }) %></tbody></table>
+      <div class="empty-state <%= services.length?'d-none':'' %>" id="catalogServicesEmpty">لا توجد خدمات مطابقة.</div></div></div>
+      <p class="text-secondary small mt-3">أسعار الخدمة ومدتها وتخصيصها للأطباء تُدار بواسطة العيادة، ولا يعدّل المشرف أسعارها من هذا الكتالوج. لا يمكن حذف الخدمات المستخدمة. </p>
+    </section></main>
+    <div class="modal fade" id="addCatalogServiceModal" tabindex="-1" aria-labelledby="catalogServiceModalTitle"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+      <form action="/admin/services/create" method="post" id="catalogServiceForm"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+      <div class="modal-header"><h5 class="fw-bold" id="catalogServiceModalTitle">إضافة خدمة للكتالوج</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+      <div class="modal-body"><label class="form-label" for="catalogServiceName">اسم الخدمة *</label><input id="catalogServiceName" name="name" class="form-control" maxlength="150" required>
+      <p class="small text-secondary mt-2">ابحث عن الخدمة أولًا لمنع تكرارها. السعر والمدة تُحددان داخل كل عيادة.</p><label class="form-label" for="catalogServiceReason">سبب الإجراء *</label>
+      <textarea id="catalogServiceReason" name="reason" class="form-control" rows="3" minlength="8" maxlength="1000" required></textarea></div>
+      <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-primary" type="submit">حفظ الخدمة</button></div>
+      </form></div></div></div>
+
+    <div class="modal fade" id="catalogSensitiveModal" tabindex="-1" aria-labelledby="catalogSensitiveTitle"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+      <form id="catalogSensitiveForm" method="post"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+      <div class="modal-header"><h5 class="modal-title fw-bold" id="catalogSensitiveTitle">تأكيد إجراء إداري</h5><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+      <div class="modal-body"><div class="alert alert-warning rounded-4"><i class="bi bi-shield-exclamation ms-1"></i>لا يمكن حذف عنصر مستخدم في سجلات أخرى، وسبب الإجراء مطلوب.</div><p class="fw-semibold" id="catalogSensitiveName"></p>
+      <label class="form-label" for="catalogSensitiveReason">سبب الإجراء الإداري *</label><textarea required minlength="8" maxlength="1000" class="form-control" id="catalogSensitiveReason" name="reason" rows="4"></textarea></div>
+      <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-primary" type="submit">تأكيد</button></div>
+      </form></div></div></div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+    <button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+    <%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

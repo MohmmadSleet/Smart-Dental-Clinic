@@ -1,0 +1,114 @@
+
+<link rel="stylesheet" href="/assets/form-errors.css">
+<script defer src="/assets/form-errors.js"></script>
+<nav class="navbar doctor-navbar bg-white border-bottom sticky-top">
+      <div class="container-fluid doctor-nav-layout px-3 px-lg-4">
+        <a class="doctor-brand<%= navActiveClass("0") %>" href="index"<%- navAriaCurrent("0") %>><span class="doctor-brand-mark"><i class="bi bi-heart-pulse-fill"></i></span><span class="doctor-brand-copy"><strong><%= sdcT("د.") %> <%= typeof currentUser !== "undefined" && currentUser?.fullName ? currentUser.fullName : "الطبيب" %></strong><small><%= typeof activeClinic !== "undefined" && activeClinic?.name ? activeClinic.name : "غير مرتبط بعيادة" %><%= typeof doctorAccount!=="undefined" && doctorAccount?.specialties?.length ? " • "+doctorAccount.specialties[0].Name_AR : "" %></small></span></a>
+        <div class="doctor-main-nav d-none d-xl-flex">
+          <ul class="navbar-nav flex-row align-items-center">
+            <li class="nav-item">
+              <a class="nav-link<%= navActiveClass("1") %>" href="index"<%- navAriaCurrent("1") %>>الرئيسية</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link<%= navActiveClass("2") %>" href="appointments"<%- navAriaCurrent("2") %>>مواعيدي</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link<%= navActiveClass("3") %>" href="schedule"<%- navAriaCurrent("3") %>>جدولي وغيابي</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link<%= navActiveClass("4") %>" href="patients"<%- navAriaCurrent("4") %>>مرضاي</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link<%= navActiveClass("5") %>" href="treatment-plans"<%- navAriaCurrent("5") %>>خطط العلاج</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link<%= navActiveClass("6") %>" href="reports"<%- navAriaCurrent("6") %>>التقارير</a>
+            </li>
+          </ul>
+        </div>
+        <div class="doctor-nav-actions">
+          <div class="dropdown language-dropdown">
+            <button aria-label="اللغة" class="top-action" data-bs-display="static" data-bs-toggle="dropdown" title="اللغة" type="button">
+              <i class="bi bi-globe2"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end clean-dropdown language-menu">
+              <li>
+                <button class="dropdown-item active" type="button" data-language="ar" data-ui-pending="">العربية</button>
+              </li>
+              <li>
+                <button class="dropdown-item" type="button" data-language="en" data-ui-pending="">English</button>
+              </li>
+            </ul>
+          </div>
+          <div class="notification-action">
+            <button aria-label="الإشعارات" class="top-action" data-ui-popover="doctorNotifications" title="الإشعارات" type="button">
+              <i class="bi bi-bell"></i><% if(typeof doctorUnreadCount!=="undefined"&&doctorUnreadCount>0){ %><span class="notification-dot"><%= doctorUnreadCount>99?"99+":doctorUnreadCount %></span><% } %>
+            </button>
+            
+          </div>
+          <div class="profile-action">
+            <button aria-label="حساب الطبيب" class="profile-trigger" data-ui-popover="doctorProfile" title="حساب الطبيب" type="button">
+              <span class="avatar-sm"><%= String(currentUser?.fullName||'ط').charAt(0) %></span><i class="bi bi-chevron-down small"></i>
+            </button>
+            
+          </div>
+          <button class="btn btn-outline-primary sections-btn" data-bs-target="#sectionsDrawer" data-bs-toggle="offcanvas" title="كل الأقسام" type="button">
+            <i class="bi bi-grid-3x3-gap"></i><span class="d-none d-xxl-inline">كل الأقسام</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+<div class="offcanvas offcanvas-start sections-drawer" id="sectionsDrawer" tabindex="-1">
+      <div class="drawer-header">
+        <div class="drawer-doctor">
+          <div class="drawer-avatar">ع</div>
+          <div>
+            <h6 class="mb-0 fw-bold"><%= sdcT("د.") %> <%= typeof currentUser !== "undefined" && currentUser?.fullName ? currentUser.fullName : "الطبيب" %></h6>
+            <small>واجهة الطبيب</small>
+          </div>
+        </div>
+        <button class="drawer-close" data-bs-dismiss="offcanvas" type="button">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="drawer-content">
+          <div class="drawer-title">العمل اليومي</div>
+          <a class="drawer-link<%= drawerActiveClass("0") %>" href="index"<%- drawerAriaCurrent("0") %>><span class="drawer-icon"><i class="bi bi-house"></i></span><span class="flex-grow-1">الرئيسية</span></a>
+          <a class="drawer-link<%= drawerActiveClass("1") %>" href="appointments"<%- drawerAriaCurrent("1") %>><span class="drawer-icon"><i class="bi bi-calendar2-check"></i></span><span class="flex-grow-1">مواعيدي</span></a><a class="drawer-link<%= drawerActiveClass("2") %>" href="schedule"<%- drawerAriaCurrent("2") %>><span class="drawer-icon"><i class="bi bi-calendar-week"></i></span><span class="flex-grow-1">جدولي وغيابي</span></a>
+          <a class="drawer-link<%= drawerActiveClass("3") %>" href="patients"<%- drawerAriaCurrent("3") %>><span class="drawer-icon"><i class="bi bi-people"></i></span><span class="flex-grow-1">مرضاي</span></a>
+                    <a class="drawer-link<%= drawerActiveClass("4") %>" href="treatment-plans"<%- drawerAriaCurrent("4") %>><span class="drawer-icon"><i class="bi bi-diagram-3"></i></span><span class="flex-grow-1">خطط العلاج</span></a>
+<div class="drawer-title mt-3">الملف الطبي</div>
+          <a class="drawer-link<%= drawerActiveClass("5") %>" href="reports"<%- drawerAriaCurrent("5") %>><span class="drawer-icon"><i class="bi bi-file-earmark-medical"></i></span><span class="flex-grow-1">التقارير الطبية</span></a>
+          <a class="drawer-link<%= drawerActiveClass("6") %>" href="lab-cases"<%- drawerAriaCurrent("6") %>><span class="drawer-icon"><i class="bi bi-box-seam"></i></span><span class="flex-grow-1">الحالات المخبرية</span></a>
+          <a class="drawer-link<%= drawerActiveClass("7") %>" href="followups"<%- drawerAriaCurrent("7") %>><span class="drawer-icon"><i class="bi bi-arrow-repeat"></i></span><span class="flex-grow-1">المتابعات</span></a>
+          <div class="drawer-title mt-3">الحساب</div>
+          <a class="drawer-link<%= drawerActiveClass("8") %>" href="profile"<%- drawerAriaCurrent("8") %>><span class="drawer-icon"><i class="bi bi-person"></i></span><span class="flex-grow-1">ملفي الشخصي</span></a>
+          <a class="drawer-link<%= drawerActiveClass("9") %>" href="settings"<%- drawerAriaCurrent("9") %>><span class="drawer-icon"><i class="bi bi-gear"></i></span><span class="flex-grow-1">الإعدادات</span></a>
+          <button class="drawer-link border-0 bg-transparent w-100 text-danger" data-logout="" data-ui-pending="">
+            <span class="drawer-icon"><i class="bi bi-box-arrow-right"></i></span><span class="flex-grow-1 text-end">تسجيل الخروج</span>
+          </button>
+          <% if(activeClinic?.manager===true){ %><div class="drawer-title mt-4">تبديل المساحة</div>
+          <a class="drawer-link<%= drawerActiveClass("10") %>" href="../clinic/index"<%- drawerAriaCurrent("10") %>><span class="drawer-icon"><i class="bi bi-arrow-left-right"></i></span><span class="flex-grow-1">الانتقال لإدارة العيادة</span></a><% } %>
+        </div>
+      </div>
+    </div>
+<%- include('../doctor-notifications/popover') %>
+<div class="clean-dropdown profile-menu doctor-popover doctor-profile-popover" id="doctorProfile">
+  <a class="dropdown-item" href="profile"><i class="bi bi-person ms-2"></i>ملفي الشخصي</a>
+  <a class="dropdown-item" href="settings"><i class="bi bi-gear ms-2"></i>الإعدادات</a>
+  <% if (typeof activeClinic !== 'undefined' && activeClinic?.manager === true) { %>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item text-primary fw-bold" href="../clinic/index"><i class="bi bi-arrow-left-right ms-2"></i>الانتقال لإدارة العيادة</a>
+  <% } %>
+  <div class="px-3 py-2 bg-light rounded-3 mx-2 mb-2">
+    <small class="text-secondary d-block">الحساب الحالي</small>
+    <strong class="small"><%= sdcT("د.") %> <%= currentUser?.fullName || 'الطبيب' %><%= activeClinic?.manager === true ? ' • مدير العيادة' : '' %></strong>
+  </div>
+  <button class="dropdown-item text-danger" data-logout="" type="button"><i class="bi bi-box-arrow-right ms-2"></i>تسجيل الخروج</button>
+</div>
+
+<% if (typeof logoutCsrf !== "undefined" && logoutCsrf) { %>
+<form id="sdcUnifiedLogoutForm" action="/auth/logout" method="post" hidden><input type="hidden" name="csrf_token" value="<%= logoutCsrf %>"></form>
+<script defer src="/assets/logout.js"></script>
+<% } %>

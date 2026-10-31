@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>مواعيدي | Smart Dental Doctor</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/doctor/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex justify-content-between flex-wrap gap-3 align-items-end mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">My Appointments</span>
+            <h1 class="fw-bold">مواعيدي</h1>
+            <p class="text-secondary mb-0">
+              يعرض النظام مواعيدك أنت فقط داخل العيادة.
+            </p>
+          </div>
+          <div class="small text-secondary">مواعيد الطبيب المسجلة داخل العيادة الحالية</div>
+        </div>
+
+<div class="row g-3 mb-4 doctor-metrics" aria-label="ملخص مواعيد الطبيب">
+  <% const doctorAppointmentMetrics=[['bi-calendar3','إجمالي المواعيد',bookings.length],['bi-hourglass-split','بانتظار الوصول',bookings.filter(b=>b.status==='confirmed'&&!b.arrived).length],['bi-heart-pulse','قيد العلاج',bookings.filter(b=>b.status==='in_progress').length],['bi-check2-circle','مكتملة',bookings.filter(b=>b.status==='completed').length]]; %>
+  <% for (const m of doctorAppointmentMetrics) { %><div class="col-6 col-xl-3"><div class="soft-card p-3 h-100 doctor-metric"><span class="doctor-metric-icon"><i class="bi <%= m[0] %>"></i></span><div><div class="small text-secondary"><%= m[1] %></div><div class="h4 fw-bold mb-0"><%= m[2] %></div></div></div></div><% } %>
+</div>
+<div class="doctor-section-title mb-3"><div><h2 class="h5 fw-bold mb-1">البحث في المواعيد</h2><p class="small text-secondary mb-0">تُعرض المواعيد بواقع 10 سجلات لكل صفحة بعد تطبيق الفلاتر.</p></div><a href="/doctor/index" class="btn btn-sm btn-outline-primary">العودة للرئيسية</a></div>
+        <div class="filter-panel mb-4">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input class="form-control" id="appointmentSearch" type="search" aria-label="ابحث باسم المريض أو الخدمة" placeholder="ابحث باسم المريض أو الخدمة" value="" >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <select class="form-select" id="appointmentFilter" aria-label="تصفية حسب حالة الموعد" >
+                <option value="all" selected>كل الحالات</option>
+                <option value="arrived">حضر</option>
+                <option value="upcoming">لم تبدأ الزيارة</option>
+                <option value="in_progress">قيد العلاج</option>
+                <option value="completed">مكتمل</option>
+                <option value="no_show">لم يحضر</option>
+                <option value="cancelled">ملغي</option>
+                <option value="rejected">مرفوض</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="doctor-section-title mb-3"><h2 class="h5 fw-bold mb-0">قائمة المواعيد</h2><span class="small text-secondary">المواعيد الخاصة بك في العيادة المختارة</span></div>
+        <div class="soft-card p-3">
+          <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+            <table class="table align-middle mb-0 responsive-stack-table system-data-table">
+              <thead class="table-light">
+                <tr>
+                  <th>الوقت</th>
+                  <th>المريض</th>
+                  <th>الخدمة</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody><% if(!bookings.length){ %><tr><td colspan="5" class="text-center text-secondary py-4">لا توجد مواعيد مرتبطة بك في هذه العيادة.</td></tr><% } %><% for(const b of bookings){ %><tr class="appointment-filter-item" data-search="<%= b.patient_name %> <%= b.service_name %>" data-status="<%= b.status %>" data-arrived="<%= b.arrived ? 'true' : 'false' %>" data-appointment-id="<%= b.id %>"><td data-label="الوقت" class="table-primary-cell"><%= b.time %> • <%= b.date %></td><td data-label="المريض"><%= b.patient_name %></td><td data-label="الخدمة"><%= b.service_name %></td><td data-label="الحالة"><%= b.expired_unconfirmed?'انتهى قبل التأكيد':labels[b.status]||b.status %></td><td data-label="إجراء" class="table-actions-cell"><% if(b.status==='confirmed'&&b.arrived){ %>
+  <a class="btn btn-primary btn-sm" href="/doctor/visit?booking_id=<%= b.id %>">فتح الزيارة</a>
+  <% }else if(b.status==='in_progress'||b.status==='completed'){ %>
+  <a class="btn btn-outline-primary btn-sm" href="/doctor/visit?booking_id=<%= b.id %>">عرض الزيارة</a>
+  <% }else if(b.status==='confirmed'){ %><span class="small text-secondary">بانتظار وصول المريض</span>
+  <% }else if(b.request_status==='pending'){ %><span class="badge text-bg-warning">طلب تغيير قيد المراجعة</span><% }else{ %><span class="text-secondary small">للعرض؛ القرارات لدى إدارة العيادة</span><% } %></td></tr><% } %><tr id="doctorAppointmentNoMatches" hidden><td colspan="5" class="text-center text-secondary py-4">لا توجد مواعيد مطابقة للبحث أو الحالة.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+<div class="doctor-pagination soft-card p-3 mt-3" data-doctor-pager="appointments" aria-live="polite" hidden>
+  <span class="doctor-pagination-info" data-page-summary></span>
+  <nav aria-label="صفحات appointments" class="doctor-pagination-controls" data-page-controls></nav>
+</div><div class="alert alert-light border mt-3" data-doctor-empty="appointments" hidden role="status">لا توجد نتائج تطابق البحث أو الفلاتر المحددة.</div>
+      </section>
+    </main>
+    <%- include('../partials/doctor/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><script defer src="/assets/i18n.js"></script>
+  </body></html>

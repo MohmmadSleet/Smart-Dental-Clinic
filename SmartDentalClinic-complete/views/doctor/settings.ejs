@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3 section-5" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>إعدادات الحساب | Smart Dental Doctor</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/doctor/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="profile">ملفي الشخصي</a>
+            </li>
+            <li class="breadcrumb-item active">الإعدادات</li>
+          </ol>
+        </nav>
+        <div class="mb-4">
+          <span class="badge badge-soft mb-2">Account Settings</span>
+          <h1 class="fw-bold">إعدادات الحساب</h1>
+          <p class="text-secondary mb-0">
+            بيانات الحساب والمعلومات المهنية والأمان واللغة لحسابك الموحد، حتى لو كنت تدير أكثر من عيادة.
+          </p>
+        </div>
+        <% if(accountSettingsAlert){ %><div class="alert <%= accountSettingsOk?'alert-success':'alert-danger' %>" role="status"><%= accountSettingsAlert %></div><% } %>
+        <div class="settings-layout">
+          <aside class="settings-nav-card">
+            <a class="settings-nav-link active" href="#account"><i class="bi bi-person-check"></i><span>الحساب</span></a><a class="settings-nav-link" href="#professional"><i class="bi bi-person-vcard"></i><span>الملف المهني</span></a>
+            <a class="settings-nav-link" href="#security"><i class="bi bi-shield-lock"></i><span>الأمان</span></a><a class="settings-nav-link" href="#preferences"><i class="bi bi-sliders"></i><span>التفضيلات</span></a>
+          </aside>
+          <div class="settings-content">
+            <div class="settings-section" id="account">
+              <div class="settings-section-head">
+                <span class="settings-section-icon"><i class="bi bi-person-check"></i></span>
+                <div>
+                  <h4 class="fw-bold mb-1">بيانات الحساب</h4>
+                  <div class="small text-secondary">
+                    بيانات الدخول والتواصل الخاصة بحساب الطبيب.
+                  </div>
+                </div>
+              </div>
+              <form method="post" action="/doctor/settings" autocomplete="off">
+                <input type="hidden" name="csrf_token" value="<%= passwordChangeCsrf %>">
+                <input type="hidden" name="action" value="contact">
+                <div class="row g-3">
+                  <div class="col-md-6"><label class="form-label" for="doctor-first-name">الاسم الأول</label><input class="form-control" id="doctor-first-name" name="first_name" value="<%= accountUser.First_Name %>" maxlength="150" required autocomplete="given-name"></div>
+                  <div class="col-md-6"><label class="form-label" for="doctor-last-name">اسم العائلة</label><input class="form-control" id="doctor-last-name" name="last_name" value="<%= accountUser.Last_Name %>" maxlength="150" required autocomplete="family-name"></div>
+                  <div class="col-md-6"><label class="form-label" for="field-1">البريد الإلكتروني</label><input class="form-control" id="field-1" type="email" name="email" value="<%= accountUser.Email||'' %>" maxlength="254" required autocomplete="email"></div>
+                  <div class="col-md-6"><label class="form-label" for="field-2">رقم الهاتف</label><input class="form-control" id="field-2" type="tel" name="phone" value="<%= accountUser.Phone||'' %>" maxlength="30" required autocomplete="tel"></div>
+                  <div class="col-12"><label class="form-label" for="doctor-contact-password">كلمة المرور الحالية لتأكيد تعديل الحساب</label><input class="form-control" id="doctor-contact-password" name="password" type="password" required autocomplete="current-password"><p class="form-text">تغيير البريد الإلكتروني يغيّر عنوان تسجيل الدخول. يجب إضافة التحقق من ملكية البريد الجديد قبل استخدام هذا المسار في الإنتاج.</p></div>
+                  <div class="col-12"><button class="btn btn-primary" type="submit">حفظ البيانات</button></div>
+                </div>
+              </form>
+            </div>
+            <div class="settings-section" id="professional">
+              <div class="settings-section-head"><span class="settings-section-icon"><i class="bi bi-person-vcard"></i></span><div><h4 class="fw-bold mb-1">المعلومات المهنية</h4><div class="small text-secondary">بيانات العرض المهني الخاصة بالطبيب، دون تعديل رقم الترخيص أو حالة الاعتماد.</div></div></div>
+              <div class="mb-3 d-flex flex-wrap align-items-center gap-3"><img src="/media/doctors/<%= accountUser.Doctor_ID %>/photo" alt="الصورة الشخصية للطبيب" style="width:90px;height:90px;object-fit:cover;border-radius:50%"><div class="flex-grow-1"><form action="/doctor/settings/photo" method="post" enctype="multipart/form-data"><input type="hidden" name="csrf_token" value="<%= passwordChangeCsrf %>"><label for="doctor-photo" class="form-label">صورتك المهنية (PNG أو JPG حتى 2MB)</label><input id="doctor-photo" class="form-control mb-2" name="photo" type="file" accept="image/png,image/jpeg" required><button class="btn btn-outline-primary btn-sm" type="submit">حفظ الصورة</button></form></div></div>
+              <form action="/doctor/settings" method="post">
+                <input type="hidden" name="action" value="professional"><input type="hidden" name="csrf_token" value="<%= passwordChangeCsrf %>">
+                <div class="row g-3">
+                  <div class="col-md-6"><label class="form-label" for="doctor-license">رقم الترخيص الطبي</label><input class="form-control" id="doctor-license" value="<%= accountUser.License_Number %>" readonly aria-readonly="true"><div class="form-text">يخضع تغيير الترخيص إلى مراجعة المشرف العام.</div></div>
+                  <div class="col-md-6"><label class="form-label" for="doctor-license-status">حالة الترخيص</label><input class="form-control" id="doctor-license-status" value="<%= accountUser.License_Status==='verified'?'معتمد':accountUser.License_Status==='pending'?'قيد المراجعة':'غير معتمد' %>" readonly></div>
+                  <div class="col-md-6"><label class="form-label" for="doctor-experience">سنوات الخبرة</label><input class="form-control" id="doctor-experience" type="number" min="0" max="65" step="1" name="years_of_experience" value="<%= accountUser.Years_Of_Experience??'' %>"></div>
+                  <div class="col-12"><label class="form-label" for="doctor-bio">النبذة المهنية</label><textarea class="form-control" id="doctor-bio" name="bio" rows="3" maxlength="2000"><%= accountUser.Bio||'' %></textarea></div>
+                  <div class="col-12"><button type="submit" class="btn btn-primary">حفظ المعلومات المهنية</button></div>
+                </div>
+              </form>
+            </div>
+            <div class="settings-section" id="security">
+              <div class="settings-section-head">
+                <span class="settings-section-icon"><i class="bi bi-shield-lock"></i></span>
+                <div>
+                  <h4 class="fw-bold mb-1">الأمان وكلمة المرور</h4>
+                  <div class="small text-secondary">
+                    غيّر كلمة المرور وراجع إعدادات حماية الحساب.
+                  </div>
+                </div>
+              </div>
+              <%- include('../partials/shared/password-editor', { passwordScope: 'doctor' }) %>
+              <%- include('../partials/shared/mfa-manager', {mfaScope:'doctor'}) %>
+              <%- include('../partials/shared/active-sessions', {sessionsScope:'doctor'}) %>
+            </div>
+            
+            <div class="settings-section" id="preferences">
+              <div class="settings-section-head">
+                <span class="settings-section-icon"><i class="bi bi-sliders"></i></span>
+                <div>
+                  <h4 class="fw-bold mb-1">التفضيلات</h4>
+                  <div class="small text-secondary">
+                    لغة الواجهة وطريقة عرض البيانات.
+                  </div>
+                </div>
+              </div>
+              <form action="/doctor/settings" method="post">
+                <input type="hidden" name="action" value="language">
+                <input type="hidden" name="csrf_token" value="<%= passwordChangeCsrf %>">
+                <div class="row g-3">
+                  <div class="col-md-6"><label class="form-label" for="field-7">لغة الواجهة المفضلة</label><select class="form-select" id="field-7" name="language">
+                      <option value="ar" <%= accountUser.Preferred_Language==='ar'?'selected':'' %>>العربية</option>
+                      <option value="en" <%= accountUser.Preferred_Language==='en'?'selected':'' %>>English</option>
+                    </select></div>
+                  <div class="col-12"><button class="btn btn-outline-primary" type="submit">حفظ التفضيلات</button></div>
+                  <div class="col-12"><p class="form-text">يُحفظ تفضيل اللغة على مستوى الحساب، لكن ترجمة كل صفحات النظام إلى الإنجليزية ليست مكتملة بعد.</p></div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include('../partials/doctor/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><script defer src="/assets/i18n.js"></script>
+  </body></html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تفاصيل المستخدم | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">ملف المستخدم</span></nav>
+        <% const statusLabels={active:'فعال',pending:'بانتظار التفعيل',suspended:'معلّق',disabled:'معطّل'};
+           const roleLabels={patient:'مريض',staff:'موظف عيادة',admin:'مشرف المنصة',doctor:'طبيب'};
+           const noticeLabels={suspend:'تم تعليق الحساب ومنع تسجيل الدخول وإلغاء الجلسات.',resume:'تمت إعادة التفعيل بعد التحقق من بيانات الدخول.',edit:'تم حفظ البيانات الإدارية وتوثيقها.',delete:'تم حذف الحساب غير المكتمل.',not_deletable:'الحذف مخصص لحساب تسجيل معلّق لم يكتمل ولم يستخدم النظام.',in_use:'لا يمكن حذف حساب مرتبط ببيانات أخرى.',self:'لا يسمح هذا الإجراء بتعديل حساب المشرف الحالي.',role_owned:'يُدار هذا الدور من قسمه المخصص. لا يمكن تغيير صلاحياته من هنا.',bookings:'لا يمكن تعليق حساب المريض بسبب حجز قادم أو زيارة قيد التنفيذ.',unchanged:'لم تتغير البيانات أو الحالة غير مناسبة للإجراء.',invalid:'الحقول أو سبب الإجراء غير صالح.',credentials:'لا يمكن إعادة التفعيل دون بريد وكلمة مرور مسجلين.',failed:'تعذّر الحفظ. تحقق من سجلات السيرفر.',schema:'يوجد اختلاف في بنية قاعدة البيانات.',permission:'لا تملك صلاحية إجراء التعديل.'};
+           const isEditable=(user.role==='patient'||user.role==='staff')&&String(user.id)!==String(currentUser?.userId||''); %>
+        <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/admin/users">المستخدمون</a></li><li class="breadcrumb-item active"><%= user.first_name %> <%= user.last_name %></li></ol></nav>
+        <% if(userNotice){ %><div class="alert <%= ['edit','delete','suspend','resume'].includes(userNotice)?'alert-success':'alert-warning' %>" role="status"><%= noticeLabels[userNotice] %></div><% } %>
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-start mb-4">
+          <div><div class="d-flex gap-2 flex-wrap mb-2">
+            <span class="badge <%= user.status==='active'?'text-bg-success':user.status==='suspended'?'text-bg-warning':'text-bg-secondary' %>" id="adminPrimaryEntityStatus"><%= statusLabels[user.status]||user.status %></span>
+            <span class="badge text-bg-light border" id="detailUserCode"><%= sdcT("الحساب #") %><%= user.id %></span>
+          </div><h1 class="fw-bold fs-2 mb-2" id="detailUserName"><%= user.first_name %> <%= user.last_name %></h1>
+          <p class="text-secondary mb-0"><%= sdcT("حساب") %> <%= sdcT(roleLabels[user.role]||user.role_name) %> • <%= user.email||'بلا بريد إلكتروني' %></p></div>
+          <div class="d-flex gap-2 flex-wrap" id="accountControls">
+            <% if(isEditable){ %>
+              <% if(user.status==='active'){ %><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#userSuspendModal">تعليق الحساب</button><% } %>
+              <% if(user.status==='suspended'){ %><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#userResumeModal">إعادة التفعيل</button><% } %>
+              <button id="adminUserEdit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserDetailsModal" type="button">تعديل البيانات الإدارية</button>
+              <% if(user.status==='pending' && !user.login_enabled && !user.last_login && !user.patient_id && !user.doctor_id && !memberships.length){ %><button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#userDeleteDraftModal">حذف تسجيل غير مكتمل</button><% } %>
+            <% } %>
+            <% if(isEditable && !(user.status==='pending' && !user.login_enabled && !user.last_login && !user.patient_id && !user.doctor_id && !memberships.length)){ %><a class="btn btn-outline-danger" href="#adminDeleteDecision">حذف المستخدم</a><% } %>
+          </div>
+        </div>
+        <section class="soft-card p-3 mb-3 border border-danger-subtle" id="adminDeleteDecision" aria-label="سياسة حذف المستخدم">
+         <% if(isEditable && user.status==='pending' && !user.login_enabled && !user.last_login && !user.patient_id && !user.doctor_id && !memberships.length){ %>
+           <strong>حذف المستخدم:</strong> <%= sdcT("هذا التسجيل مؤهل لفحص الحذف الآمن. استخدم زر «حذف تسجيل غير مكتمل» أعلاه. يتحقق الخادم من جميع علاقات PostgreSQL قبل تنفيذ الحذف.") %>
+         <% } else if(user.role==='doctor'){ %>
+           <strong>حذف المستخدم:</strong> <%= sdcT("هذا الحساب مرتبط بملف طبيب. إدارة ترخيصه وحالة تشغيله من") %> <a href="/admin/doctor-details?id=<%= user.doctor_id %>">ملف الطبيب</a><%= sdcT(". الحذف النهائي ليس متاحًا عبر هذا المسار لأنه قد يكسر حجوزات وعلاقات العيادات.") %>
+         <% } else if(user.role==='admin'){ %>
+           <strong>حذف المستخدم:</strong> <%= sdcT("حذف حسابات مشرفي المنصة ممنوع من هذا المسار لحماية إدارة النظام.") %>
+         <% } else { %>
+           <strong>حذف المستخدم:</strong> <%= sdcT("الحذف النهائي غير متاح لهذا الحساب في حالته الحالية أو لوجود بيانات مرتبطة. استخدم التعليق لإيقاف الدخول، مع الاحتفاظ بالحجوزات والفواتير والسجل الطبي والتدقيق الإداري.") %>
+         <% } %>
+        </section>
+        <div class="alert alert-primary rounded-4 border-0"><i class="bi bi-diagram-3 ms-2"></i><strong>الارتباطات الفعلية:</strong>
+          <%= sdcT(roleLabels[user.role]||user.role_name) %> • <%= memberships.length %> <%= sdcT("عيادة مرتبطة") %> • <%= sdcT("لا يُسمح بتغيير الدور العام أو عضويات العيادة من هنا.") %>
+        </div>
+        <div class="soft-card p-4 mb-4 admin-full-control-panel">
+          <h4 class="fw-bold mb-1"><i class="bi bi-sliders ms-2 text-primary"></i>تحكم Super Admin</h4>
+          <p class="text-secondary small mb-0">تعديل الاسم والهاتف، التعليق وإعادة التفعيل، وحذف التسجيلات غير المكتملة تُحفظ في PostgreSQL وتُوثّق في سجل النظام. بيانات الأدوار والصلاحيات والإيميل والملف الطبي لا تُغيّر من هذا القسم.</p>
+        </div>
+        <ul class="nav admin-tabs mb-4" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-target="#patientOverview" data-bs-toggle="pill" aria-selected="true" role="tab" type="button">نظرة عامة</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-target="#userMemberships" data-bs-toggle="pill" aria-selected="false" role="tab" type="button">الارتباطات والأدوار</button></li>
+          <% if(user.role==='patient'&&user.patient_id){ %>
+            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-target="#patientAppointments" data-bs-toggle="pill" aria-selected="false" role="tab" type="button">المواعيد</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" data-bs-target="#patientInvoices" data-bs-toggle="pill" aria-selected="false" role="tab" type="button">الفواتير</button></li>
+          <% } %>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-target="#patientActivity" data-bs-toggle="pill" aria-selected="false" role="tab" type="button">نشاط الحساب</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="patientOverview" role="tabpanel"><div class="row g-4">
+            <div class="col-lg-8"><div class="soft-card p-4"><h4 class="fw-bold mb-3">بيانات الحساب</h4><div class="row g-3">
+              <% [['الاسم',user.first_name+' '+user.last_name],['البريد',user.email||'غير متوفر'],['الهاتف',user.phone||'غير متوفر'],['تاريخ إنشاء الحساب',new Date(user.created_at).toLocaleDateString('ar-PS')],['آخر دخول',user.last_login?new Date(user.last_login).toLocaleString('ar-PS'):'لم يسجل دخولًا']].forEach(([label,value])=>{ %>
+                <div class="col-md-6"><label class="form-label"><%= label %></label><input class="form-control" readonly value="<%= value %>"></div>
+              <% }); %>
+              <% if(user.role==='patient'){ %><div class="col-md-6"><label class="form-label">تاريخ الميلاد</label><input class="form-control" readonly value="<%= user.birthdate||'غير مسجل' %>"></div>
+                <div class="col-md-6"><label class="form-label">الجنس</label><input class="form-control" readonly value="<%= user.gender||'غير مسجل' %>"></div><% } %>
+            </div></div></div>
+            <% if(user.role==='patient'){ %><div class="col-lg-4"><div class="soft-card p-4"><h4 class="fw-bold mb-2">خصوصية البيانات الطبية</h4><p class="small text-secondary mb-2">المعلومات الصحية والتقارير السريرية لا تُعرض ضمن إدارة الحسابات.</p><a href="/admin/medical-records" class="btn btn-outline-primary btn-sm">مراقبة حالات التقارير</a></div></div><% } %>
+          </div></div>
+          <div class="tab-pane fade" id="userMemberships" role="tabpanel"><div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"><table class="table mb-0 admin-master-table responsive-stack-table"><thead><tr><th>العيادة</th><th>الدور داخل العيادة</th><th>حالة العضوية</th></tr></thead><tbody>
+            <% memberships.forEach(m=>{ %><tr><td data-label="العيادة"><%= m.name %> (#<%= m.id %>)</td><td data-label="الدور"><%= m.role %></td><td data-label="الحالة"><%= m.status %></td></tr><% }); %>
+            <% if(!memberships.length){ %><tr><td colspan="3" class="text-center text-secondary py-4">لا توجد عضويات مسجلة لهذا الحساب.</td></tr><% } %>
+          </tbody></table></div></div>
+          <% if(user.role==='patient'&&user.patient_id){ %>
+            <div class="tab-pane fade" id="patientAppointments" role="tabpanel"><div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"><table class="table mb-0 admin-master-table wide-data-table responsive-stack-table system-data-table"><thead><tr><th>الحجز</th><th>العيادة</th><th>الطبيب</th><th>الخدمة</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>
+              <% patient.appointments.forEach(a=>{ %><tr><td data-label="الحجز"><a href="/admin/appointment-details?id=<%= a.id %>">#<%= a.id %></a></td><td data-label="العيادة"><%= a.clinic %></td><td data-label="الطبيب"><%= a.doctor %></td><td data-label="الخدمة"><%= a.service %></td><td data-label="التاريخ"><%= a.date %> — <%= a.time %></td><td data-label="الحالة"><%= a.status %></td></tr><% }); %>
+              <% if(!patient.appointments.length){ %><tr><td colspan="6" class="text-center py-4 text-secondary">لا توجد حجوزات.</td></tr><% } %>
+            </tbody></table></div></div>
+            <div class="tab-pane fade" id="patientInvoices" role="tabpanel"><div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"><table class="table mb-0 admin-master-table responsive-stack-table"><thead><tr><th>الفاتورة</th><th>العيادة</th><th>الإجمالي</th><th>المدفوع</th><th>المتبقي</th><th>الحالة</th></tr></thead><tbody>
+              <% patient.invoices.forEach(i=>{const total=Number(i.total),paid=Number(i.paid); %><tr><td data-label="الفاتورة"><%= i.id %></td><td data-label="العيادة"><%= i.clinic %></td><td data-label="الإجمالي"><%= total.toFixed(2) %> ₪</td><td data-label="المدفوع"><%= paid.toFixed(2) %> ₪</td><td data-label="المتبقي"><%= Math.max(0,total-paid).toFixed(2) %> ₪</td><td data-label="الحالة"><%= i.status %></td></tr><% }); %>
+              <% if(!patient.invoices.length){ %><tr><td colspan="6" class="text-center py-4 text-secondary">لا توجد فواتير.</td></tr><% } %>
+            </tbody></table></div></div>
+          <% } %>
+          <div class="tab-pane fade" id="patientActivity" role="tabpanel"><div class="soft-card p-4"><div class="timeline">
+            <% activity.forEach((a,index)=>{ %><div class="timeline-item <%= index===0?'current':'' %>"><strong><%= a.description %></strong><small><%= new Date(a.occurred).toLocaleString('ar-PS') %> • <%= a.action %></small><% if(a.reason){ %><p class="small text-secondary mb-0"><%= a.reason %></p><% } %></div><% }); %>
+            <div class="timeline-item"><strong>تاريخ إنشاء الحساب</strong><small><%= new Date(user.created_at).toLocaleString('ar-PS') %></small></div>
+          </div></div></div>
+        </div>
+      </section>
+      <% if(isEditable){ %>
+      <div class="modal fade" id="editUserDetailsModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><h5 class="modal-title fw-bold">تعديل البيانات الإدارية</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+        <form action="/admin/user-details/<%= user.id %>/edit" method="post"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+          <div class="modal-body"><div class="alert alert-light border">لتغيير البريد الإلكتروني يجب استخدام مسار تحقق مستقل. الأدوار وبيانات المريض الصحية لا تتغير هنا.</div><div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="editUserFirst">الاسم الأول</label><input id="editUserFirst" class="form-control" name="first_name" value="<%= user.first_name %>" maxlength="150" required></div>
+            <div class="col-md-6"><label class="form-label" for="editUserLast">اسم العائلة</label><input id="editUserLast" class="form-control" name="last_name" value="<%= user.last_name %>" maxlength="150" required></div>
+            <div class="col-md-6"><label class="form-label" for="editUserPhone">الهاتف</label><input id="editUserPhone" class="form-control" name="phone" value="<%= user.phone %>" maxlength="30" required></div>
+            <div class="col-md-6"><label class="form-label">البريد الإلكتروني</label><input class="form-control" value="<%= user.email||'' %>" readonly></div>
+            <div class="col-12"><label class="form-label" for="editUserReason">سبب التعديل الإداري *</label><textarea id="editUserReason" name="reason" class="form-control" minlength="8" maxlength="1000" rows="3" required></textarea></div>
+          </div></div>
+          <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button type="submit" class="btn btn-primary">حفظ</button></div>
+        </form></div></div></div>
+      <% } %>
+      <% if(isEditable && (user.status==='active'||user.status==='suspended')){const isSuspending=user.status==='active'; %>
+      <div class="modal fade" id="<%= isSuspending?'userSuspendModal':'userResumeModal' %>" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><h5 class="modal-title fw-bold"><%= isSuspending?'تعليق حساب المستخدم':'إعادة تفعيل المستخدم' %></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+        <form method="post" action="/admin/user-details/<%= user.id %>/<%= isSuspending?'suspend':'resume' %>"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+          <div class="modal-body"><p class="text-secondary"><%= isSuspending?'التعليق يمنع دخول الحساب ويلغي جلساته. لن يُسمح بتعليق المريض إذا لديه حجز قادم أو زيارة جارية.':'إعادة التفعيل تتطلب بيانات دخول صحيحة ولا تغير أدوار المستخدم أو عضويات العيادات.' %></p>
+          <label for="userStatusReason" class="form-label">سبب الإجراء *</label><textarea id="userStatusReason" name="reason" class="form-control" minlength="8" maxlength="1000" rows="3" required></textarea></div>
+          <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button type="submit" class="btn <%= isSuspending?'btn-warning':'btn-success' %>"><%= isSuspending?'تأكيد التعليق':'تأكيد إعادة التفعيل' %></button></div>
+        </form></div></div></div>
+      <% } %>
+      <% if(isEditable){ %>
+      <% if(user.status==='pending' && !user.login_enabled && !user.last_login && !user.patient_id && !user.doctor_id && !memberships.length){ %>
+        <div class="modal fade" id="userDeleteDraftModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+          <div class="modal-header"><h5 class="modal-title fw-bold">حذف تسجيل غير مكتمل</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <form action="/admin/user-details/<%= user.id %>/delete" method="post"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+          <div class="modal-body"><p class="text-danger">الحذف نهائي فقط لحساب لم يكتمل ولم ينشأ له ملف مريض أو طبيب أو عضوية. أي ارتباط آخر يمنع الحذف بقاعدة البيانات.</p><label class="form-label" for="deleteDraftReason">سبب الحذف *</label><textarea name="reason" id="deleteDraftReason" class="form-control" minlength="8" maxlength="1000" required></textarea></div>
+          <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-danger" type="submit" onclick="return confirm('حذف هذا التسجيل غير المكتمل نهائيًا؟')">حذف التسجيل</button></div></form>
+        </div></div></div>
+      <% } %>
+      <% } %>
+    </main>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+<script src="assets/app.js"></script>
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+<%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

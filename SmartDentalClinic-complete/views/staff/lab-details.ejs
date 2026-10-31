@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>حالات المختبر | Clinic Staff</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body data-page-permission="lab_orders.view" data-staff-account-status="active" data-staff-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>" data-staff-user-id="<%= typeof currentUser !== 'undefined' && currentUser ? currentUser.userId : '' %>" data-rendered-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-active-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-staff-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : '' %>"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/staff/header') %>
+    
+
+    
+    <main class="page-shell" data-staff-lab-details-page="" id="main-content" data-staff-workspace=""><div class="container pt-3"><div class="staff-context-bar"><div class="staff-context-heading"><i class="bi bi-building"></i><div><small class="text-secondary">تعمل الآن في</small><strong><%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.name : 'العيادة' %></strong></div></div><label class="visually-hidden" for="activeClinicContext">العيادة الحالية</label><select class="form-select" id="activeClinicContext" name="active_clinic_id" data-context-switcher="" aria-describedby="staffClinicContextHelp"><% if(typeof activeClinic !== 'undefined' && activeClinic){ %><option value="<%= activeClinic.id %>" data-membership-status="active" data-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : 'موظف' %>" data-clinic-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>"><%= activeClinic.name %></option><% } %></select><a class="btn btn-outline-primary btn-sm" href="choose-clinic" data-choose-clinic-link><i class="bi bi-arrow-left-right ms-1"></i>تبديل العيادة</a><small class="visually-hidden" id="staffClinicContextHelp">تظهر بيانات وصلاحيات العيادة المختارة فقط.</small></div></div><section class="container py-4 py-lg-5 staff-work-content staff-module-page" data-clinic-content="">
+<% const staffSelectedLab=typeof staffLabDetail==='undefined'?null:staffLabDetail; %>
+
+<% if(!staffSelectedLab){ %><div class="alert alert-warning">هذا المختبر غير مرتبط بالعيادة المختارة.</div><% }else{ %>
+<div class="staff-section-heading mb-4"><a class="small text-decoration-none d-inline-flex align-items-center gap-2 mb-2" href="lab-cases"><i class="bi bi-arrow-right"></i>العودة للمختبرات</a><h1 class="fw-bold fs-2 mt-2"><%= staffSelectedLab.lab.Laboratory_Name %></h1><p class="text-secondary"><%= staffSelectedLab.lab.Address||'—' %> • <%= staffSelectedLab.lab.Phone||'—' %></p></div>
+<div class="staff-list-heading mb-3 d-flex justify-content-between align-items-center gap-2"><h2 class="h6 fw-bold mb-0">الحالات المخبرية</h2><span class="badge badge-soft"><%= staffSelectedLab.cases.length %> <%= sdcT("حالة") %></span></div>
+<div class="soft-card p-3"><div class="table-responsive mobile-stack-wrapper table-ui-shell"><table class="table align-middle mb-0 wide-data-table responsive-stack-table system-data-table"><thead><tr><th>الرقم</th><th>المريض</th><th>الطبيب</th><th>العمل</th><th>الحالة</th><th>التسليم المتوقع</th><th>إجراء</th></tr></thead><tbody>
+<% if(!staffSelectedLab.cases.length){ %><tr><td colspan="7" class="text-center py-4">لا توجد حالات مخبرية لهذا المختبر.</td></tr><% } %><% for(const c of staffSelectedLab.cases){ %><tr><td data-label="الرقم" class="table-primary-cell"><%= c.Lab_Order_ID %></td><td data-label="المريض"><%= c.patient_first %> <%= c.patient_last %></td><td data-label="الطبيب"><%= c.doctor_first %> <%= c.doctor_last %></td><td data-label="العمل"><%= c.work %></td><td data-label="الحالة"><%= {draft:'بانتظار الإرسال',sent:'تم الإرسال',received:'تم الاستلام',installed:'تم التركيب',cancelled:'ملغاة'}[c.display_status]||c.display_status %></td><td data-label="التسليم المتوقع"><%= c.Expected_Delivery_Date?new Date(c.Expected_Delivery_Date).toLocaleDateString('ar'): '—' %></td><td data-label="إجراء"><% if(hasStaffPermission('lab_orders.update_delivery')&&['draft','sent'].includes(c.Order_Status)){ %><form method="post" action="/staff/workspace/lab-action"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="lab_id" value="<%= staffSelectedLab.lab.Laboratory_ID %>"><input type="hidden" name="order_id" value="<%= c.Lab_Order_ID %>"><button type="submit" name="action" value="<%= c.Order_Status==='draft'?'send':'receive' %>" class="btn btn-primary btn-sm"><%= c.Order_Status==='draft'?'تسجيل الإرسال':'تسجيل الاستلام' %></button></form><% }else{ %><span class="text-secondary">—</span><% } %></td></tr><% } %></tbody></table></div></div><% } %>
+
+      </section>
+    <section class="container py-4" id="staffScopeNotice" hidden><div class="soft-card p-4 text-center"><i class="bi bi-building-lock fs-1 text-primary"></i><h3 class="fw-bold mt-3" id="staffScopeTitle">اختر العيادة للمتابعة</h3><p class="text-secondary" id="staffScopeMessage">حدد عيادة لديك عضوية فعّالة فيها لعرض بياناتها وصلاحياتك.</p><a href="choose-clinic" class="btn btn-primary">اختيار العيادة</a></div></section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><%- include('../partials/staff/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

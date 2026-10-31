@@ -1,0 +1,58 @@
+<!DOCTYPE html><html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تقارير المنصة | Smart Dental Clinic</title>
+<!-- Bootstrap fallback retained for all layouts. -->
+<link rel="stylesheet" href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css"><% if (typeof lang === "string" && lang === "en") { %><link rel="stylesheet" href="/assets/vendor/bootstrap.ltr.min.css"><% } %>
+<link rel="stylesheet" href="../assets/vendor/28667e4f82c7-bootstrap-icons.css">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="../assets/vendor/8c34d74036e9-css2-fonts.css"><link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+<body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+<%- include('../partials/admin/header') %>
+<main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">التقارير والإحصائيات</span></nav>
+<% const f=reportFilters;const stats=reportStats||{};const money=v=>Number(v||0).toLocaleString('ar-EG',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₪';
+const percent=(v,all)=>all?Math.round(Number(v||0)*1000/all)/10:0;
+const reportQuery=new URLSearchParams({period:f.period,clinic:f.clinic,from:f.from,to:f.to}); %>
+<div class="d-flex flex-wrap justify-content-between gap-3 align-items-start mb-4">
+<div><span class="badge badge-soft mb-2">إحصائيات فعلية</span><h1 class="fw-bold fs-2 mb-2">تقارير المنصة</h1>
+<p class="text-secondary mb-0">مؤشرات تشغيلية ومالية مجمّعة من PostgreSQL، دون تفاصيل أو بيانات طبية للمرضى.</p></div>
+<a class="btn btn-outline-primary" href="/admin/reports/export?<%= reportQuery.toString() %>"><i class="bi bi-download ms-1"></i>تصدير CSV</a></div>
+<div class="filter-panel mb-4"><form method="get" action="/admin/reports" class="row g-3 align-items-end">
+<div class="col-md-3"><label class="form-label" for="reportPeriod">الفترة</label><select class="form-select" id="reportPeriod" name="period">
+<% [['today','اليوم'],['week','هذا الأسبوع'],['month','هذا الشهر'],['year','هذا العام'],['custom','فترة مخصصة']].forEach(([val,label])=>{ %>
+<option value="<%= val %>" <%= f.period===val?'selected':'' %>><%= label %></option><% }); %></select></div>
+<div class="col-md-3"><label class="form-label" for="reportClinic">العيادة</label><select class="form-select" id="reportClinic" name="clinic">
+<option value="">كل العيادات</option><% reportClinics.forEach(c=>{ %><option value="<%= c.id %>" <%= f.clinic===c.id?'selected':'' %>><%= c.name %></option><% }); %></select></div>
+<div class="col-md-2"><label class="form-label" for="reportFrom">من تاريخ</label><input class="form-control" type="date" id="reportFrom" name="from" value="<%= f.from %>"></div>
+<div class="col-md-2"><label class="form-label" for="reportTo">حتى تاريخ</label><input class="form-control" type="date" id="reportTo" name="to" value="<%= f.to %>"></div>
+<div class="col-md-2"><button class="btn btn-primary w-100" type="submit">تطبيق</button></div></form>
+<small class="text-secondary d-block mt-2"><%= sdcT("المدى:") %> <%= f.from %> <%= sdcT("إلى") %> <%= f.to %>. <%= sdcT("لتحديد تواريخ يدويًا اختر «فترة مخصصة» (حتى 366 يومًا).") %></small></div>
+<div class="row g-3 mb-4">
+<% [['الحجوزات',stats.total,''],['الحجوزات المكتملة',stats.completed,'text-success'],['مرضى جدد لديهم حجوزات',stats.new_patients,''],['لم يحضروا',stats.no_show,'text-danger']].forEach(v=>{ %>
+<div class="col-6 col-xl-3"><div class="stat-card"><small class="text-secondary"><%= v[0] %></small><div class="stat-value <%= v[2] %>"><%= v[1]||0 %></div></div></div><% }); %></div>
+<div class="row g-4 mb-4">
+<div class="col-xl-7"><div class="soft-card p-4 h-100"><h2 class="section-title mb-1">حالات الحجوزات</h2>
+<p class="small text-secondary mb-4">الحالة الحالية للحجوزات الواقعة ضمن الفترة المختارة؛ الحالات ليست مراحل متتابعة لنفس الحجز.</p>
+<% reportFunnel.forEach((r,i)=>{const pct=percent(r.count,stats.total);%>
+<div class="mb-3"><div class="d-flex justify-content-between mb-1"><span><%= r.label %></span><strong><%= r.count %> (<%= pct %>%)</strong></div>
+<div class="progress" style="height:10px"><div class="progress-bar <%= i===2?'bg-success':i===3?'bg-danger':i===4?'bg-warning':'' %>" role="progressbar" style="width:<%= pct %>%" aria-valuenow="<%= pct %>" aria-valuemin="0" aria-valuemax="100"></div></div></div><% }); %></div></div>
+<div class="col-xl-5"><div class="soft-card p-4 h-100"><h2 class="section-title mb-2">عمولات التسويات</h2>
+<p class="small text-secondary">يتم اختيار التسويات حسب تاريخ نهاية فترة التسوية؛ المبلغ المستلم يشمل جميع دفعات تلك التسويات حتى الآن.</p>
+<div class="summary-row"><span>عمولة مستحقة</span><strong><%= money(reportMoney.due) %></strong></div>
+<div class="summary-row"><span>تم استلامه</span><strong class="text-success"><%= money(reportMoney.received) %></strong></div>
+<div class="summary-row"><span>متبقٍ</span><strong><%= money(reportMoney.remaining) %></strong></div>
+<a href="/admin/finance?tab=settlements" class="btn btn-light border btn-sm mt-3">إدارة التسويات</a></div></div></div>
+<div class="row g-4"><div class="col-xl-7"><div class="soft-card p-0 overflow-hidden h-100"><div class="p-4 pb-2"><h2 class="section-title mb-1">أداء العيادات</h2><small class="text-secondary">إحصائيات الحجوزات الفعلية حسب العيادة والفترة</small></div>
+<div class="table-responsive mobile-stack-wrapper table-ui-shell"><table class="table align-middle mb-0 responsive-stack-table system-data-table">
+<thead><tr><th>العيادة</th><th>الحجوزات</th><th>الإكمال</th><th>لم يحضر</th><th>العمولة المستحقة</th></tr></thead><tbody>
+<% if(!reportClinicRows.length){ %><tr><td colspan="5" class="text-center py-4">لا توجد بيانات خلال الفترة المحددة.</td></tr><% } %>
+<% reportClinicRows.forEach(r=>{ %><tr><td data-label="العيادة"><%= r.name %></td><td data-label="الحجوزات"><%= r.bookings %></td><td data-label="الإكمال"><%= r.completion_pct %>%</td><td data-label="لم يحضر"><%= r.no_show_pct %>%</td><td data-label="العمولة"><%= money(r.due) %></td></tr><% }); %>
+</tbody></table></div></div></div>
+<div class="col-xl-5"><div class="soft-card p-4 h-100"><h2 class="section-title mb-2">أكثر الخدمات حجزًا</h2><p class="small text-secondary">التجميع حسب الخدمة المحجوزة، وليس تخصصات الطبيب المتعددة.</p>
+<% if(!reportServices.length){ %><p class="text-secondary">لا توجد حجوزات خلال الفترة.</p><% } %>
+<% reportServices.forEach(s=>{const pct=percent(s.bookings,stats.total);%><div class="mb-3"><div class="d-flex justify-content-between gap-2"><span><%= s.name %></span><strong><%= s.bookings %></strong></div>
+<div class="progress mt-2" style="height:9px"><div class="progress-bar" style="width:<%= pct %>%"></div></div></div><% }); %></div></div></div>
+</section></main><script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+<script src="assets/app.js"></script><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

@@ -1,0 +1,111 @@
+/* Bilingual presentation — limits changes to English, preserving the Arabic UI. */
+.sdc-language-switch{display:flex;align-items:center;gap:.2rem;white-space:nowrap;font-size:.78rem;padding:.2rem .35rem;border:1px solid rgba(30,94,128,.18);border-radius:999px;background:var(--bs-body-bg,#fff);z-index:2;flex:0 0 auto}
+.sdc-language-switch button{border:0;background:transparent;border-radius:999px;padding:.25rem .48rem;color:var(--bs-secondary-color,#586d79);font-size:inherit;cursor:pointer}
+.sdc-language-switch button[aria-pressed="true"]{background:var(--bs-primary,#157fa7);color:#fff;font-weight:700}
+.sdc-language-switch--floating{position:fixed;inset-block-start:.65rem;inset-inline-end:.8rem;z-index:1090;box-shadow:0 2px 12px #0001}
+.sdc-language-switch--nav{margin-inline:.35rem}
+html[lang="en"]{direction:ltr}
+html[lang="en"] body{direction:ltr;text-align:left}
+html[lang="en"] .text-start{text-align:left!important}
+html[lang="en"] .text-end{text-align:right!important}
+html[lang="en"] input:not([type="checkbox"]):not([type="radio"]),html[lang="en"] textarea,html[lang="en"] select{direction:ltr;text-align:left}
+html[lang="en"] .form-check{padding-left:1.5em;padding-right:0}
+html[lang="en"] .form-check-input{float:left;margin-left:-1.5em;margin-right:0}
+html[lang="en"] .dropdown-menu-end{right:0;left:auto}
+html[lang="en"] .offcanvas-start{left:0;right:auto;transform:translateX(-100%)}
+html[lang="en"] .offcanvas-start.show,html[lang="en"] .offcanvas-start.showing{transform:none}
+html[lang="en"] .offcanvas-end{right:0;left:auto;transform:translateX(100%)}
+html[lang="en"] .offcanvas-end.show,html[lang="en"] .offcanvas-end.showing{transform:none}
+html[lang="en"] .ms-1{margin-left:.25rem!important;margin-right:0!important}
+html[lang="en"] .me-1{margin-right:.25rem!important;margin-left:0!important}
+html[lang="en"] .ms-2{margin-left:.5rem!important;margin-right:0!important}
+html[lang="en"] .me-2{margin-right:.5rem!important;margin-left:0!important}
+html[lang="en"] .ms-3{margin-left:1rem!important;margin-right:0!important}
+html[lang="en"] .me-3{margin-right:1rem!important;margin-left:0!important}
+html[lang="en"] .ms-auto{margin-left:auto!important;margin-right:0!important}
+html[lang="en"] .me-auto{margin-right:auto!important;margin-left:0!important}
+html[lang="en"] .float-start{float:left!important}
+html[lang="en"] .float-end{float:right!important}
+html[lang="en"] .sdc-form-error-notice{direction:ltr!important}
+@media(max-width:575px){.sdc-language-switch--nav{gap:0;padding:.1rem}.sdc-language-switch--nav button{padding:.15rem .32rem;font-size:.7rem}}
+
+/* Readability of mixed-language user-entered fields in an English interface. */
+html[lang="en"] [data-user-language="ar"]{direction:rtl;unicode-bidi:isolate;text-align:start}
+html[lang="en"] .sdc-language-switch button:focus-visible{outline:2px solid #097b9f;outline-offset:2px}
+
+/* v27.42.12 — One language selector per header and full English mirroring.
+   The Arabic layout and all existing role styles remain unchanged. */
+.sdc-nav-language-dropdown{flex:0 0 auto;position:relative}
+.sdc-nav-language-trigger{display:inline-flex;align-items:center;justify-content:center;gap:.35rem;min-width:39px;min-height:39px;padding:.35rem .65rem;border:1px solid #d6e6ed;border-radius:11px;background:#fff;color:#256078;font-size:.78rem;cursor:pointer}
+.sdc-nav-language-trigger:hover,.sdc-nav-language-trigger:focus-visible{background:#f1fafd;border-color:#a6d6e3}
+.sdc-nav-language-menu{min-width:138px;border:1px solid #dce9ee;border-radius:12px;padding:.35rem;box-shadow:0 12px 35px #152d3a1a}
+.sdc-nav-language-menu .dropdown-item{border-radius:7px;font-size:.85rem}
+.sdc-language-switch--floating{max-width:calc(100vw - 24px)}
+/* Clinic and staff share a fixed three-column grid with physical coordinates.
+   Switch the grid's direction, not just its text direction. */
+html[lang="en"] .clinic-nav-layout,
+html[lang="en"] .doctor-nav-layout{direction:rtl!important}
+html[lang="en"] .clinic-brand-left,
+html[lang="en"] .doctor-brand,
+html[lang="en"] .clinic-desktop-nav,
+html[lang="en"] .doctor-main-nav,
+html[lang="en"] .clinic-desktop-nav .navbar-nav,
+html[lang="en"] .doctor-main-nav .navbar-nav{direction:ltr!important}
+html[lang="en"] .clinic-brand-copy,
+html[lang="en"] .doctor-brand-copy{text-align:left!important}
+html[lang="en"] .clinic-nav-actions,
+html[lang="en"] .doctor-nav-actions{direction:ltr!important}
+html[lang="en"] .clinic-nav-actions .dropdown-menu,
+html[lang="en"] .doctor-nav-actions .dropdown-menu,
+html[lang="en"] .sdc-nav-language-menu{direction:ltr!important;text-align:left!important}
+/* On the left end of the mirrored header open dropdowns towards the page,
+   not outside the viewport. Bootstrap's JS still manages open/close state. */
+html[lang="en"] .clinic-nav-actions .dropdown-menu-end,
+html[lang="en"] .doctor-nav-actions .dropdown-menu-end,
+html[lang="en"] .patient-nav-actions .dropdown-menu-end,
+html[lang="en"] .admin-original-actions .dropdown-menu-end{left:0!important;right:auto!important}
+/* Patient and admin use flex header containers instead of a fixed grid. */
+html[lang="en"] .patient-navbar > .container,
+html[lang="en"] .admin-original-nav-row{flex-direction:row-reverse!important}
+html[lang="en"] .patient-desktop-nav,
+html[lang="en"] .patient-desktop-nav .navbar-nav,
+html[lang="en"] .patient-nav-actions,
+html[lang="en"] .admin-original-primary,
+html[lang="en"] .admin-original-actions{direction:ltr!important}
+html[lang="en"] .patient-nav-actions .dropdown-menu,
+html[lang="en"] .admin-original-actions .dropdown-menu{direction:ltr!important;text-align:left!important}
+html[lang="en"] .patient-brand,
+html[lang="en"] .admin-original-brand{direction:ltr!important;text-align:left!important}
+/* The public header follows the same direction rule without moving its forms. */
+html[lang="en"] .public-navbar > .container{flex-direction:row-reverse!important}
+html[lang="en"] .public-navbar .navbar-nav{direction:ltr!important}
+/* Keep RTL user-provided names readable within the English frame. */
+html[lang="en"] .clinic-brand-copy strong,
+html[lang="en"] .doctor-brand-copy strong,
+html[lang="en"] .admin-original-brand strong{unicode-bidi:plaintext}
+@media(max-width:767.98px){
+  .sdc-nav-language-trigger{min-width:35px;min-height:35px;padding:.2rem .4rem}
+  .sdc-nav-language-trigger .sdc-language-code{font-size:.69rem}
+}
+/* Flex headers that start RTL require a new writing direction, not row-reverse
+   (doing both cancels the mirror and leaves the brand on the Arabic side). */
+html[lang="en"] .patient-navbar > .container,
+html[lang="en"] .admin-original-nav-row,
+html[lang="en"] .public-navbar > .container{direction:ltr!important;flex-direction:row!important}
+
+/* Mobile drawers mirror the header's edge in English. */
+html[lang="en"] #sectionsDrawer.offcanvas-start,
+html[lang="en"] #patientMobileDrawer.offcanvas-start{left:auto!important;right:0!important;transform:translateX(100%)}
+html[lang="en"] #sectionsDrawer.offcanvas-end{left:0!important;right:auto!important;transform:translateX(-100%)}
+html[lang="en"] #sectionsDrawer.show,
+html[lang="en"] #sectionsDrawer.showing,
+html[lang="en"] #patientMobileDrawer.show,
+html[lang="en"] #patientMobileDrawer.showing{transform:none!important}
+html[lang="en"] .sections-drawer .bi-chevron-left,
+html[lang="en"] .patient-mobile-drawer .bi-chevron-left{transform:scaleX(-1)}
+@media(max-width:575.98px){
+ html[lang="en"] .admin-original-brand>span:last-child{display:none!important}
+ html[lang="en"] .admin-original-brand{min-width:0;flex-shrink:1}
+ html[lang="en"] .admin-original-actions{gap:.18rem!important}
+ .admin-original-actions .sdc-nav-language-trigger{padding:0;width:36px;min-width:36px;height:38px;min-height:38px}
+}

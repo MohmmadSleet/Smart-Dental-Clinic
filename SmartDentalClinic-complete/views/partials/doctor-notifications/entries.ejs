@@ -1,0 +1,35 @@
+<% const _doctorNotes=typeof doctorNotifications!=='undefined'&&Array.isArray(doctorNotifications)?doctorNotifications:[]; %>
+<% const _doctorCount=Number(typeof doctorUnreadCount!=='undefined'?doctorUnreadCount:0)||0; %>
+<% const _doctorCsrf=typeof doctorNotificationCsrf!=='undefined'?doctorNotificationCsrf:(typeof csrfToken!=='undefined'?csrfToken:''); %>
+<% const _doctorReturn=typeof doctorNotificationReturn!=='undefined'?doctorNotificationReturn:'/doctor/index'; %>
+<div class="px-3 py-2 fw-bold d-flex justify-content-between align-items-center border-bottom mb-1">
+ <span>الإشعارات</span><span class="badge text-bg-primary rounded-pill"><%= _doctorCount %> <%= sdcT("جديدة") %></span>
+</div>
+<div style="max-height:340px;overflow-y:auto;">
+ <% if(!_doctorNotes.length){ %><div class="px-3 py-3 small text-secondary">لا توجد إشعارات حاليًا.</div><% } %>
+ <% for (const notice of _doctorNotes){ %>
+ <div class="notification-entry px-3 py-2 border-bottom <%= notice.Read_At?'':'fw-bold' %>">
+  <form method="post" action="/doctor/notifications/<%= notice.Notification_ID %>/open">
+   <input type="hidden" name="csrf_token" value="<%= _doctorCsrf %>">
+   <button type="submit" class="btn btn-link p-0 text-start text-decoration-none text-dark w-100">
+    <strong class="d-block"><%= notice.Title %></strong>
+    <span class="d-block small text-secondary"><%= notice.Body %></span>
+   </button>
+  </form>
+  <div class="d-flex gap-2 mt-1">
+   <form method="post" action="/doctor/notifications/<%= notice.Notification_ID %>/read">
+    <input type="hidden" name="csrf_token" value="<%= _doctorCsrf %>"><input type="hidden" name="return_to" value="<%= _doctorReturn %>">
+    <button type="submit" class="btn btn-sm btn-light border" <%= notice.Read_At?'disabled':'' %>>مقروء</button>
+   </form>
+   <form method="post" action="/doctor/notifications/<%= notice.Notification_ID %>/delete">
+    <input type="hidden" name="csrf_token" value="<%= _doctorCsrf %>"><input type="hidden" name="return_to" value="<%= _doctorReturn %>">
+    <button type="submit" class="btn btn-sm btn-light border text-danger">حذف</button>
+   </form>
+  </div>
+ </div>
+ <% } %>
+</div>
+<form method="post" action="/doctor/notifications/read-all" class="px-3 py-2">
+ <input type="hidden" name="csrf_token" value="<%= _doctorCsrf %>"><input type="hidden" name="return_to" value="<%= _doctorReturn %>">
+ <button type="submit" class="btn btn-sm btn-outline-primary w-100" <%= _doctorCount?'':'disabled' %>>تحديد الكل كمقروء</button>
+</form>

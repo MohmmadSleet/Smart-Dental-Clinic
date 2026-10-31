@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>سجل التشخيصات والزيارات | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="patient-visual-page patient-page-diagnosis-history"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/patient/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+          <div><span class="badge badge-soft mb-2">ملفي الطبي</span><h1 class="fw-bold">السجل الطبي</h1>
+            <p class="text-secondary mb-0">زياراتك وتقارير طبيبك المعتمدة والمتابعات والتوجيهات الأولية المحفوظة.</p></div>
+          <a class="btn btn-outline-primary" href="appointments"><i class="bi bi-calendar2-check ms-1"></i>عرض مواعيدي</a>
+        </div>
+        <div class="row g-3 mb-4 patient-summary-row" aria-label="ملخص سجلك الطبي">
+          <div class="col-4"><div class="soft-card p-3"><small class="text-secondary d-block">الزيارات</small><strong class="fs-4"><%= history.visits.length %></strong></div></div>
+          <div class="col-4"><div class="soft-card p-3"><small class="text-secondary d-block">المتابعات</small><strong class="fs-4"><%= history.followups.length %></strong></div></div>
+          <div class="col-4"><div class="soft-card p-3"><small class="text-secondary d-block">التقييمات الأولية</small><strong class="fs-4"><%= history.assessments.length %></strong></div></div>
+        </div>
+        <div class="medical-followup-panel mb-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+            <div><h4 class="fw-bold mb-1">المتابعات المقترحة</h4><p class="text-secondary mb-0">الاقتراح من الطبيب، والحجز يخضع لتوفر الوقت وموافقة العيادة.</p></div>
+            <span class="badge badge-soft"><%= history.followups.length %> <%= sdcT("متابعة") %></span>
+          </div>
+          <div class="row g-3">
+            <% history.followups.forEach(f=>{ %>
+            <div class="col-lg-6"><div class="followup-patient-card waiting h-100">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-3"><div>
+                <span class="badge <%= f.linked_id?'text-bg-success':'text-bg-warning' %>"><%= f.linked_id?'تم الحجز':'بانتظار الحجز' %></span>
+                <h5 class="fw-bold mb-1"><%= f.followup %></h5><div class="text-secondary"><%= f.doctor %> • <%= f.clinic %></div>
+              </div><i class="bi bi-arrow-repeat fs-3 text-warning"></i></div>
+              <div class="followup-date-row"><span>التاريخ المقترح</span><strong><%= f.date %></strong></div>
+              <% if(f.linked_id){ %><a class="btn btn-outline-primary btn-sm mt-3" href="/patient/booking-details?id=<%= f.linked_id %>">عرض موعد المتابعة</a>
+              <% }else{ %><a class="btn btn-primary btn-sm mt-3" href="/patient/book-appointment?clinic_id=<%= f.clinic_id %>&doctor_id=<%= f.doctor_id %>&service_id=<%= f.service_id %>&follow_up_visit_id=<%= f.id %>">حجز موعد متابعة</a><% } %>
+            </div></div>
+            <% }); %>
+            <% if(!history.followups.length){ %><div class="col-12"><p class="text-secondary small mb-0">لا توجد متابعات مقترحة.</p></div><% } %>
+          </div>
+        </div>
+        <ul class="nav nav-pills mb-4" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-target="#doctorRecords" data-bs-toggle="pill" aria-selected="true" role="tab" type="button">الزيارات وتقارير الطبيب (<%= history.visits.length %>)</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-target="#aiRecords" data-bs-toggle="pill" aria-selected="false" role="tab" type="button">التقييمات الأولية (<%= history.assessments.length %>)</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="doctorRecords" role="tabpanel">
+            <% history.visits.forEach(v=>{ %>
+            <div class="record-card p-4 mb-3 <%= v.approved?'':'current-visit-card' %>">
+              <div class="row align-items-center g-3">
+                <div class="col-lg-3"><span class="badge <%= v.approved?'text-bg-success':'text-bg-secondary' %> mb-2"><%= v.approved?'تقرير معتمد':'غير معتمد' %></span><h5 class="fw-bold mb-0"><%= v.service %></h5><small class="text-secondary"><%= v.date %> • <%= v.time %></small></div>
+                <div class="col-lg-3"><small class="text-secondary">الطبيب</small><div class="fw-bold"><%= sdcT("د.") %> <%= v.doctor %></div><div class="text-secondary small"><%= v.clinic %></div></div>
+                <div class="col-lg-3"><small class="text-secondary">التشخيص / حالة التقرير</small><div class="fw-bold"><%= v.approved?(v.diagnosis||'لم يسجل تشخيص مفصّل'):'بانتظار اعتماد الطبيب' %></div></div>
+                <div class="col-lg-3 d-flex flex-wrap gap-2"><a class="btn btn-outline-primary btn-sm" href="/patient/appointment-details?visit_id=<%= v.id %>">عرض الزيارة</a><% if(v.approved){ %><a class="btn btn-outline-success btn-sm" href="/patient/reports/<%= v.id %>.pdf" download><i class="bi bi-file-earmark-pdf ms-1"></i> تنزيل PDF</a><% } %></div>
+              </div>
+            </div>
+            <% }); %>
+            <% if(!history.visits.length){ %><div class="record-card p-4 text-secondary">لم تُسجّل زيارات لك حتى الآن.</div><% } %>
+          </div>
+          <div class="tab-pane fade" id="aiRecords" role="tabpanel">
+            <% history.assessments.forEach(a=>{ %>
+            <div class="record-card p-4 mb-3"><span class="badge badge-soft mb-2">تقييم أولي</span><div class="d-flex justify-content-between flex-wrap gap-2"><h5 class="fw-bold"><%= sdcT("تقييم #") %><%= a.id %></h5><small class="text-secondary"><%= a.date %></small></div>
+              <p class="mb-2"><strong>الأعراض:</strong> <%= a.symptoms %></p><p class="mb-3"><strong>إرشاد النظام:</strong> <%= a.advice||'لا يتوفر إرشاد' %></p>
+              <a class="btn btn-outline-primary btn-sm" href="/patient/ai-diagnosis?id=<%= a.id %>">التفاصيل والاقتراحات</a>
+              <p class="small text-secondary mt-2 mb-0">هذه معلومات أولية قائمة على قواعد، وليست تشخيصًا طبيًا.</p>
+            </div>
+            <% }); %>
+            <% if(!history.assessments.length){ %><div class="record-card p-4 text-secondary">لا يوجد تقييم أولي محفوظ.</div><% } %>
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include('../partials/patient/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><script defer src="/assets/i18n.js"></script>
+  </body></html>

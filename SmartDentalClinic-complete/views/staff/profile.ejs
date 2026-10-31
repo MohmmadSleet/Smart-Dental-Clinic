@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>الملف والصلاحيات | Clinic Staff</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body data-staff-account-status="active" data-staff-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>" data-staff-user-id="<%= typeof currentUser !== 'undefined' && currentUser ? currentUser.userId : '' %>" data-rendered-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-active-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-staff-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : '' %>"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/staff/header') %>
+    
+    <main class="page-shell" id="main-content" data-staff-workspace="">
+      <div class="container pt-3"><div class="staff-context-bar"><div class="staff-context-heading"><i class="bi bi-building"></i><div><small class="text-secondary">تعمل الآن في</small><strong><%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.name : 'العيادة' %></strong></div></div><label class="visually-hidden" for="activeClinicContext">العيادة الحالية</label><select class="form-select" id="activeClinicContext" name="active_clinic_id" data-context-switcher="" aria-describedby="staffClinicContextHelp"><% if(typeof activeClinic !== 'undefined' && activeClinic){ %><option value="<%= activeClinic.id %>" data-membership-status="active" data-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : 'موظف' %>" data-clinic-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>"><%= activeClinic.name %></option><% } %></select><a class="btn btn-outline-primary btn-sm" href="choose-clinic" data-choose-clinic-link><i class="bi bi-arrow-left-right ms-1"></i>تبديل العيادة</a><small class="visually-hidden" id="staffClinicContextHelp">تظهر بيانات وصلاحيات العيادة المختارة فقط.</small></div></div><section class="container py-4 py-lg-5 staff-work-content staff-module-page" data-clinic-content="">
+        <div class="staff-section-heading mb-4">
+          <span class="badge badge-soft mb-2">ملف الموظف</span>
+          <h1 class="fw-bold fs-2">ملفي والصلاحيات</h1>
+          <p class="text-secondary">
+            صلاحياتك يحددها مدير العيادة، ولا يمكنك منح صلاحيات لنفسك.
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="soft-card p-4">
+              <h4 class="fw-bold mb-3">بيانات الحساب</h4><p class="small text-secondary">يمكنك تحديث رقم الهاتف؛ لتعديل الاسم أو البريد راجع مدير العيادة.</p>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="field-1">الاسم</label><input class="form-control" value="<%= (typeof staffAccount!=="undefined"?staffAccount:null) ? (staffAccount.first+' '+staffAccount.last) : currentUser.fullName %>" readonly id="field-1" name="full_name" form="backend-form-5">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-2">الدور</label><input class="form-control" readonly value="<%= staffClinicRole %>" id="field-2" name="field_2" form="backend-form-5">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-3">البريد</label><input class="form-control" value="<%= (typeof staffAccount!=="undefined"?staffAccount:null)?.email||'' %>" readonly id="field-3" name="field_3" form="backend-form-5">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="field-4">الهاتف</label><input class="form-control" value="<%= (typeof staffAccount!=="undefined"?staffAccount:null)?.phone||'' %>" id="field-4" name="phone" form="staff-account-form">
+                </div>
+              </div>
+              <button class="btn btn-primary mt-3" form="staff-account-form" type="submit">
+                حفظ
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="soft-card p-4">
+              <h4 class="fw-bold mb-1">ماذا أستطيع أن أفعل؟</h4><p class="small text-secondary mb-3">الصلاحيات للعرض فقط، ويحددها مدير العيادة.</p>
+              <div class="staff-profile-permissions"><section class="staff-access-section"><h5>المواعيد</h5><div class="staff-access-row"><span>عرض الجدول</span><span class="staff-access-state <%= hasStaffPermission('appointments.view')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('appointments.view')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('appointments.view')?'مسموح':'غير مسموح' %></span></div><div class="staff-access-row"><span>إنشاء وإدارة الحجوزات</span><span class="staff-access-state <%= hasStaffPermission('appointments.manage')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('appointments.manage')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('appointments.manage')?'مسموح':'غير مسموح' %></span></div></section><section class="staff-access-section"><h5>المرضى</h5><div class="staff-access-row"><span>عرض الدليل الإداري المحدود</span><span class="staff-access-state <%= hasStaffPermission('patients.view_directory')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('patients.view_directory')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('patients.view_directory')?'مسموح':'غير مسموح' %></span></div><div class="staff-access-row"><span>تسجيل ملف مريض</span><span class="staff-access-state <%= hasStaffPermission('patients.create')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('patients.create')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('patients.create')?'مسموح':'غير مسموح' %></span></div></section><section class="staff-access-section"><h5>الفواتير</h5><div class="staff-access-row"><span>عرض الفواتير</span><span class="staff-access-state <%= hasStaffPermission('invoices.view')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('invoices.view')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('invoices.view')?'مسموح':'غير مسموح' %></span></div><div class="staff-access-row"><span>إصدار فاتورة</span><span class="staff-access-state <%= hasStaffPermission('invoices.issue')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('invoices.issue')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('invoices.issue')?'مسموح':'غير مسموح' %></span></div><div class="staff-access-row"><span>تسجيل دفعة</span><span class="staff-access-state <%= hasStaffPermission('payments.record')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('payments.record')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('payments.record')?'مسموح':'غير مسموح' %></span></div></section><section class="staff-access-section"><h5>المختبرات</h5><div class="staff-access-row"><span>عرض الحالات</span><span class="staff-access-state <%= hasStaffPermission('lab_orders.view')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('lab_orders.view')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('lab_orders.view')?'مسموح':'غير مسموح' %></span></div><div class="staff-access-row"><span>تسجيل الإرسال والاستلام</span><span class="staff-access-state <%= hasStaffPermission('lab_orders.update_delivery')?'is-allowed':'is-blocked' %>"><i class="bi <%= hasStaffPermission('lab_orders.update_delivery')?'bi-check-circle':'bi-dash-circle' %>"></i><%= hasStaffPermission('lab_orders.update_delivery')?'مسموح':'غير مسموح' %></span></div></section>              </div><p class="small text-secondary mt-3 mb-0"><i class="bi bi-shield-lock ms-1"></i> السجل الطبي والتشخيص والوصفات خارج صلاحيات موظف الاستقبال.</p>            </div>
+          </div>
+        </div>
+      <%- include('../partials/shared/mfa-manager', {mfaScope:'staff'}) %>
+      <div class="container"><%- include('../partials/shared/password-editor', { passwordScope: 'staff' }) %>
+<%- include('../partials/shared/active-sessions', {sessionsScope:'staff'}) %></div>
+</section>
+    <section class="container py-4" id="staffScopeNotice" hidden><div class="soft-card p-4 text-center"><i class="bi bi-building-lock fs-1 text-primary"></i><h3 class="fw-bold mt-3" id="staffScopeTitle">اختر العيادة للمتابعة</h3><p class="text-secondary" id="staffScopeMessage">حدد عيادة لديك عضوية فعّالة فيها لعرض بياناتها وصلاحياتك.</p><a href="choose-clinic" class="btn btn-primary">اختيار العيادة</a></div></section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><form id="staff-account-form" action="/staff/workspace/profile" method="post" hidden><input type="hidden" name="csrf_token" value="<%= csrfToken %>"></form><%- include('../partials/staff/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

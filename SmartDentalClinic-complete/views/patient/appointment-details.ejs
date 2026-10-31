@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>سجل الزيارة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="patient-visual-page patient-page-appointment-details"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/patient/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <nav aria-label="breadcrumb" class="no-print"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="diagnosis-history">السجل الطبي</a></li><li class="breadcrumb-item active">التقرير الطبي</li></ol></nav>
+        <div class="report-page-toolbar no-print">
+          <div><span class="badge <%= visit.approved?'text-bg-success':'text-bg-secondary' %> mb-2"><%= visit.approved?'تقرير معتمد':'بانتظار الاعتماد' %></span><h1 class="fw-bold mb-1"><%= sdcT("تقرير الزيارة #") %><%= visit.id %></h1><p class="text-secondary mb-0">تقرير الزيارة للقراءة فقط، دون تعديل للمريض.</p></div>
+          <div class="d-flex gap-2 flex-wrap"><a class="btn btn-light" href="diagnosis-history">رجوع للسجل الطبي</a><% if(visit.approved){ %><a class="btn btn-primary" href="/patient/reports/<%= visit.id %>.pdf" download><i class="bi bi-file-earmark-pdf ms-1"></i>تنزيل PDF</a><% } %><button type="button" class="btn btn-outline-primary" data-ui-print=""><i class="bi bi-printer ms-1"></i>طباعة</button></div>
+        </div>
+        <div class="report-preview unified-system-report">
+          <div class="report-header unified-report-header"><div class="report-brand"><span class="report-logo"><i class="bi bi-heart-pulse-fill"></i></span><div><h3 class="fw-bold mb-1"><%= visit.clinic %></h3><div class="text-secondary">Smart Dental Clinic • Dental Visit Report</div></div></div>
+            <div class="report-meta text-start"><% if(visit.approved){ %><span class="report-status-line"><i class="bi bi-patch-check-fill"></i> تقرير معتمد</span><% } %><strong>#<%= visit.id %></strong><span><%= visit.date %></span><span><%= visit.service %></span></div></div>
+          <div class="report-identity-grid"><div><small>الطبيب</small><strong><%= sdcT("د.") %> <%= visit.doctor %></strong></div><div><small>العيادة</small><strong><%= visit.clinic %></strong></div><div><small>الخدمة</small><strong><%= visit.service %></strong></div><div><small>حالة التقرير</small><strong><%= visit.approved?'معتمد':'غير معتمد' %></strong></div></div>
+          <% if (visit.approved) { %>
+            <div class="report-section"><h5><i class="bi bi-chat-left-text ms-2"></i>سبب الزيارة</h5><p class="mb-0"><%= visit.complaint||'لا توجد ملاحظة' %></p></div>
+            <div class="report-section"><h5><i class="bi bi-clipboard2-pulse ms-2"></i>الفحص السريري</h5><p class="mb-0"><%= visit.examination||'لم يُسجل' %></p></div>
+            <div class="report-section"><h5><i class="bi bi-activity ms-2"></i>التشخيص</h5><p class="mb-0"><%= visit.diagnosis||'لم يُسجل تشخيص مفصّل' %></p></div>
+            <div class="report-section"><h5><i class="bi bi-capsule ms-2"></i>الوصفة والأدوية</h5><p class="mb-0"><%= visit.prescription||'لا توجد وصفات صادرة' %></p></div>
+            <div class="report-section"><h5><i class="bi bi-list-check ms-2"></i>توصيات الطبيب</h5><p class="mb-0"><%= visit.recommendations||'لا توجد توصيات مسجلة' %></p></div>
+            <div class="report-section"><h5><i class="bi bi-arrow-repeat ms-2"></i>المتابعة المقترحة</h5>
+              <div class="followup-summary"><div><small>نوع المتابعة</small><strong><%= visit.followup||'لا توجد متابعة' %></strong></div><div><small>التاريخ المقترح</small><strong><%= visit.suggested_date||'غير محدد' %></strong></div></div>
+            </div>
+            <div class="report-section" id="visitAttachments">
+              <h5><i class="bi bi-paperclip ms-2"></i>المرفقات الطبية المعتمدة</h5>
+              <% if(attachments.length){ %>
+                <div class="row g-3">
+                  <% attachments.forEach(file=>{ const fileUrl='/patient/visits/'+visit.id+'/attachments/'+file.id; %>
+                    <div class="col-12 col-md-6">
+                      <div class="border rounded-4 p-3 h-100 bg-white">
+                        <% if(!file.available){ %><p class="small text-warning"><i class="bi bi-exclamation-triangle ms-1"></i>الملف الأصلي غير متاح حاليًا على الخادم</p><% }else if(file.kind==='image'){ %>
+                          <a href="<%= fileUrl %>?preview=1" target="_blank" rel="noopener noreferrer" aria-label="عرض الصورة الطبية <%= file.name %>">
+                            <img src="<%= fileUrl %>?preview=1" alt="<%= file.name %>" class="img-fluid rounded-3 border mb-2" loading="lazy" style="max-height:220px;width:100%;object-fit:contain">
+                          </a>
+                        <% }else{ %><i class="bi bi-file-earmark-pdf fs-2 text-danger"></i><% } %>
+                        <div class="fw-bold text-break"><%= file.name %></div>
+                        <% if(file.description){ %><p class="text-secondary small mb-2 text-break"><%= file.description %></p><% } %>
+                        <% if(file.available){ %><a class="btn btn-outline-primary btn-sm mt-2" href="<%= fileUrl %>"><i class="bi bi-download ms-1"></i>تنزيل المرفق</a><% } %>
+                      </div>
+                    </div>
+                  <% }); %>
+                </div>
+              <% }else{ %><p class="text-secondary mb-0 small">لا توجد مرفقات اختارها الطبيب للإدراج في التقرير المعتمد.</p><% } %>
+            </div>
+            <div class="report-signature"><div><small>اعتماد الطبيب</small><strong><%= sdcT("د.") %> <%= visit.doctor %></strong><span>التقرير معتمد ومحفوظ في النظام</span></div><div aria-label="تقرير معتمد" class="report-seal"><i class="bi bi-patch-check-fill"></i></div></div>
+          <% }else{ %><div class="alert alert-info m-4">الزيارة غير معتمدة بعد. لن تُعرض تفاصيلها السريرية على أنها تقرير نهائي.</div><% } %>
+        </div>
+        <div class="role-permission-note no-print"><i class="bi bi-shield-lock-fill ms-2"></i><div><strong>صلاحية المريض: قراءة فقط</strong><div class="small">نسخة PDF الأصلية تُنزّل عند توفرها. إذا نُقل المشروع بدون ملفات التقارير، تُنشأ نسخة مستخرجة موضّح عليها أنها ليست الملف الأصلي المعتمد.</div></div></div>
+      </section>
+    </main>
+    <%- include('../partials/patient/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><script defer src="/assets/i18n.js"></script>
+  </body></html>

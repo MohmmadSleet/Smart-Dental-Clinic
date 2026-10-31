@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تسويات المنصة | لوحة تحكم العيادة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/clinic/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">Platform Settlement</span>
+            <h1 class="fw-bold fs-2 mb-2">تسويات المنصة</h1>
+            <p class="text-secondary mb-0">
+              نفس أرقام التسوية التي يراها Super Admin: قيمة الحجوزات المؤهلة،
+              عمولة الفترة من سعر الخدمة المثبّت وقت الحجز، بعد اكتمال الموعد وإصدار الفاتورة وسدادها بالكامل.
+            </p>
+          </div>
+          <span class="badge text-bg-warning align-self-start"><%= sdcT("المتبقي") %> <%= settlements.reduce((a,b)=>a+b.remaining,0).toFixed(2) %> ₪</span>
+        </div>
+        <% if(feedback){ %><div class="alert alert-success" role="status"><%= feedback %></div><% } %>
+        <% if(error){ %><div class="alert alert-danger" role="alert"><%= error %></div><% } %>
+        <% if(unsettled && unsettled.count>0){ %><div class="alert alert-info" role="status">يوجد <strong><%= unsettled.count %></strong> حجز مؤهل لم يُضم بعد إلى تسوية. قيمة خدماتها المحجوزة: <strong><%= unsettled.base.toFixed(2) %> ₪</strong>. تُنشأ التسويات تلقائيًا عند نهاية فترة التسوية بحسب إعدادات المشرف، وتظهر هنا بعد إنشائها.</div><% } %>
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">قيمة الحجوزات المؤهلة</small>
+              <div class="stat-value"><%= settlements.reduce((a,b)=>a+b.base,0).toFixed(2) %> ₪</div>
+              <small>جميع التسويات المسجلة</small>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">نسبة عمولة المنصة الحالية</small>
+              <div class="stat-value"><%= Number(currentCommissionRate).toLocaleString('en-US',{maximumFractionDigits:2}) %>%</div>
+              <small>تُطبّق تلقائيًا على الحجوزات الجديدة</small>
+              <div class="small text-secondary mt-2">الحجوزات السابقة تحتفظ بنسبتها المثبّتة عند الحجز.</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">المطلوب للمنصة</small>
+              <div class="stat-value"><%= settlements.reduce((a,b)=>a+b.due,0).toFixed(2) %> ₪</div>
+              <small>من أسعار الحجوزات المؤهلة فقط</small>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="stat-card">
+              <small class="text-secondary">المتبقي</small>
+              <div class="stat-value text-danger"><%= settlements.reduce((a,b)=>a+b.remaining,0).toFixed(2) %> ₪</div>
+              <small>تم استلام <%= settlements.reduce((a,b)=>a+b.paid,0).toFixed(2) %> ₪</small>
+            </div>
+          </div>
+        </div>
+        <% if(!settlements.length){ %><div class="soft-card p-4 mb-4 text-secondary">لا توجد تسويات مسجلة لهذه العيادة بعد. تُنشأ تلقائيًا عند انتهاء الفترة عند وجود حجوزات مؤهلة.</div><% } %>
+        <% settlements.forEach(function(s){ %><div class="soft-card p-4 mb-4"><div class="d-flex justify-content-between align-items-center mb-3"><div><h4 class="fw-bold mb-1">SET-<%= s.id %></h4><small class="text-secondary"><%= s.start %> — <%= s.finish %></small><% if(s.due_date){ %><div class="small text-secondary mt-1"><%= sdcT("موعد الاستحقاق:") %> <%= s.due_date %></div><% } %></div><span class="badge <%= s.remaining>0?'text-bg-warning':'text-bg-success' %>"><%= s.remaining>0?'متبقي':'مسدد' %></span></div><div class="summary-row"><span>المطلوب</span><strong><%= s.due.toFixed(2) %> ₪</strong></div><div class="summary-row"><span>المستلم</span><strong class="text-success"><%= s.paid.toFixed(2) %> ₪</strong></div><div class="summary-row"><span>المتبقي</span><strong class="text-danger"><%= s.remaining.toFixed(2) %> ₪</strong></div>
+          <% if(s.remaining>0){ %><div class="border-top pt-3 mt-3 small text-secondary">تسجيل الدفعات المستلمة من صلاحيات المشرف العام فقط. تظهر الدفعات والرصيد هنا تلقائيًا بعد اعتمادها.</div><% } %>
+        </div><% }); %>
+        <div class="soft-card p-0 overflow-hidden mb-4">
+          <div class="p-4 pb-2">
+            <h4 class="fw-bold mb-1">تفاصيل احتساب العمولة</h4>
+            <small class="text-secondary">كل بند يمثل حجزًا واحدًا مؤهلًا، مع سعر الخدمة المحفوظ وقت الحجز
+              ونسبة العمولة المحفوظة لذلك البند.</small>
+          </div>
+          <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+            <table class="table align-middle mb-0 medium-data-table responsive-stack-table system-data-table">
+              <thead>
+                <tr>
+                  <th>المرجع</th>
+                  <th>المريض</th>
+                  <th>سعر الحجز وقت إنشائه</th>
+                  <th>النسبة</th>
+                  <th>عمولة المنصة</th>
+                  <th>التاريخ</th>
+                </tr>
+              </thead>
+              <tbody><% settlements.forEach(function(s){s.bookings.forEach(function(b){ %><tr><td data-label="المرجع" class="table-primary-cell"><strong>A-<%= b.booking_id %></strong></td><td data-label="المريض"><%= b.patient %></td><td data-label="سعر الحجز وقت إنشائه"><%= Number(b.price).toFixed(2) %> ₪</td><td data-label="النسبة"><%= b.rate %>%</td><td data-label="عمولة المنصة"><%= Number(b.commission).toFixed(2) %> ₪</td><td data-label="التاريخ"><%= b.date %></td></tr><% });}); %><% if(!settlements.some(s=>s.bookings.length)){ %><tr><td colspan="6" class="text-secondary text-center">لا توجد حجوزات مرتبطة بتسويات بعد.</td></tr><% } %></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="soft-card p-0 overflow-hidden">
+          <div class="p-4 pb-2">
+            <h4 class="fw-bold mb-1">سجل دفعات التسوية</h4>
+          </div>
+          <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+            <table class="table align-middle mb-0 responsive-stack-table system-data-table">
+              <thead>
+                <tr>
+                  <th>التاريخ</th>
+                  <th>المبلغ</th>
+                  <th>الطريقة</th>
+                  <th>المرجع</th>
+                  <th>سجّلها المشرف</th>
+                </tr>
+              </thead>
+              <tbody><% settlements.forEach(function(s){s.payments.forEach(function(p){ %><tr><td><%= p.at %></td><td><%= p.amount %> ₪</td><td><%= ({cash:'نقداً',card:'بطاقة',bank_transfer:'تحويل'})[p.method]||p.method %></td><td><%= p.ref||'—' %></td><td><%= p.actor %></td></tr><% });}); %><% if(!settlements.some(s=>s.payments.length)){ %><tr><td colspan="5" class="text-secondary text-center">لم تُسجّل دفعات لهذه التسويات بعد.</td></tr><% } %></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include('../partials/clinic/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><script defer src="/assets/i18n.js"></script>
+  </body></html>

@@ -1,0 +1,39 @@
+/* Accessible, role-neutral error banner. Does not modify existing page layout. */
+.sdc-form-error-notice {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: 50%;
+  transform: translateX(50%);
+  z-index: 12000;
+  width: min(94vw, 610px);
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid #eeb5b5;
+  border-right: 4px solid #b42330;
+  border-radius: 12px;
+  background: #fff8f8;
+  color: #86252c;
+  box-shadow: 0 12px 34px rgba(26, 32, 43, .18);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.8;
+  align-items: flex-start;
+  gap: 14px;
+}
+.sdc-form-error-notice:not([hidden]) { display: flex; }
+.sdc-form-error-notice[hidden] { display: none !important; }
+.sdc-form-error-message { flex: 1; overflow-wrap: anywhere; }
+.sdc-form-error-dismiss {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 23px;
+  line-height: 1;
+  padding: 1px 5px;
+}
+.sdc-form-error-dismiss:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+@media (max-width: 576px) {
+  .sdc-form-error-notice { top: max(8px, env(safe-area-inset-top)); font-size: 13px; padding: 12px; }
+}

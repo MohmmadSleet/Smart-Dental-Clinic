@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تفاصيل فاتورة | Smart Dental Clinic</title>
+<!-- Bootstrap fallback retained for all layouts. -->
+<link rel="stylesheet" href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css"><% if (typeof lang === "string" && lang === "en") { %><link rel="stylesheet" href="/assets/vendor/bootstrap.ltr.min.css"><% } %><link rel="stylesheet" href="../assets/vendor/28667e4f82c7-bootstrap-icons.css"><link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="../assets/vendor/8c34d74036e9-css2-fonts.css">
+<link rel="stylesheet" href="/assets/i18n.css">
+  </head><body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a><%- include('../partials/admin/header') %>
+<main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">تفاصيل الفاتورة</span></nav>
+<% const i=invoice;const money=x=>Number(x||0).toLocaleString('ar-EG',{minimumFractionDigits:2,maximumFractionDigits:2})+' ₪';
+const statuses={paid:'مدفوعة',partial:'جزئية',unpaid:'غير مدفوعة',void:'ملغاة سابقًا'};
+const methods={cash:'نقدًا',card:'بطاقة',bank_transfer:'تحويل بنكي'};
+const n=typeof financeInvoiceNotice!=='undefined'?financeInvoiceNotice:''; %>
+<nav aria-label="مسار التنقل"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/admin/finance?tab=invoices">المالية / فواتير المرضى</a></li><li class="breadcrumb-item active"><%= sdcT("فاتورة #") %><%= i.id %></li></ol></nav>
+<div class="mb-4"><span class="badge badge-soft mb-2">رقابة مالية / للعرض فقط</span><h1 class="fw-bold fs-2 mb-2"><%= sdcT("الفاتورة #") %><%= i.id %></h1><p class="text-secondary mb-0">بيانات حقيقية من نظام الفواتير والدفعات. إصدار الفاتورة وتسجيل دفعاتها وتعديلها ليست من صلاحيات المشرف العام.</p></div>
+<% if(n==='noted'){ %><div class="alert alert-success" role="alert">تم حفظ الملاحظة الرقابية في سجل النظام.</div><% }else if(n==='invalid'||n==='failed'){ %><div class="alert alert-warning" role="alert"><%= n==='invalid'?'يرجى كتابة سبب واضح من 8 إلى 1000 حرف.':'تعذر حفظ الملاحظة؛ راجع سجل الخادم.' %></div><% } %>
+<div class="row g-3 mb-4"><div class="col-lg-7"><div class="soft-card p-4 h-100"><h2 class="fw-bold fs-5 mb-3">البيانات الأساسية</h2>
+<dl class="row mb-0"><dt class="col-5 text-secondary">العيادة</dt><dd class="col-7"><a href="/admin/clinic-details?id=<%= i.clinic_id %>"><%= i.clinic_name %></a></dd>
+<dt class="col-5 text-secondary">المريض</dt><dd class="col-7"><%= i.patient_name %></dd><dt class="col-5 text-secondary">التاريخ</dt><dd class="col-7"><%= i.created %></dd>
+<dt class="col-5 text-secondary">الزيارة</dt><dd class="col-7"><% if(i.visit_id){ %><a href="/admin/medical-record-details?id=<%= i.visit_id %>">#<%= i.visit_id %></a><% }else{ %><%= sdcT("غير مرتبطة بزيارة") %><% } %></dd>
+<dt class="col-5 text-secondary">الحالة</dt><dd class="col-7"><span class="badge <%= i.state==='paid'?'text-bg-success':'text-bg-secondary' %>"><%= statuses[i.state]||i.state %></span></dd></dl></div></div>
+<div class="col-lg-5"><div class="soft-card p-4 h-100"><h2 class="fw-bold fs-5 mb-3">ملخص الفاتورة</h2><div class="summary-row"><span>الإجمالي</span><strong><%= money(i.total) %></strong></div><div class="summary-row"><span>المدفوع</span><strong class="text-success"><%= money(i.paid) %></strong></div><div class="summary-row"><span>المتبقي</span><strong><%= money(i.remaining) %></strong></div><small class="text-secondary d-block mt-3">لا تدخل الإضافات العلاجية اللاحقة في أساس عمولة المنصة؛ العمولة تحسب من سعر الخدمة الأصلي المثبت عند الحجز.</small></div></div></div>
+<div class="soft-card p-4 mb-4"><h2 class="fw-bold fs-5 mb-3">ملخص بنود الفاتورة</h2>
+<p class="text-secondary small">يعرض المشرف المبالغ الإجمالية دون أوصاف الخدمات أو التفاصيل العلاجية الخاصة بالمريض.</p>
+<div class="summary-row"><span>عدد البنود</span><strong><%= invoiceItemSummary.item_count||0 %></strong></div>
+<div class="summary-row"><span>القيمة قبل الخصومات</span><strong><%= money(invoiceItemSummary.subtotal) %></strong></div>
+<div class="summary-row"><span>إجمالي الخصومات</span><strong><%= money(invoiceItemSummary.discounts) %></strong></div>
+</div>
+<div class="soft-card p-4 mb-4"><h2 class="fw-bold fs-5 mb-3">سجل دفعات المريض</h2><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>التاريخ</th><th>المبلغ</th><th>الطريقة</th><th>المرجع</th><th>سجلها</th></tr></thead><tbody><% if(!invoicePayments.length){ %><tr><td colspan="5" class="text-secondary">لم تُسجل دفعات.</td></tr><% } %>
+<% invoicePayments.forEach(p=>{ %><tr><td><%= p.at %></td><td><%= money(p.amount) %></td><td><%= methods[p.method]||p.method %></td><td><%= p.reference||'—' %></td><td><%= p.actor||'—' %></td></tr><% }); %></tbody></table></div></div>
+<div class="row g-4"><div class="col-lg-6"><div class="soft-card p-4"><h2 class="fw-bold fs-5 mb-3">ملاحظة رقابية</h2><form method="post" action="/admin/invoice-details/<%= i.id %>/note"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><label for="financeReason" class="form-label">سبب الملاحظة *</label><textarea id="financeReason" name="reason" minlength="8" maxlength="1000" rows="4" required class="form-control mb-3" placeholder="سبب واضح للمراجعة الإدارية، دون تفاصيل طبية"></textarea><button type="submit" class="btn btn-primary">حفظ في سجل النظام</button></form></div></div>
+<div class="col-lg-6"><div class="soft-card p-4"><h2 class="fw-bold fs-5 mb-3">سجل الرقابة المالية</h2><% if(!invoiceEvents.length){ %><p class="text-secondary">لا توجد ملاحظات رقابية مسجلة.</p><% } %><% invoiceEvents.forEach(e=>{ %><div class="border-bottom py-2"><div class="d-flex justify-content-between gap-2 flex-wrap"><strong><%= e.action==='invoice.admin.oversight_note'?'ملاحظة مشرف':'حدث مالي' %></strong><small class="text-secondary"><%= e.at %></small></div><% if(e.reason){ %><p class="mb-0 mt-1"><%= e.reason %></p><% } %></div><% }); %></div></div></div>
+</section></main><script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script><script src="assets/app.js"></script><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

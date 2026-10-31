@@ -1,0 +1,86 @@
+
+<link rel="stylesheet" href="/assets/form-errors.css">
+<script defer src="/assets/form-errors.js"></script>
+<% /* v27.26: original horizontal identity; canonical destination for every module. */ %>
+<%
+const adminView=String(typeof currentPage==='string'?currentPage:'admin/index.html').replace(/^admin\//,'').replace(/\.html$/,'');
+const adminModules=[
+ {label:sdcT('الاعتمادات'),links:[
+  {href:'approvals',label:sdcT('طلبات العيادات واعتمادها'),icon:'bi-hospital',match:['approvals','clinic-details','clinic-application-details']},
+  {href:'doctor-license-review',label:sdcT('مراجعة تراخيص الأطباء'),icon:'bi-person-check',match:['doctor-license-review']}]},
+ {label:sdcT('الحسابات والجهات'),links:[
+  {href:'users',label:sdcT('المستخدمون'),icon:'bi-people',match:['users','user-details']},
+  {href:'doctors',label:sdcT('الأطباء'),icon:'bi-person-badge',match:['doctors','doctor-details']},
+  {href:'labs',label:sdcT('المختبرات'),icon:'bi-buildings',match:['labs','lab-details']},
+  {href:'staff-permissions',label:sdcT('الصلاحيات الإدارية'),icon:'bi-key',match:['staff-permissions']}]},
+ {label:sdcT('الخدمات والتخصصات'),links:[
+  {href:'services',label:sdcT('الخدمات العامة'),icon:'bi-list-check',match:['services']},
+  {href:'specialties',label:sdcT('التخصصات'),icon:'bi-diagram-3',match:['specialties']}]},
+ {label:sdcT('الرقابة'),links:[
+  {href:'appointments',label:sdcT('الحجوزات'),icon:'bi-calendar3',match:['appointments','appointment-details']},
+  {href:'jobs',label:sdcT('الوظائف والطلبات'),icon:'bi-briefcase',match:['jobs','job-details','job-application-details']},
+  {href:'medical-records',label:sdcT('رقابة السجلات الطبية'),icon:'bi-file-earmark-medical',match:['medical-records','medical-record-details']}]},
+ {label:sdcT('المالية'),links:[
+  {href:'finance',label:sdcT('العمولات والتسويات'),icon:'bi-wallet2',match:['finance','invoice-details']},
+  {href:'reports',label:sdcT('التقارير'),icon:'bi-bar-chart',match:['reports']}]},
+ {label:sdcT('النظام والأمان'),links:[
+  {href:'system-log',label:sdcT('سجل النظام'),icon:'bi-shield-check',match:['system-log']},
+  {href:'settings',label:sdcT('إعدادات المنصة'),icon:'bi-gear',match:['settings']}]}
+];
+const adminIsActive=link=>link.match.includes(adminView);
+const adminLocation=adminView==='index'?sdcT('الرئيسية'):adminView==='settings'?sdcT('إعدادات المنصة'):adminModules.flatMap(x=>x.links).find(adminIsActive)?.label||sdcT('إدارة المنصة');
+%>
+<% if(navVariant===1){ %>
+<nav class="navbar admin-original-nav sticky-top bg-white border-bottom" aria-label="<%= sdcT('القائمة الرئيسية للمشرف') %>">
+ <div class="container-fluid admin-original-nav-row px-3 px-lg-4">
+  <a class="admin-original-brand" href="/admin/index"><span class="admin-original-mark"><i class="bi bi-shield-check"></i></span><span><strong><%= sdcT('إدارة Smart Dental') %></strong><small>Super Admin</small></span></a>
+  <div class="admin-original-primary d-none d-xl-flex align-items-center" aria-label="<%= sdcT('الأقسام') %>">
+   <a href="/admin/index" class="admin-original-link<%= adminView==='index'?' active':'' %>" <%- adminView==='index'?'aria-current="page"':'' %>><i class="bi bi-house-door"></i> <%= sdcT('الرئيسية') %></a>
+   <% adminModules.forEach((group,g) => { %>
+     <div class="dropdown"><button class="admin-original-link admin-original-dropdown<%= group.links.some(adminIsActive)?' active':'' %>" type="button" data-bs-toggle="dropdown" aria-expanded="false"><%= group.label %> <i class="bi bi-chevron-down"></i></button>
+      <ul class="dropdown-menu admin-original-dropdown-menu"><% group.links.forEach(link=>{ %><li><a href="/admin/<%= link.href %>" class="dropdown-item<%= adminIsActive(link)?' active':'' %>" <%- adminIsActive(link)?'aria-current="page"':'' %>><i class="bi <%= link.icon %>"></i><%= link.label %></a></li><% }); %></ul>
+     </div>
+   <% }); %>
+  </div>
+  <div class="admin-original-actions">
+   <div class="dropdown sdc-nav-language-dropdown">
+    <button class="admin-original-icon sdc-nav-language-trigger" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<%= sdcT('اختيار اللغة') %>"><i class="bi bi-globe2" aria-hidden="true"></i></button>
+    <ul class="dropdown-menu dropdown-menu-end sdc-nav-language-menu">
+     <li><button class="dropdown-item active" type="button" data-language="ar" data-ui-pending="">العربية</button></li>
+     <li><button class="dropdown-item" type="button" data-language="en" data-ui-pending="">English</button></li>
+    </ul>
+   </div>
+   <div class="dropdown"><button class="admin-original-icon position-relative" type="button" data-bs-toggle="dropdown" aria-label="<%= sdcT('إشعارات المشرف') %>" aria-expanded="false" title="<%= sdcT('إشعارات المشرف') %>"><i class="bi bi-bell"></i><% if(Number(typeof adminUnreadCount!=='undefined'?adminUnreadCount:0)>0){ %><span class="admin-original-dot"></span><% } %></button>
+    <div class="dropdown-menu dropdown-menu-end clean-dropdown p-3 admin-original-notice" style="width:min(370px,92vw);max-height:65vh;overflow-y:auto">
+     <div class="d-flex align-items-center justify-content-between gap-2 mb-2"><strong><%= sdcT('إشعارات المشرف') %></strong><span class="badge text-bg-primary"><%= typeof adminUnreadCount!=='undefined'?adminUnreadCount:0 %> <%= sdcT("غير مقروء") %></span></div>
+     <% const notices=typeof adminNotifications!=='undefined'?adminNotifications:[]; for(const n of notices){ %>
+      <div class="py-2 border-bottom <%= n.Read_At?'':'fw-bold' %>">
+       <form class="mb-1" method="post" action="/admin/notifications/<%= n.Notification_ID %>/open"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="hidden" name="return_to" value="<%= typeof currentPage==='string'?currentPage:'' %>"><button type="submit" class="btn btn-link p-0 text-start text-decoration-none text-body"><%= n.Title %></button></form>
+       <p class="small text-secondary mb-1"><%= n.Body %></p>
+       <div class="d-flex gap-2">
+        <% if(!n.Read_At){ %><form method="post" action="/admin/notifications/<%= n.Notification_ID %>/read"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><button type="submit" class="btn btn-sm btn-outline-secondary"><%= sdcT('مقروء') %></button></form><% } %>
+        <form method="post" action="/admin/notifications/<%= n.Notification_ID %>/delete"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><button type="submit" class="btn btn-sm btn-link text-danger"><%= sdcT('حذف الإشعار') %></button></form>
+       </div>
+      </div>
+     <% } %><% if(!notices.length){ %><p class="small text-secondary py-2 mb-1"><%= sdcT('لا توجد إشعارات حاليًا.') %></p><% } %>
+     <form method="post" action="/admin/notifications/read-all" class="mt-2"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><button type="submit" class="btn btn-outline-primary btn-sm w-100" <%= (typeof adminUnreadCount==='undefined'||!adminUnreadCount)?'disabled':'' %>><%= sdcT('تحديد الكل كمقروء') %></button></form>
+    </div>
+   </div>
+   <a class="admin-original-icon" href="/admin/settings" title="<%= sdcT('إعدادات المنصة') %>" aria-label="<%= sdcT('إعدادات المنصة') %>"><i class="bi bi-gear"></i></a>
+   <div class="dropdown"><button class="admin-original-account" type="button" data-bs-toggle="dropdown" aria-label="<%= sdcT('حساب المشرف') %>" aria-expanded="false"><span class="admin-original-avatar"><i class="bi bi-person"></i></span><span class="d-none d-md-inline"><%= sdcT('المشرف العام') %></span><i class="bi bi-chevron-down d-none d-md-inline"></i></button>
+    <div class="dropdown-menu dropdown-menu-end clean-dropdown"><a class="dropdown-item" href="/admin/settings#account"><i class="bi bi-person-gear ms-2"></i> <%= sdcT('حسابي') %></a><form class="m-0" action="/admin/sign-out" method="post"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><button class="dropdown-item text-danger" type="submit"><i class="bi bi-box-arrow-right ms-2"></i> <%= sdcT('تسجيل الخروج') %></button></form></div></div>
+   <button type="button" class="admin-original-menu d-xl-none" data-bs-toggle="offcanvas" data-bs-target="#sectionsDrawer" aria-controls="sectionsDrawer" aria-label="<%= sdcT('فتح جميع الأقسام') %>"><i class="bi bi-list"></i></button>
+  </div>
+ </div>
+</nav>
+<% } %>
+<% if(drawerVariant===1){ %>
+<div class="offcanvas offcanvas-end admin-original-drawer" tabindex="-1" id="sectionsDrawer" aria-labelledby="adminDrawerTitle">
+ <div class="offcanvas-header admin-original-drawer-head"><div><strong class="d-block" id="adminDrawerTitle"><%= sdcT('أقسام الإدارة') %></strong><small><%= adminLocation %></small></div><button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="<%= sdcT('إغلاق') %>"></button></div>
+ <div class="offcanvas-body"><nav aria-label="<%= sdcT('كل أقسام المشرف') %>">
+  <a href="/admin/index" class="admin-original-drawer-link<%= adminView==='index'?' active':'' %>"><i class="bi bi-house-door"></i><%= sdcT('الرئيسية') %></a>
+  <% adminModules.forEach(group=>{ %><div class="admin-original-drawer-group"><span><%= group.label %></span><% group.links.forEach(link=>{ %><a href="/admin/<%= link.href %>" class="admin-original-drawer-link<%= adminIsActive(link)?' active':'' %>" <%- adminIsActive(link)?'aria-current="page"':'' %>><i class="bi <%= link.icon %>"></i><%= link.label %></a><% }); %></div><% }); %>
+  
+ </nav></div></div>
+<% } %>
+<% if(typeof logoutCsrf!=='undefined'&&logoutCsrf){ %><form id="sdcUnifiedLogoutForm" action="/auth/logout" method="post" hidden><input type="hidden" name="csrf_token" value="<%= logoutCsrf %>"></form><script defer src="/assets/logout.js"></script><% } %>

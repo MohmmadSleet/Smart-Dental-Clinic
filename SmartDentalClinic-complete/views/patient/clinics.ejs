@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>العيادات | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+    <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+    
+      
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="patient-visual-page patient-page-clinics"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <!-- شريط التنقل العلوي -->
+    <%- include('../partials/patient/header') %>
+
+    <!-- القائمة الجانبية للموبايل -->
+    
+
+    <!-- المحتوى الرئيسي -->
+    <main class="page-shell bg-light min-vh-100 py-4" id="main-content">
+      <section class="container">
+        
+        <!-- تصفح مباشر: النتائج هي المحتوى الأساسي -->
+        <header class="directory-heading mb-3">
+          <div class="directory-heading-title">
+            <h1 class="fw-bold mb-1">العيادات</h1>
+            <p class="text-secondary small mb-0">اختر عيادة لعرض الأطباء وحجز موعد.</p>
+          </div>
+          <div class="directory-search input-group" role="search">
+            <span class="input-group-text bg-white border-end-0 text-primary"><i class="bi bi-search" aria-hidden="true"></i></span>
+            <input class="form-control border-start-0 ps-0" id="clinicSearch" type="search" autocomplete="off" aria-label="البحث في العيادات" placeholder="ابحث عن عيادة أو مدينة أو منطقة" value="">
+          </div>
+        </header>
+
+        <div class="directory-toolbar mb-3">
+          <strong class="text-secondary small" id="clinicResultCount" aria-live="polite"><%= sdcT("عرض") %> <%= clinics.length %> <%= sdcT("عيادة معتمدة") %></strong>
+          <a href="/patient/doctors" class="btn btn-link btn-sm text-decoration-none">استعراض الأطباء <i class="bi bi-arrow-left" aria-hidden="true"></i></a>
+        </div>
+
+        <!-- الفلاتر والموقع متاحان لكن لا يؤخران عرض النتائج -->
+        <details class="patient-optional-filters mb-3" id="clinicFiltersPanel">
+          <summary><i class="bi bi-sliders2 ms-2 text-primary" aria-hidden="true"></i>فلاتر إضافية وموقع العيادة<span class="filter-expand-hint">اختياري</span></summary>
+          <div class="patient-optional-filters-body">
+            <div class="row g-3">
+              <div class="col-md-6 col-lg-3">
+                <label for="clinicServiceFilter" class="form-label small fw-bold">الخدمة</label>
+                <select class="form-select form-select-sm" id="clinicServiceFilter"><option value="all">كل الخدمات</option><% for(const item of clinicServices){ %><option value="<%= item.id %>"><%= item.name %></option><% } %></select>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <label for="clinicStatusFilter" class="form-label small fw-bold">الحجز الإلكتروني</label>
+                <select class="form-select form-select-sm" id="clinicStatusFilter" name="clinic_status_filter"><option value="all">جميع العيادات</option><option value="open">يقبل الحجز</option><option value="closed">الحجز متوقف</option></select>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <label for="manualCityLocation" class="form-label small fw-bold">المدينة</label>
+                <select id="manualCityLocation" class="form-select form-select-sm"><option value="">كل المدن</option><% for(const name of [...new Set(clinics.map(c=>c.city))].sort()){ %><option value="<%= name %>"><%= name %></option><% } %></select>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <label for="clinicSort" class="form-label small fw-bold">الترتيب</label>
+                <select class="form-select form-select-sm" id="clinicSort"><option value="name">الاسم</option><option value="distance">الأقرب (بعد مشاركة الموقع)</option></select>
+              </div>
+            </div>
+            <div class="patient-filters-footer mt-3" id="clinicLocationCard">
+              <div class="flex-grow-1">
+                <div class="fw-semibold small">الموقع اختياري لحساب المسافة</div>
+                <div class="text-secondary small" id="clinicLocationStatus">لم يتم استخدام موقعك بعد، ويمكن متابعة البحث بدونه.</div>
+              </div>
+              <button class="btn btn-outline-primary btn-sm" id="useClinicLocation" type="button"><i class="bi bi-geo-alt ms-1" aria-hidden="true"></i> استخدام موقعي</button>
+              <button class="btn btn-light btn-sm border" id="clearClinicFilters" type="button"><i class="bi bi-arrow-counterclockwise ms-1" aria-hidden="true"></i>مسح الفلاتر</button>
+            </div>
+          </div>
+        </details>
+
+        <!-- شبكة العيادات -->
+        <div class="row g-4" id="clinicsGrid">
+          <% if(!clinics.length){ %><div class="col-12"><div class="alert alert-info rounded-4">لا توجد عيادات معتمدة ونشطة حاليًا.</div></div><% } %>
+          <% for(const c of clinics){ %>
+          <div class="col-sm-6 col-xl-4 clinic-filter-item" data-lat="<%= c.latitude %>" data-lng="<%= c.longitude %>" data-name="<%= c.name %>" data-location="<%= c.city %> <%= c.area %>" data-service-ids="<%= c.service_ids||'' %>" data-status="<%= c.online_booking?'open':'closed' %>" data-record-id="<%= c.id %>">
+            <article class="card h-100 overflow-hidden patient-directory-card">
+              <img class="patient-directory-cover" src="<%= c.has_cover?'/media/clinics/'+c.id+'/cover':c.has_logo?'/media/clinics/'+c.id+'/logo':'../assets/vendor/1a7676da86a2-photo-1629909613654-28e377c37b09.jpg' %>" alt="صورة عيادة <%= c.name %>" loading="lazy">
+              <div class="patient-directory-content">
+                <div class="d-flex gap-2 justify-content-between align-items-start">
+                  <div class="flex-grow-1"><h2 class="h6 fw-bold mb-1"><%= c.name %></h2><div class="text-secondary small"><i class="bi bi-geo-alt ms-1" aria-hidden="true"></i><%= c.city %> — <%= c.area %></div></div>
+                  <span class="badge <%= c.online_booking?'bg-success':'bg-secondary' %>"><%= c.online_booking?'الحجز متاح':'الحجز متوقف' %></span>
+                </div>
+                <div class="patient-directory-meta"><span><i class="bi bi-person-badge ms-1" aria-hidden="true"></i><%= c.doctor_count %> <%= sdcT("طبيب") %></span><span><i class="bi bi-clipboard2-pulse ms-1" aria-hidden="true"></i><%= c.service_count %> <%= sdcT("خدمة") %></span><span class="location-demo-distance" data-real-distance>المسافة غير محسوبة</span><span><% if(c.rating != null && Number(c.rating_count)>0){ %><span class="patient-rating" aria-label="متوسط التقييم <%= c.rating %> <%= sdcT("من 5 بناء على") %> <%= c.rating_count %> تقييم"><i class="bi bi-star-fill text-warning" aria-hidden="true"></i> <%= c.rating %>/5 <small class="text-secondary">(<%= c.rating_count %> تقييم)</small></span><% }else{ %><span class="small text-secondary">لا توجد تقييمات بعد</span><% } %></span></div>
+                <a class="btn btn-primary btn-sm w-100" href="/patient/clinic-details?clinic_id=<%= c.id %>">عرض الأطباء والحجز</a>
+              </div>
+            </article>
+          </div><% } %>
+        </div>
+
+        <!-- حالة عدم وجود نتائج -->
+        <div class="empty-state d-none text-center py-5 card border-0 shadow-sm rounded-4 mt-3" id="clinicEmptyState">
+          <i class="bi bi-search fs-1 text-muted"></i>
+          <h5 class="fw-bold mt-3 text-dark">لا توجد عيادات مطابقة</h5>
+          <p class="text-muted small mb-0">
+            يرجى تغيير كلمات البحث أو إعادة ضبط الفلاتر والمحاولة مرة أخرى.
+          </p>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- الفوتر -->
+    <%- include('../partials/patient/footer') %>
+
+    <!-- التوست (Toast) -->
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0 shadow" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- السكريبتات -->
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+    <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+  
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><script defer src="/assets/i18n.js"></script>
+  </body></html>

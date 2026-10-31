@@ -1,0 +1,20 @@
+<form method="post" action="/admin/jobs/save" class="row g-3 mt-2">
+ <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="hidden" name="job_id" value="<%= typeof editJob!=='undefined'&&editJob?editJob.id:'' %>">
+ <div class="col-md-6"><label class="form-label w-100">العيادة
+ <% if(typeof editJob!=='undefined'&&editJob){ %><input class="form-control" readonly value="<%= editJob.clinic %>"><input type="hidden" name="clinic_id" value="<%= editJob.clinic_id %>"><% }else{ %>
+ <select name="clinic_id" class="form-select" required><option value="">اختر العيادة</option><% for(const c of jobCreateClinics){ %><option value="<%= c.id %>"><%= c.name %></option><% } %></select><% } %>
+ </label></div>
+ <div class="col-md-6"><label class="form-label w-100">المسمى الوظيفي<input name="clinic_job_title" class="form-control" maxlength="150" required value="<%= typeof editJob!=='undefined'&&editJob?editJob.title:'' %>"></label></div>
+ <div class="col-md-4"><label class="form-label w-100">التخصص<select name="clinic_job_specialty" class="form-select" required><option value="">اختر</option><% for(const sp of jobSpecialties){ %><option value="<%= sp.id %>" <%= typeof editJob!=='undefined'&&editJob&&String(editJob.specialty_id)===String(sp.id)?'selected':'' %>><%= sp.name %></option><% } %></select></label></div>
+ <div class="col-md-4"><label class="form-label w-100">نوع الدوام<select name="clinic_job_type" class="form-select"><% for(const [type,caption] of [['full_time','دوام كامل'],['part_time','جزئي'],['contract','تعاقد']]){ %><option value="<%= type %>" <%= typeof editJob!=='undefined'&&editJob&&editJob.employment===type?'selected':'' %>><%= caption %></option><% } %></select></label></div>
+ <div class="col-md-4"><label class="form-label w-100">سنوات الخبرة<input name="clinic_job_experience" type="number" min="0" max="60" class="form-control" required value="<%= typeof editJob!=='undefined'&&editJob?editJob.experience:0 %>"></label></div>
+ <div class="col-md-4"><label class="form-label w-100">آخر موعد تقديم<input name="clinic_job_deadline" type="date" class="form-control" required value="<%= typeof editJob!=='undefined'&&editJob?editJob.deadline:'' %>"></label></div>
+ <div class="col-md-4"><label class="form-label w-100">ساعات العمل<input name="clinic_job_hours" maxlength="4000" class="form-control" required value="<%= typeof editJob!=='undefined'&&editJob?editJob.schedule:'' %>"></label></div>
+ <div class="col-md-4"><label class="form-label w-100">تفاصيل الراتب<input name="clinic_job_salary" maxlength="4000" class="form-control" required value="<%= typeof editJob!=='undefined'&&editJob?editJob.salary:'' %>"></label></div>
+ <div class="col-12"><label class="form-label w-100">الوصف<textarea name="clinic_job_description" class="form-control" required maxlength="4000" rows="2"><%= typeof editJob!=='undefined'&&editJob?editJob.summary:'' %></textarea></label></div>
+ <div class="col-md-6"><label class="form-label w-100">المسؤوليات<textarea name="clinic_job_responsibilities" class="form-control" required maxlength="4000" rows="2"><%= typeof editJob!=='undefined'&&editJob?editJob.responsibilities:'' %></textarea></label></div>
+ <div class="col-md-6"><label class="form-label w-100">المتطلبات<textarea name="clinic_job_requirements" class="form-control" required maxlength="4000" rows="2"><%= typeof editJob!=='undefined'&&editJob?editJob.requirements:'' %></textarea></label></div>
+ <div class="col-md-4"><label class="form-label w-100">النشر<select name="publish" class="form-select"><option value="0" <%= typeof editJob!=='undefined'&&editJob&&editJob.status!=='open'?'selected':'' %>>مسودة</option><option value="1" <%= typeof editJob!=='undefined'&&editJob&&editJob.status==='open'?'selected':'' %>>نشر</option></select></label></div>
+ <div class="col-md-8"><label class="form-label w-100">سبب الإجراء الإداري<input name="reason" minlength="8" maxlength="1000" required class="form-control"></label></div>
+ <div class="col-12"><button class="btn btn-primary">حفظ الإعلان</button></div>
+</form>

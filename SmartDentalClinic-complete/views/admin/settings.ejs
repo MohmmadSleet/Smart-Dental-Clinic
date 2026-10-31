@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3 section-5" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>إعدادات المنصة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">إعدادات المنصة</span></nav>
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">Platform Settings</span>
+            <h1 class="fw-bold fs-2 mb-2">إعدادات المنصة</h1>
+            <p class="text-secondary mb-0">
+              إعدادات المنصة مقسمة حسب المجال لتسهيل إدارتها ومراجعتها.
+            </p>
+          </div>
+          <div class="settings-save-note">
+            <i class="bi bi-info-circle"></i><span>راجع القيم جيدًا قبل حفظ الإعدادات.</span>
+          </div>
+        </div>
+        <% if(adminSettingsNotice==='saved' && adminSettingsSection!=='financeSettings'){ %><div class="alert alert-success">تم حفظ التعديلات في قاعدة البيانات.</div><% } %>
+        <% if(['invalid','failed'].includes(adminSettingsNotice) && adminSettingsSection!=='financeSettings'){ %><div class="alert alert-warning">تعذر حفظ التعديل؛ تحقق من المدخلات وسجل الخادم.</div><% } %>
+        <div class="row g-4">
+          <div class="col-xl-3">
+            <div class="settings-nav-card soft-card p-2 sticky-lg-top" data-settings-tabs="" role="tablist" aria-label="أقسام إعدادات المنصة" style="top: 92px">
+              <button class="settings-nav-item <%= adminSettingsSection==='general'?'active':'' %>" id="settings-general-tab" type="button" role="tab" aria-controls="general" aria-selected="<%= adminSettingsSection==='general'?'true':'false' %>" data-bs-target="#general" data-bs-toggle="pill">
+                <i class="bi bi-sliders"></i><span><strong>عام</strong><small>هوية المنصة</small></span>
+              </button>
+              <button class="settings-nav-item <%= adminSettingsSection==='registration'?'active':'' %>" id="settings-registration-tab" type="button" role="tab" aria-controls="registration" aria-selected="<%= adminSettingsSection==='registration'?'true':'false' %>" data-bs-target="#registration" data-bs-toggle="pill" tabindex="-1">
+                <i class="bi bi-calendar2-check"></i><span><strong>التسجيل والحجز</strong><small>سياسات الوصول والحجز</small></span>
+              </button>
+              <button class="settings-nav-item <%= adminSettingsSection==='financeSettings'?'active':'' %>" id="settings-finance-tab" type="button" role="tab" aria-controls="financeSettings" aria-selected="<%= adminSettingsSection==='financeSettings'?'true':'false' %>" data-bs-target="#financeSettings" data-bs-toggle="pill" tabindex="-1">
+                <i class="bi bi-wallet2"></i><span><strong>المالية</strong><small>العمولة والتسويات</small></span>
+              </button>
+              <button class="settings-nav-item <%= adminSettingsSection==='notificationsSettings'?'active':'' %>" id="settings-notifications-tab" type="button" role="tab" aria-controls="notificationsSettings" aria-selected="<%= adminSettingsSection==='notificationsSettings'?'true':'false' %>" data-bs-target="#notificationsSettings" data-bs-toggle="pill" tabindex="-1">
+                <i class="bi bi-bell"></i><span><strong>التنبيهات</strong><small>قواعد الإشعارات الإدارية</small></span>
+              </button>
+              <button class="settings-nav-item <%= adminSettingsSection==='security'?'active':'' %>" id="settings-security-tab" type="button" role="tab" aria-controls="security" aria-selected="<%= adminSettingsSection==='security'?'true':'false' %>" data-bs-target="#security" data-bs-toggle="pill" tabindex="-1">
+                <i class="bi bi-shield-lock"></i><span><strong>الأمان</strong><small>2FA والجلسات والتدقيق</small></span>
+              </button>
+              <button class="settings-nav-item <%= adminSettingsSection==='account'?'active':'' %>" id="settings-account-tab" type="button" role="tab" aria-controls="account" aria-selected="<%= adminSettingsSection==='account'?'true':'false' %>" data-bs-target="#account" data-bs-toggle="pill" tabindex="-1">
+                <i class="bi bi-person-gear"></i><span><strong>حساب Super Admin</strong><small>الحساب الوحيد للإدارة العليا</small></span>
+              </button>
+            </div>
+          </div>
+          <div class="col-xl-9">
+            <div class="tab-content">
+              <div class="tab-pane fade <%= adminSettingsSection==='general'?'show active':'' %>" id="general" role="tabpanel" aria-labelledby="settings-general-tab" tabindex="0">
+                <div class="soft-card p-4 mb-4">
+                  <div class="settings-section-head">
+                    <span class="icon-box"><i class="bi bi-building"></i></span>
+                    <div>
+                      <h4 class="fw-bold mb-1">هوية المنصة</h4>
+                      <small class="text-secondary">الاسم، اللغة والعملة.</small>
+                    </div>
+                  </div>
+                  <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+                      <label class="form-label" for="field-1">اسم المنصة</label><input class="form-control" value="Smart Dental Clinic" readonly id="field-1">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label" for="field-2">اللغة الافتراضية</label><select class="form-select" id="field-2" disabled>
+                        <option selected>العربية</option>
+                        <option>English</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label" for="field-3">العملة</label><select class="form-select" id="field-3" disabled>
+                        <option selected>₪ شيكل</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade <%= adminSettingsSection==='registration'?'show active':'' %>" id="registration" role="tabpanel" aria-labelledby="settings-registration-tab" tabindex="0">
+                <div class="soft-card p-4"><h4 class="fw-bold mb-3">سياسات التسجيل والحجز المعتمدة</h4>
+                  <p class="text-secondary">هذه السياسات تُنفّذ حاليًا في مسارات التسجيل والعيادات والحجز، ولا يمكن تغييرها بمجرد زر شكلي.</p>
+                  <div class="alert alert-info">تسجيل المرضى والأطباء متاح وفق التحقق، وتفعيل الطبيب مرتبط بمراجعة رقم الترخيص، واعتماد العيادة من المشرف. إدارة هذه السياسات برمجيًا تتطلب تحديث مساراتها واختبارها في دفعة منفصلة.</div>
+                  <p class="mb-0">لم يتم إيقاف التسجيل أو الحجز أو تعطيل فحص الترخيص. لا يوجد زر حفظ وهمي في هذا القسم.</p>
+                </div>
+              </div>
+              <div class="tab-pane fade <%= adminSettingsSection==='financeSettings'?'show active':'' %>" id="financeSettings" role="tabpanel" aria-labelledby="settings-finance-tab" tabindex="0">
+                <div class="soft-card p-4">
+                  <div class="settings-section-head">
+                    <span class="icon-box"><i class="bi bi-percent"></i></span>
+                    <div>
+                      <h4 class="fw-bold mb-1">عمولة وتسويات المنصة</h4>
+                      <small class="text-secondary">النسبة الجديدة تُثبَّت على الحجوزات الجديدة وقت إنشائها؛
+                        وتظل نسب الحجوزات والتسويات السابقة محفوظة دون تغيير.</small>
+                    </div>
+                  </div>
+                  <% if(adminFinanceNotice==='saved'){ %><div role="alert" class="alert alert-success mt-3">تم حفظ سياسة العمولة والتسويات التلقائية.</div><% } %>
+                  <% if(adminFinanceNotice==='invalid'||adminFinanceNotice==='failed'){ %><div role="alert" class="alert alert-warning mt-3">تعذّر حفظ إعدادات المالية. راجع القيم أو سجل الخادم.</div><% } %>
+                  <p class="small text-secondary mt-3">يُنشئ النظام تسويات العيادات المستحقة تلقائيًا بعد إغلاق الفترة، أثناء تشغيل السيرفر، ويعيد المحاولة عند إعادة تشغيله. لا تُنشأ تسوية فارغة، ولا يمكن تكرار نفس الفترة. مهلة السداد تُحتسب من تاريخ إنشاء التسوية.</p>
+                  <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+                      <label class="form-label">عمولة المنصة</label>
+                      <div class="input-group">
+                        <input class="form-control" value="<%= adminFinanceSettings?adminFinanceSettings.rate:5 %>" type="number" min="0.01" max="100" step="0.01" required id="field-12" name="rate" form="backend-form-29"><span class="input-group-text">%</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="field-13">دورية إنشاء التسوية</label><select class="form-select" id="field-13" name="frequency" form="backend-form-29">
+                        <option value="monthly" <%= !adminFinanceSettings||adminFinanceSettings.frequency==='monthly'?'selected':'' %>>شهريًا</option>
+                        <option value="weekly" <%= adminFinanceSettings?.frequency==='weekly'?'selected':'' %>>أسبوعيًا</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="field-14">مهلة السداد</label><select class="form-select" id="field-14" name="due_days" form="backend-form-29">
+                        <option value="7" <%= !adminFinanceSettings||Number(adminFinanceSettings.due_days)===7?'selected':'' %>>7 أيام</option>
+                        <option value="14" <%= Number(adminFinanceSettings?.due_days)===14?'selected':'' %>>14 يومًا</option>
+                        <option value="30" <%= Number(adminFinanceSettings?.due_days)===30?'selected':'' %>>30 يومًا</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label" for="field-15">العملة</label><input class="form-control" readonly value="₪" id="field-15" name="field_15" form="backend-form-29">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary mt-4" form="backend-form-29" type="submit">
+                    حفظ إعدادات المالية
+                  </button>
+                </div>
+              </div>
+              <div class="tab-pane fade <%= adminSettingsSection==='notificationsSettings'?'show active':'' %>" id="notificationsSettings" role="tabpanel" aria-labelledby="settings-notifications-tab" tabindex="0">
+                <div class="soft-card p-4"><h4 class="fw-bold mb-3">التنبيهات الإدارية</h4>
+                <p class="text-secondary">يعرض النظام إشعارات اعتماد العيادات والأحداث المرتبطة بمراجعة الأطباء والتسويات وفق البيانات الحقيقية المتاحة.</p>
+                <p class="mb-3">لا يوجد حاليًا محرّك تفضيلات لتعطيل نوع تنبيه معيّن من هذه الصفحة؛ لذلك أزلت المفاتيح الوهمية.</p>
+                <a class="btn btn-outline-primary" href="/admin/approvals">مراجعة طلبات العيادات</a>
+                </div>
+              </div>
+              <div class="tab-pane fade <%= adminSettingsSection==='security'?'show active':'' %>" id="security" role="tabpanel" aria-labelledby="settings-security-tab" tabindex="0">
+                <div class="soft-card p-4 mb-4">
+                  <div class="settings-section-head">
+                    <span class="icon-box"><i class="bi bi-shield-check"></i></span>
+                    <div>
+                      <h4 class="fw-bold mb-1">الأمان والتدقيق</h4>
+                      <small class="text-secondary">الإجراءات الحساسة تحتاج سببًا وتسجل في Audit
+                        Log.</small>
+                    </div>
+                  </div>
+<%- include('../partials/shared/mfa-manager', {mfaScope:'admin'}) %>
+                  <div class="alert alert-secondary mt-3">الإجراءات الحساسة محمية في الخادم وتُسجل في سجل النظام؛ لا يمكن تعطيلها من هذه الصفحة.</div>
+                  <%- include('../partials/shared/active-sessions', {sessionsScope:'admin'}) %>
+                </div>
+                <div class="soft-card p-4" id="sdc-password">
+                  <h4 class="fw-bold mb-3">كلمة المرور</h4><% if (typeof passwordChangeError !== "undefined" && passwordChangeError) { %><div class="alert alert-danger mt-2" role="alert" id="sdc-password"><%= passwordChangeError %><% if (typeof passwordChangeReference !== "undefined" && passwordChangeReference) { %> <small>(<%= sdcT("رمز التشخيص:") %> <%= passwordChangeReference %>)</small><% } %></div><% } %>
+
+                  <p class="text-secondary">لحماية حسابك، سيُنهي تغيير كلمة المرور جميع الجلسات ويطلب تسجيل الدخول من جديد.</p>
+                  <button class="btn btn-outline-primary" data-bs-target="#passwordModal" data-bs-toggle="modal" type="button">
+                    تغيير كلمة المرور
+                  </button>
+                </div>
+              </div>
+              <div class="tab-pane fade <%= adminSettingsSection==='account'?'show active':'' %>" id="account" role="tabpanel" aria-labelledby="settings-account-tab" tabindex="0">
+                <div class="soft-card p-4">
+                  <h4 class="fw-bold mb-2">حساب المشرف العام</h4><p class="text-secondary">يمكن تعديل الاسم والهاتف فقط. تغيير كلمة المرور وMFA والجلسات من تبويب الأمان.</p>
+                  <div class="row g-3 mt-2">
+                    <div class="col-md-6"><label for="adminFirst" class="form-label">الاسم الأول</label><input class="form-control" id="adminFirst" name="first_name" value="<%= adminPlatformSettings.account.first_name %>" maxlength="150" required form="backend-form-32"></div>
+                    <div class="col-md-6"><label for="adminLast" class="form-label">اسم العائلة</label><input class="form-control" id="adminLast" name="last_name" value="<%= adminPlatformSettings.account.last_name %>" maxlength="150" required form="backend-form-32"></div>
+                    <div class="col-md-6"><label for="adminEmail" class="form-label">البريد (للعرض فقط)</label><input class="form-control" id="adminEmail" value="<%= adminPlatformSettings.account.email %>" readonly></div>
+                    <div class="col-md-6"><label for="adminPhone" class="form-label">الهاتف</label><input class="form-control" id="adminPhone" name="phone" value="<%= adminPlatformSettings.account.phone %>" maxlength="30" required form="backend-form-32"></div>
+                  </div>
+                  <button class="btn btn-primary mt-4" type="submit" form="backend-form-32">حفظ بيانات الحساب</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="modal fade" id="passwordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-0 rounded-4">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold">تغيير كلمة المرور</h5>
+              <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+              <label class="form-label" for="field-25">كلمة المرور الحالية</label><input class="form-control mb-3" type="password" required value="" id="field-25" name="current_password" autocomplete="current-password" form="sdc-change-password-form"><label class="form-label">كلمة المرور الجديدة</label><input class="form-control mb-3" id="newAdminPassword" type="password" minlength="14" maxlength="128" required value="" name="new_password" autocomplete="new-password" form="sdc-change-password-form"><label class="form-label">تأكيد كلمة المرور</label><input class="form-control" id="confirmAdminPassword" type="password" minlength="14" maxlength="128" required value="" name="confirm_password" autocomplete="new-password" form="sdc-change-password-form">
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-light" data-bs-dismiss="modal" type="button">
+                إلغاء</button><button class="btn btn-primary" id="savePasswordBtn" form="sdc-change-password-form" type="submit">
+                تغيير
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><form id="backend-form-29" method="post" action="/admin/settings/finance" hidden=""><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"></form><form id="backend-form-32" method="post" action="/admin/settings/profile" hidden=""><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"></form><%- include('../partials/admin/footer') %><form id="sdc-change-password-form" action="/auth/change-password" method="post" hidden><input type="hidden" name="profile_scope" value="admin"><input type="hidden" name="csrf_token" value="<%= typeof passwordChangeCsrf !== 'undefined' ? passwordChangeCsrf : '' %>"></form><% if (typeof passwordChangeError !== 'undefined' && passwordChangeError) { %>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.bootstrap) {
+      const securityTab = document.getElementById('settings-security-tab');
+      if (securityTab) bootstrap.Tab.getOrCreateInstance(securityTab).show();
+    }
+  });
+</script>
+<% } %>
+<script defer src="/assets/i18n.js"></script>
+  </body></html>

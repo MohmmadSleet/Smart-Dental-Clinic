@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>التخصصات | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">التخصصات</span></nav>
+      <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+        <div><h1 class="fw-bold fs-2 mb-2">إدارة التخصصات</h1><p class="text-secondary mb-0">يدير Super Admin قائمة التخصصات المعتمدة للملفات المهنية للأطباء. خدمات العيادات وتخصيصها للأطباء مستقلة عن هذه القائمة.</p></div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#specialtyModal" data-catalog-specialty-new type="button"><i class="bi bi-plus-lg ms-1"></i>إضافة تخصص</button>
+      </div>
+      <% const catalogMessages = {"created": "تم إنشاء السجل وتوثيق العملية.", "updated": "تم حفظ التعديل وتوثيق العملية.", "deleted": "تم حذف السجل غير المستخدم.", "invalid": "المدخلات غير صالحة. تحقق من الأسماء وسبب الإجراء.", "duplicate": "يوجد سجل آخر بنفس الاسم العربي أو الإنجليزي.", "reserved": "هذا تخصص معتمد في تسجيل الأطباء؛ لا يمكن تغيير اسمه الإنجليزي الأساسي أو حذفه.", "in_use": "لا يمكن حذف سجل مرتبط ببيانات قائمة.", "history": "لا يمكن تغيير اسم خدمة مستخدمة في تاريخ الحجوزات أو العلاجات.", "unchanged": "لم تتغير البيانات.", "failed": "تعذّر إتمام العملية. راجع سجلات الخادم.", "schema": "هناك اختلاف في مخطط قاعدة البيانات. راجع سجلات الخادم.", "permission": "ليس لديك صلاحية لتنفيذ هذا الإجراء.", "constraint": "رفضت قاعدة البيانات العملية بسبب ارتباطات أو قيود حماية."}; %>
+    <% if (catalogNotice && catalogMessages[catalogNotice]) { %><div class="alert <%= ['created','updated','deleted'].includes(catalogNotice)?'alert-success':'alert-warning' %> rounded-4" role="status"><%= catalogMessages[catalogNotice] %></div><% } %>
+      <div class="filter-panel mb-4"><div class="row g-3"><div class="col-lg-5"><input class="form-control" id="specialtySearch" placeholder="ابحث بالتخصص..." aria-label="ابحث بالتخصص"></div>
+      </div></div>
+      <div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"><table class="table mb-0 admin-master-table medium-data-table responsive-stack-table system-data-table">
+        <thead><tr><th>التخصص</th><th>English</th><th>الأطباء</th><th>الإجراءات</th></tr></thead>
+        <tbody id="specialtyTableBody">
+          <% specialties.forEach(s => { %>
+          <tr data-specialty-row data-search="<%= s.ar %> <%= s.en %>" data-status="<%= s.active?'active':'disabled' %>">
+            <td data-label="التخصص" class="table-primary-cell"><strong data-ar><%= s.ar %></strong></td>
+            <td data-label="English" data-en><%= s.en %></td>
+            <td data-label="الأطباء"><%= s.doctors %></td>
+            <td data-label="الإجراءات" class="table-actions-cell"><div class="d-flex gap-1 table-action-grid">
+              <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#specialtyModal" data-catalog-specialty-edit data-id="<%= s.id %>" data-ar="<%= s.ar %>" data-en="<%= s.en %>" data-active="<%= s.active %>">تعديل</button>
+
+              <button class="btn btn-sm btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#catalogSensitiveModal" data-catalog-sensitive data-action="delete" data-kind="specialty" data-id="<%= s.id %>" data-name="<%= s.ar %>">حذف نهائي</button>
+            </div></td>
+          </tr><% }) %>
+        </tbody></table><div class="empty-state <%= specialties.length?'d-none':'' %>" id="specialtyEmpty">لا توجد تخصصات مطابقة.</div></div>
+      <p class="small text-secondary mt-3">لا يمكن حذف تخصص مرتبط بسجلات سابقة، أو أحد التخصصات الأساسية المستخدمة في تسجيل الأطباء. تُوثّق العمليات في سجل النظام.</p>
+    </section></main>
+    <div class="modal fade" id="specialtyModal" tabindex="-1" aria-labelledby="specialtyModalTitle"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+      <form method="post" action="/admin/specialties/create" id="specialtyForm"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+      <div class="modal-header"><h5 class="modal-title fw-bold" id="specialtyModalTitle">إضافة تخصص</h5><button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="إغلاق"></button></div>
+      <div class="modal-body"><label class="form-label" for="specialtyAr">الاسم بالعربية</label><input required maxlength="150" class="form-control mb-3" id="specialtyAr" name="ar">
+      <label class="form-label" for="specialtyEn">الاسم بالإنجليزية</label><input required maxlength="150" class="form-control mb-3" id="specialtyEn" name="en">
+      
+      <label class="form-label" for="specialtyReason">سبب الإجراء الإداري *</label><textarea required minlength="8" maxlength="1000" class="form-control" id="specialtyReason" name="reason" rows="3" placeholder="اكتب سببًا واضحًا"></textarea></div>
+      <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" id="saveSpecialtyBtn" type="submit">حفظ</button></div>
+      </form></div></div></div>
+
+    <div class="modal fade" id="catalogSensitiveModal" tabindex="-1" aria-labelledby="catalogSensitiveTitle"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+      <form id="catalogSensitiveForm" method="post"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+      <div class="modal-header"><h5 class="modal-title fw-bold" id="catalogSensitiveTitle">تأكيد إجراء إداري</h5><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+      <div class="modal-body"><div class="alert alert-warning rounded-4"><i class="bi bi-shield-exclamation ms-1"></i>لا يمكن حذف عنصر مستخدم في سجلات أخرى، وسبب الإجراء مطلوب.</div><p class="fw-semibold" id="catalogSensitiveName"></p>
+      <label class="form-label" for="catalogSensitiveReason">سبب الإجراء الإداري *</label><textarea required minlength="8" maxlength="1000" class="form-control" id="catalogSensitiveReason" name="reason" rows="4"></textarea></div>
+      <div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-primary" type="submit">تأكيد</button></div>
+      </form></div></div></div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+    <button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+    <%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

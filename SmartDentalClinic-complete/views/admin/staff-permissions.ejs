@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>صلاحيات موظفي العيادات | Super Admin</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+<section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">صلاحيات الموظفين</span></nav>
+  <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+    <div><span class="badge badge-soft mb-2">Clinic Staff Access</span>
+      <h1 class="fw-bold fs-2 mb-2">صلاحيات موظفي العيادات</h1>
+      <p class="text-secondary mb-0">مراجعة صلاحيات الموظفين عبر كل العيادات، مع الحفاظ على إدارة الصلاحيات داخل كل عيادة.</p>
+    </div>
+    <a class="btn btn-primary" href="/admin/users?role=staff"><i class="bi bi-people ms-1"></i>عرض حسابات الموظفين</a>
+  </div>
+  <% const staffMessages={noted:'تم تسجيل الملاحظة الرقابية دون تعديل عضوية الموظف أو صلاحياته.',invalid:'سبب الملاحظة غير صالح (من 8 إلى 1000 حرف).',not_found:'العضوية لم تعد موجودة.',failed:'تعذّر تسجيل الملاحظة حاليًا. لم يتم حفظها.'}; %>
+  <% if(staffNotice && staffMessages[staffNotice]){ %>
+    <div role="status" class="alert <%= staffNotice==='noted'?'alert-success':'alert-warning' %> rounded-4 mb-4"><%= staffMessages[staffNotice] %></div>
+  <% } %>
+  <div class="filter-panel mb-4"><form method="get" action="/admin/staff-permissions" class="row g-3">
+    <div class="col-lg-4"><label for="staffPermissionSearch" class="visually-hidden">الموظف أو العيادة</label>
+      <input class="form-control" id="staffPermissionSearch" name="q" placeholder="الموظف أو العيادة..." maxlength="100" value="<%= staffFilters.q %>"></div>
+    <div class="col-lg-3"><label for="staffPermissionClinic" class="visually-hidden">العيادة</label>
+      <select class="form-select" id="staffPermissionClinic" name="clinic">
+        <option value="">كل العيادات</option>
+        <% staffClinics.forEach(clinic=>{ %><option value="<%= clinic.id %>" <%= staffFilters.clinic===clinic.id?'selected':'' %>><%= clinic.name %></option><% }) %>
+      </select></div>
+    <div class="col-lg-3"><label for="staffPermissionRole" class="visually-hidden">الدور</label>
+      <select class="form-select" id="staffPermissionRole" name="role"><option value="">كل الأدوار</option>
+        <% Object.values(staffRoles).forEach(role=>{ %><option value="<%= role.name %>" <%= staffFilters.role===role.name?'selected':'' %>><%= role.label %></option><% }) %>
+      </select></div>
+    <div class="col-lg-2"><label for="staffPermissionStatus" class="visually-hidden">حالة العضوية</label>
+      <select class="form-select" id="staffPermissionStatus" name="status">
+        <option value="">كل الحالات</option>
+        <option value="active" <%= staffFilters.status==='active'?'selected':'' %>>فعال</option>
+        <option value="suspended" <%= staffFilters.status==='suspended'?'selected':'' %>>معلق</option>
+        <option value="inactive" <%= staffFilters.status==='inactive'?'selected':'' %>>مؤرشف</option>
+      </select></div>
+    <div class="col-12 d-flex align-items-center flex-wrap gap-2"><button type="submit" class="btn btn-primary">بحث وتصفية</button>
+      <a href="/admin/staff-permissions" class="btn btn-light border">مسح الفلاتر</a>
+      <span class="text-secondary small me-auto"><%= staffTotal %> <%= sdcT("عضوية مطابقة") %></span></div>
+  </form></div>
+  <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+    <table class="table align-middle mb-0 medium-data-table responsive-stack-table system-data-table">
+      <thead><tr><th>الموظف</th><th>العيادة</th><th>الدور</th><th>الصلاحيات الفعالة</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+      <tbody>
+        <% staffRows.forEach(entry=>{ %>
+          <tr data-permission-row>
+            <td data-label="الموظف" class="table-primary-cell"><%= entry.name %><div class="small text-secondary"><%= entry.email %> — U-<%= entry.user_id %></div></td>
+            <td data-label="العيادة"><a href="/admin/clinic-details?id=<%= entry.clinic_id %>&tab=staff"><%= entry.clinic_name %></a></td>
+            <td data-label="الدور"><%= entry.roleLabel %></td>
+            <td data-label="الصلاحيات الفعالة" class="table-status-cell"><span class="badge badge-soft"><%= entry.effective?entry.grantsCount:0 %> <%= sdcT("صلاحيات") %></span>
+              <% if(!entry.effective && entry.grantsCount){ %><span class="small text-secondary d-block"><%= sdcT("الصلاحيات محفوظة لكنها غير مفعّلة") %></span><% } %><% if(entry.unexpectedPermissions.length){ %><span class="small text-danger d-block"><%= sdcT("تنبيه:") %> <%= entry.unexpectedPermissions.length %> <%= sdcT("رمز صلاحية غير معروف") %></span><% } %>
+            </td>
+            <td data-label="الحالة" class="table-status-cell"><span class="badge <%= entry.effective?'text-bg-success':'text-bg-secondary' %>"><%= entry.effective?'فعال':entry.membership_status==='inactive'?'مؤرشف':entry.membership_status==='suspended'?'معلق':'غير متاح للدخول' %></span>
+              <% if(entry.membership_status==='active'&&!entry.effective){ %><small class="d-block text-secondary">راجع حالة الحساب أو العيادة</small><% } %>
+            </td>
+            <td data-label="الإجراءات" class="table-actions-cell"><div class="d-flex gap-1 table-action-grid flex-wrap">
+              <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#staffPermissionsModal"
+                data-staff-readonly data-name="<%= entry.name %>" data-clinic-name="<%= entry.clinic_name %>" data-permissions="<%= entry.permissions.join(',') %>" data-unknown-permissions="<%= entry.unexpectedPermissions.join(', ') %>">الصلاحيات</button>
+              <a class="btn btn-sm btn-outline-secondary" href="/admin/user-details?id=<%= entry.user_id %>">الحساب</a>
+              <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#sensitiveActionModal"
+                data-staff-note data-name="<%= entry.name %>" data-clinic-name="<%= entry.clinic_name %>" data-note-url="/admin/staff-permissions/<%= entry.user_id %>/<%= entry.clinic_id %>/note">ملاحظة رقابية</button>
+            </div></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% if(!staffRows.length){ %><div class="empty-state py-4 text-center">لا توجد عضويات موظفين مطابقة للفلاتر.</div><% } %>
+  </div>
+  <% if(staffPages>1){ const pageUrl=n=>{const params=new URLSearchParams({q:staffFilters.q,clinic:staffFilters.clinic,role:staffFilters.role,status:staffFilters.status,page:String(n)});return '/admin/staff-permissions?'+params.toString();}; %>
+    <nav class="mt-3 d-flex justify-content-center align-items-center gap-3" aria-label="صفحات عضويات الموظفين">
+      <% if(staffPage>1){ %><a class="btn btn-sm btn-outline-secondary" href="<%= pageUrl(staffPage-1) %>">السابق</a><% } %>
+      <span class="small text-secondary"><%= sdcT("صفحة") %> <%= staffPage %> <%= sdcT("من") %> <%= staffPages %></span>
+      <% if(staffPage<staffPages){ %><a class="btn btn-sm btn-outline-secondary" href="<%= pageUrl(staffPage+1) %>">التالي</a><% } %>
+    </nav>
+  <% } %>
+  <p class="text-secondary small mt-3">لكل موظف دور واحد داخل كل عيادة، وقد يعمل في عدة عيادات بصلاحيات مختلفة. تعديل العضويات والصلاحيات مسؤولية مدير العيادة فقط، والمشرف يراجعها هنا دون تعديلها.</p>
+</section></main>
+<div class="modal fade" id="staffPermissionsModal" tabindex="-1" aria-labelledby="staffPermissionTitle">
+  <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+    <div class="modal-header"><div><h5 class="modal-title fw-bold" id="staffPermissionTitle">صلاحيات الموظف (للعرض فقط)</h5>
+      <small class="text-secondary" id="staffPermissionsName"></small></div>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+    <div class="modal-body"><div class="row g-2">
+      <% const availableStaffPermissions=[
+        ['appointments.view','عرض المواعيد'],['appointments.manage','إدارة المواعيد'],
+        ['patients.view_directory','عرض دليل المرضى الإداري المحدود'],['patients.create','إضافة مريض'],
+        ['invoices.view','عرض الفواتير'],['payments.record','تسجيل دفعات'],
+        ['reports.view_operational','عرض التقارير التشغيلية'],['lab_orders.view','عرض الحالات المخبرية'],
+        ['lab_orders.update_delivery','تسجيل إرسال واستلام الحالات المخبرية'],['laboratories.manage','ربط مختبر وإدارة التعامل'],
+        ['invoices.issue','إصدار الفواتير']]; %>
+      <% availableStaffPermissions.forEach((permission,i)=>{ %>
+        <div class="col-md-6"><label class="border rounded-3 p-3 w-100"><input class="form-check-input ms-2" type="checkbox" data-staff-permission-code="<%= permission[0] %>" disabled><%= permission[1] %></label></div>
+      <% }) %>
+      <div class="col-12"><label class="border rounded-3 p-3 w-100 text-muted"><input class="form-check-input ms-2" type="checkbox" disabled>التشخيص والوصفات — غير متاحة لموظفي العيادة</label></div>
+    </div><p class="text-danger small mt-3 mb-0" id="staffUnknownPermissions" hidden></p>
+      <p class="text-secondary small mt-3 mb-0">صلاحيات هذه العضوية محفوظة في PostgreSQL ولا يمكن تغييرها من شاشة المشرف.</p></div>
+    <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إغلاق</button></div>
+  </div></div>
+</div>
+<div class="modal fade" id="sensitiveActionModal" tabindex="-1" aria-labelledby="sensitiveActionTitle">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+    <form method="post" action="/admin/staff-permissions" id="staffOversightForm">
+      <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+      <div class="modal-header"><div><h5 class="modal-title fw-bold" id="sensitiveActionTitle">إضافة ملاحظة رقابية</h5>
+        <small class="text-secondary" id="sensitiveActionSubtitle"></small></div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+      <div class="modal-body"><div class="alert alert-warning rounded-4"><i class="bi bi-shield-exclamation ms-1"></i>الملاحظة تُسجّل في سجل النظام فقط؛ لا تغيّر الدور أو الصلاحيات أو حالة الموظف.</div>
+        <label for="sensitiveActionReason" class="form-label">سبب الملاحظة الرقابية *</label>
+        <textarea class="form-control" id="sensitiveActionReason" name="reason" required minlength="8" maxlength="1000" rows="4"></textarea>
+      </div>
+      <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button>
+        <button type="submit" class="btn btn-primary">حفظ الملاحظة</button></div>
+    </form>
+  </div></div>
+</div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+    <button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+    <%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

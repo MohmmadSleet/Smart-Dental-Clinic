@@ -1,0 +1,30 @@
+<section class="soft-card p-4 mb-4" id="clinicPatients" aria-labelledby="patTitle">
+ <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3"><div><h2 class="h4 fw-bold mb-1" id="patTitle">مرضى العيادة</h2><p class="text-secondary small mb-0">قائمة الملفات المسجلة في هذه العيادة؛ التفاصيل الصحية محفوظة للأدوار الطبية المخولة.</p></div><span class="badge text-bg-light border"><%= patients.length %> <%= sdcT("مريض") %></span></div>
+ <div class="table-responsive"><table class="table align-middle"><thead><tr><th>المريض</th><th>الهاتف</th><th>آخر زيارة</th><th>الحساب</th></tr></thead><tbody>
+ <% for(const patient of patients){ %><tr><td><strong><%= patient.name %></strong> — P-<%= patient.id %></td><td><%= patient.phone||'—' %></td><td><%= patient.lastVisit||'لم يسجل زيارة' %></td><td><a class="btn btn-sm btn-outline-primary" href="/admin/user-details?id=<%= patient.user_id %>">الحساب الإداري</a> <details class="mt-2"><summary class="btn btn-sm btn-outline-secondary">تصحيح بيانات الاتصال</summary><form method="post" action="/admin/clinics/<%= clinic.id %>/patients/update" class="row g-2 mt-2">
+ <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="hidden" name="patient_id" value="<%= patient.id %>">
+ <div class="col-md-6"><input name="first_name" class="form-control form-control-sm" maxlength="150" required placeholder="الاسم الأول" value="<%= patient.first_name %>"></div>
+ <div class="col-md-6"><input name="last_name" class="form-control form-control-sm" maxlength="150" required placeholder="اسم العائلة" value="<%= patient.last_name %>"></div>
+ <div class="col-md-6"><input name="phone" class="form-control form-control-sm" maxlength="30" required placeholder="الهاتف" value="<%= patient.phone||'' %>"></div>
+ <div class="col-md-6"><input name="email" type="email" class="form-control form-control-sm" maxlength="254" placeholder="البريد (اختياري)" value="<%= patient.email||'' %>"></div>
+ <div class="col-12"><input name="reason" class="form-control form-control-sm" minlength="8" maxlength="1000" required placeholder="سبب التعديل الإداري"></div><div class="col-12"><button class="btn btn-sm btn-primary">حفظ التصحيح</button></div>
+ </form></details></td></tr><% } %>
+ <% if(!patients.length){ %><tr><td colspan="4" class="text-center text-secondary">لا توجد ملفات مرضى مرتبطة بهذه العيادة.</td></tr><% } %></tbody></table></div>
+ <details class="admin-record-edit mt-3"><summary class="btn btn-outline-primary">إضافة ملف مريض لهذه العيادة</summary>
+ <p class="text-secondary small mt-3">يُنشأ ملف تسجيل بالعيادة دون تفعيل تسجيل الدخول أو ربط تلقائي بحساب آخر. البيانات الصحية تُحفظ بخصوصيتها.</p>
+ <form method="post" action="/admin/clinics/<%= clinic.id %>/patients/create" class="row g-3 mt-1"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+ <div class="col-md-3"><label class="form-label">الاسم الأول<input name="clinic_patient_first_name" class="form-control" maxlength="150" required></label></div>
+ <div class="col-md-3"><label class="form-label">اسم العائلة<input name="clinic_patient_last_name" class="form-control" maxlength="150" required></label></div>
+ <div class="col-md-3"><label class="form-label">تاريخ الميلاد<input type="date" name="clinic_patient_birthdate" class="form-control" required></label></div>
+ <div class="col-md-3"><label class="form-label">الجنس<select name="clinic_patient_gender" class="form-select" required><option value="male">ذكر</option><option value="female">أنثى</option></select></label></div>
+ <div class="col-md-4"><label class="form-label">الهاتف<input name="clinic_patient_phone" class="form-control" maxlength="30" required></label></div>
+ <div class="col-md-4"><label class="form-label">البريد (اختياري)<input name="clinic_patient_email" type="email" class="form-control"></label></div>
+ <div class="col-md-4"><label class="form-label">فصيلة الدم<select name="blood_type" class="form-select" required><% for(const b of ['unknown','O+','O-','A+','A-','B+','B-','AB+','AB-']){ %><option value="<%= b %>"><%= b==='unknown'?'غير معروفة':b %></option><% } %></select></label></div>
+ <div class="col-md-4"><label class="form-label">الحساسية (كل بند بسطر)<textarea name="clinic_patient_allergies" rows="2" class="form-control" placeholder="لا يوجد أو اسم الحساسية"></textarea></label></div>
+ <div class="col-md-4"><label class="form-label">الأمراض المزمنة (كل بند بسطر)<textarea name="clinic_patient_chronic_diseases" rows="2" class="form-control"></textarea></label></div>
+ <div class="col-md-4"><label class="form-label">الأدوية الحالية (كل بند بسطر)<textarea name="clinic_patient_current_medications" rows="2" class="form-control"></textarea></label></div>
+ <div class="col-12"><label class="form-label w-100">ملاحظات صحية<input name="health_notes" class="form-control" maxlength="3000" required placeholder="لا توجد ملاحظات صحية مسجلة"></label></div>
+ <div class="col-12"><label class="form-label w-100">سبب الإنشاء الإداري<input name="reason" required minlength="8" maxlength="1000" class="form-control"></label></div>
+ <div class="col-12"><button class="btn btn-primary">إنشاء الملف</button></div>
+ </form></details>
+</section>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تفاصيل الطبيب | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">ملف الطبيب</span></nav>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="doctors">الأطباء</a></li>
+            <li class="breadcrumb-item active"><%= sdcT("الطبيب #") %><%= doctor.id %></li>
+          </ol>
+        </nav>
+        <% const licenseLabels={pending:'بانتظار المراجعة',verified:'موثّق',rejected:'مرفوض'}; %>
+        <% const accountLabels={active:'فعال',suspended:'موقوف',pending:'بانتظار التفعيل',disabled:'معطّل'}; %>
+        <% const dayNames=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']; %>
+        <% const noticeLabels={suspend:'تم تعليق حساب الطبيب.',resume:'تمت إعادة تفعيل حساب الطبيب.',edit:'تم حفظ التعديل الإداري وتوثيقه.', 'edit-profile':'تم تحديث بيانات حساب الطبيب وتوثيق السبب.',bookings:'لا يمكن تعليق الحساب أو تغيير الترخيص لوجود حجوزات قادمة أو زيارة جارية.',manager:'الطبيب يدير عيادة فعالة. يجب نقل إدارة العيادة أولًا.',duplicate:'رقم الترخيص مستخدم لدى طبيب آخر.',invalid:'البيانات غير صحيحة. تحقق من الحقول وسبب الإجراء.',unchanged:'الحالة الحالية لا تسمح بهذا الإجراء أو لم تتغير البيانات.',not_deletable:'الحذف مخصص لتسجيل طبيب غير مُفعل ولم يُستخدم.',in_use:'توجد سجلات أو ارتباطات تمنع الحذف النهائي.',failed:'تعذّر حفظ التعديل. راجع سجل الخادم.',schema:'تعذّر إكمال الإجراء بسبب اختلاف في قاعدة البيانات.',permission:'لا تملك الصلاحية لهذا الإجراء.'}; %>
+        <% if(doctorNotice) { %><div class="alert <%= ['suspend','resume','edit'].includes(doctorNotice)?'alert-success':'alert-warning' %>" role="status"><%= noticeLabels[doctorNotice] %></div><% } %>
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+          <div><div class="d-flex gap-2 flex-wrap mb-2">
+            <span class="badge <%= doctor.account_status==='active'?'text-bg-success':doctor.account_status==='suspended'?'text-bg-warning':'text-bg-secondary' %>" id="adminPrimaryEntityStatus"><%= accountLabels[doctor.account_status] || doctor.account_status %></span>
+            <span class="badge text-bg-light border" id="detailDoctorCode"><%= sdcT("الطبيب #") %><%= doctor.id %></span>
+            <span class="badge <%= doctor.license_status==='verified'?'text-bg-success':doctor.license_status==='rejected'?'text-bg-danger':'text-bg-warning' %>"><%= licenseLabels[doctor.license_status]||doctor.license_status %></span>
+          </div><h1 class="fw-bold fs-2 mb-2" id="detailDoctorName"><%= sdcT("د.") %> <%= doctor.first_name %> <%= doctor.last_name %></h1>
+            <p class="text-secondary mb-0"><%= doctor.email %> • <%= doctor.phone %></p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <% if(doctor.account_status==='active' && doctor.license_status==='verified') { %>
+            <button class="btn btn-outline-warning" data-bs-target="#sensitiveActionModal" data-bs-toggle="modal" type="button">إيقاف الطبيب</button>
+            <% } else if(doctor.account_status==='suspended' && doctor.license_status==='verified') { %>
+            <form action="/admin/doctor-details/<%= doctor.id %>/resume" method="post" class="d-flex gap-2 align-items-center flex-wrap">
+              <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="text" class="form-control" name="reason" placeholder="سبب إعادة التفعيل (8 أحرف على الأقل)" minlength="8" maxlength="1000" required>
+              <button class="btn btn-outline-success" type="submit" onclick="return confirm('إعادة تفعيل حساب الطبيب؟')">إعادة تفعيل</button>
+            </form>
+            <% } %>
+            
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#doctorAccountProfileModal" type="button">تعديل بيانات الحساب</button>
+            <a href="#adminDeleteDecision" class="btn btn-outline-danger">حذف الطبيب</a>
+            <button class="btn btn-primary" data-bs-target="#doctorAdminEditModal" data-bs-toggle="modal" type="button">تعديل إداري</button>
+            <a class="btn btn-outline-primary" href="/admin/doctor-license-review?id=<%= doctor.id %>">مراجعة الترخيص</a>
+          </div>
+        </div>
+        
+        <section id="adminDeleteDecision" class="alert alert-light border border-danger-subtle rounded-4 mb-4" aria-label="سياسة حذف الطبيب">
+          <strong>حذف الطبيب:</strong> <%= sdcT("متاح فقط لتسجيل غير مُفعَّل (ترخيص قيد المراجعة أو مرفوض)، دون دخول سابق أو عضويات أو حجوزات أو تاريخ طبي أو مالي أو جلسات. أي ارتباط آخر يمنع الحذف آليًا، ويمكن استخدام تعليق الحساب عندما يكون مؤهلًا.") %>
+          <% if(['pending','rejected'].includes(doctor.license_status)&&doctor.account_status!=='active'&&!doctor.login_enabled&&!clinics.length&&!bookings.length&&!applications.length&&!schedules.length&&!absences.length){ %>
+          <form method="post" class="mt-3 row g-2" action="/admin/doctor-details/<%= doctor.id %>/delete" onsubmit="return confirm('تأكيد حذف تسجيل الطبيب غير المستخدم نهائيًا؟')">
+           <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+           <div class="col-md-9"><label class="form-label">سبب الحذف الإداري (إلزامي)<input class="form-control" name="reason" minlength="8" maxlength="1000" required></label></div>
+           <div class="col-md-3 d-flex align-items-end"><button class="btn btn-outline-danger w-100">حذف تسجيل غير مستخدم</button></div>
+          </form><% } %>
+        </section>
+        <div class="row g-4 mb-4"><div class="col-lg-8"><div class="soft-card p-4">
+          <h4 class="fw-bold mb-3">البيانات المهنية</h4><div class="row g-3">
+            <div class="col-md-6"><label class="form-label">التخصصات</label><input class="form-control" id="detailDoctorSpecialty" readonly value="<%= specialties.map(x=>x.name).join('، ')||'غير محدد' %>"></div>
+            <div class="col-md-6"><label class="form-label">رقم الترخيص</label><input class="form-control" id="detailDoctorLicense" readonly value="<%= doctor.license %>"></div>
+            <div class="col-md-6"><label class="form-label">حالة التحقق</label><input class="form-control" id="detailDoctorVerification" readonly value="<%= licenseLabels[doctor.license_status]||doctor.license_status %>"></div>
+            <div class="col-md-6"><label class="form-label">العيادات الحالية</label><input class="form-control" id="detailDoctorClinic" readonly value="<%= clinics.filter(x=>x.status==='active').map(x=>x.name).join('، ')||'لا يوجد ارتباط فعال' %>"></div>
+          </div><div class="text-secondary small mt-3"><%= sdcT("سنوات الخبرة:") %> <%= doctor.experience ?? 'غير محددة' %><% if(doctor.bio){ %> — <%= doctor.bio %><% } %></div>
+        </div></div><div class="col-lg-4"><div class="soft-card p-4 h-100"><h4 class="fw-bold mb-3">حالة إعداد الطبيب</h4>
+          <div class="summary-row"><span>الحساب</span><strong><%= accountLabels[doctor.account_status] || doctor.account_status %></strong></div>
+          <div class="summary-row"><span>الترخيص</span><strong><%= licenseLabels[doctor.license_status]||doctor.license_status %></strong></div>
+          <div class="summary-row"><span>العيادات المرتبطة</span><strong><%= clinics.length %></strong></div>
+          <div class="summary-row"><span>مالك/مدير عيادة</span><strong><%= clinics.some(x=>x.manager)?'نعم':'لا' %></strong></div>
+          <% clinics.forEach(function(c){ %><div class="summary-row"><span><%= c.name %> — <%= c.status %></span>
+            <a class="btn btn-sm btn-outline-primary" href="/admin/clinic-details?id=<%= c.id %>">فتح العيادة</a></div><% }); %>
+        </div></div></div>
+        <ul class="nav admin-tabs mb-4" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-target="#docAppointments" data-bs-toggle="pill" aria-current="page" aria-selected="true" role="tab" type="button">
+              المواعيد
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#docSetup" data-bs-toggle="pill" aria-selected="false" tabindex="-1" role="tab" type="button">
+              المسار والطلبات
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#docLicense" data-bs-toggle="pill" aria-selected="false" tabindex="-1" role="tab" type="button">
+              الترخيص
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#docSchedule" data-bs-toggle="pill" aria-selected="false" tabindex="-1" role="tab" type="button">
+              الجدول والغيابات
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="docAppointments" role="tabpanel"><div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell">
+            <table class="table mb-0 admin-master-table medium-data-table responsive-stack-table system-data-table"><thead><tr><th>#</th><th>المريض</th><th>الخدمة</th><th>العيادة</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody>
+              <% if(!bookings.length){ %><tr><td colspan="6" class="text-center text-secondary py-4">لا توجد مواعيد لهذا الطبيب.</td></tr><% } %>
+              <% bookings.forEach(function(b){ %><tr><td data-label="#" class="table-primary-cell"><a href="/admin/appointment-details?id=<%= b.id %>">#<%= b.id %></a></td>
+                <td data-label="المريض"><%= b.patient %></td><td data-label="الخدمة"><%= b.service %></td><td data-label="العيادة"><%= b.clinic %></td>
+                <td data-label="التاريخ"><%= b.date %> — <%= b.start_time %></td><td data-label="الحالة"><span class="badge text-bg-light border"><%= b.status %></span></td></tr><% }); %>
+            </tbody></table></div></div>
+          <div class="tab-pane fade" id="docSetup" role="tabpanel"><div class="row g-4"><div class="col-lg-6"><div class="soft-card p-4 h-100">
+            <h4 class="fw-bold mb-3">مسار الحساب والعيادات</h4><div class="summary-row"><span>حالة الحساب</span><strong><%= accountLabels[doctor.account_status] || doctor.account_status %></strong></div>
+            <% if(!clinics.length){ %><p class="text-secondary mb-0">لا توجد عضويات عيادة.</p><% } %>
+            <% clinics.forEach(function(c){ %><div class="summary-row"><span><%= c.name %><%= c.manager?' (مدير)':'' %></span><strong><%= c.status %></strong></div><% }); %>
+          </div></div><div class="col-lg-6"><div class="soft-card p-4 h-100"><h4 class="fw-bold mb-3">طلبات الوظائف</h4>
+            <% if(!applications.length){ %><p class="text-secondary mb-0">لا توجد طلبات وظائف لهذا الطبيب.</p><% } %>
+            <% applications.forEach(function(a){ %><div class="summary-row"><span><a href="/admin/job-application-details?id=<%= a.id %>"><%= a.title %> — <%= a.clinic %> (#<%= a.id %>)</a></span><strong><%= a.status %></strong></div><% }); %>
+          </div></div></div></div>
+          <div class="tab-pane fade" id="docLicense" role="tabpanel"><div class="soft-card p-4">
+            <div class="summary-row"><span>رقم الترخيص</span><strong><%= doctor.license %></strong></div>
+            <div class="summary-row"><span>حالة التحقق</span><strong><%= licenseLabels[doctor.license_status]||doctor.license_status %></strong></div>
+            <div class="summary-row"><span>المراجع</span><strong><%= doctor.reviewer || 'لم يراجع بعد' %></strong></div>
+            <% if(doctor.review_notes){ %><div class="summary-row"><span>ملاحظات المراجعة</span><strong><%= doctor.review_notes %></strong></div><% } %>
+            <% if(doctor.submission_note){ %><div class="summary-row"><span>ملاحظة مقدم الطلب</span><strong><%= doctor.submission_note %></strong></div><% } %>
+            <a class="btn btn-sm btn-outline-primary mt-3" href="/admin/doctor-license-review?id=<%= doctor.id %>">فتح مراجعة الترخيص</a>
+          </div></div>
+          <div class="tab-pane fade" id="docSchedule" role="tabpanel"><div class="row g-4"><div class="col-lg-7"><div class="soft-card p-4">
+            <h4 class="fw-bold mb-3">جدول الدوام</h4>
+            <% if(!schedules.length){ %><p class="text-secondary mb-0">لا توجد فترات دوام مسجلة.</p><% } %>
+            <% schedules.forEach(function(h){ %><div class="summary-row"><span><%= h.clinic %> — <%= dayNames[Number(h.day)]||'يوم غير محدد' %></span><strong><%= h.starts %> — <%= h.ends %><%= h.active?'':' (غير نشط)' %></strong></div><% }); %>
+          </div></div><div class="col-lg-5"><div class="soft-card p-4 h-100"><h4 class="fw-bold mb-3">الغيابات</h4>
+            <% if(!absences.length){ %><p class="text-secondary mb-0">لا توجد غيابات مسجلة.</p><% } %>
+            <% absences.forEach(function(a){ %><div class="summary-row"><span><%= a.clinic %> — <%= a.starts %> <%= sdcT("إلى") %> <%= a.ends %></span><strong><%= a.reason %></strong></div><% }); %>
+          </div></div></div></div>
+        </div>
+      </section>
+      <div class="modal fade" id="doctorAccountProfileModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><h5 class="modal-title fw-bold">تعديل اسم الطبيب وهاتفه</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+        <form method="post" action="/admin/doctor-details/<%= doctor.id %>/edit-profile">
+         <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+         <div class="modal-body"><p class="small text-secondary">العملية لا تغيّر رقم الترخيص أو الصلاحيات أو البيانات الطبية. لتغيير البريد يلزم مسار تحقق مستقل.</p><div class="row g-3">
+          <div class="col-md-6"><label for="doctorAccountFirst" class="form-label">الاسم الأول</label><input id="doctorAccountFirst" class="form-control" name="first_name" value="<%= doctor.first_name %>" maxlength="150" required></div>
+          <div class="col-md-6"><label for="doctorAccountLast" class="form-label">اسم العائلة</label><input id="doctorAccountLast" class="form-control" name="last_name" value="<%= doctor.last_name %>" maxlength="150" required></div>
+          <div class="col-md-6"><label for="doctorAccountPhone" class="form-label">رقم الهاتف</label><input id="doctorAccountPhone" class="form-control" name="phone" value="<%= doctor.phone||'' %>" maxlength="30" required></div>
+          <div class="col-12"><label for="doctorAccountReason" class="form-label">سبب التصحيح الإداري</label><textarea id="doctorAccountReason" class="form-control" name="reason" rows="3" minlength="8" maxlength="1000" required></textarea></div>
+         </div></div><div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button type="submit" class="btn btn-primary">حفظ التصحيح</button></div>
+        </form></div></div></div>
+      <div class="modal fade" id="doctorAdminEditModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><h5 class="modal-title fw-bold">تعديل إداري للطبيب</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+        <form method="post" action="/admin/doctor-details/<%= doctor.id %>/edit">
+          <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+          <div class="modal-body"><div class="alert alert-warning">تغيير رقم الترخيص يعيد حالته إلى «بانتظار المراجعة» ويوقف دخول الطبيب حتى يعتمد المشرف الرقم الجديد. يُمنع التغيير إذا كانت هناك حجوزات قادمة أو عيادة فعّالة يديرها الطبيب.</div><div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="field-1">إضافة تخصص</label><select class="form-select" id="field-1" name="specialty_id"><option value="">بدون تغيير</option>
+              <% allSpecialties.forEach(function(x){ %><option value="<%= x.id %>"><%= x.name %></option><% }); %></select></div>
+            <div class="col-md-6"><label class="form-label" for="field-2">العيادات</label><input class="form-control" id="field-2" readonly value="<%= clinics.filter(x=>x.status==='active').map(x=>x.name).join('، ')||'لا توجد عيادات فعالة' %>"></div>
+            <div class="col-md-6"><label class="form-label" for="field-3">رقم الترخيص</label><input class="form-control" value="<%= doctor.license %>" id="field-3" name="license_number" minlength="3" maxlength="150" required></div>
+            <div class="col-md-6"><label class="form-label">سبب التعديل الإداري *</label><input class="form-control" id="doctorDetailAdminReason" placeholder="اكتب سببًا واضحًا للإجراء" name="reason" minlength="8" maxlength="1000" required></div>
+          </div></div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button>
+            <button class="btn btn-primary" id="saveDoctorAdminEdit" type="submit" onclick="return confirm('هل تريد حفظ التغيير الإداري؟ تغيير رقم الترخيص يعطل دخول الطبيب حتى المراجعة.')">حفظ</button></div>
+        </form></div></div></div>
+    </main>
+    <div class="modal fade" id="viewModal" tabindex="-1">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 rounded-4">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title fw-bold" id="viewTitle"></h5>
+              <small class="text-secondary" id="viewSubtitle"></small>
+            </div>
+            <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+          </div>
+          <div class="modal-body" id="viewBody"></div>
+          <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal" type="button">إغلاق</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sensitiveActionModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+      <div class="modal-header"><h5 class="modal-title fw-bold">إيقاف الطبيب</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+      <form method="post" action="/admin/doctor-details/<%= doctor.id %>/suspend">
+        <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><div class="modal-body">
+          <div class="alert alert-warning rounded-4">لن يتم تعليق الطبيب إذا كانت لديه حجوزات قادمة أو زيارة جارية أو كان مديرًا لعيادة معتمدة وفعالة.</div>
+          <label class="form-label" for="sensitiveActionReason">سبب الإجراء الإداري *</label>
+          <textarea class="form-control" id="sensitiveActionReason" name="reason" rows="4" minlength="8" maxlength="1000" required></textarea>
+        </div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button>
+          <button class="btn btn-warning" type="submit" onclick="return confirm('تأكيد تعليق حساب الطبيب؟')">تأكيد الإيقاف</button></div>
+      </form></div></div></div>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

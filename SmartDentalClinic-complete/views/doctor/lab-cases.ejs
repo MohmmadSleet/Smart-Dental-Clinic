@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html data-style-sections="section-5" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>الحالات المخبرية | Smart Dental Doctor</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/doctor/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="mb-4"><span class="badge badge-soft mb-2">My Lab Cases</span><h1 class="fw-bold">الحالات المخبرية المرتبطة بمرضاي</h1><p class="text-secondary mb-0">تابع الأعمال المرتبطة بزيارات مرضاك، وسجّل التركيب بعد أن تؤكد العيادة استلام العمل من المختبر.</p></div>
+        <div class="alert alert-info border-0 rounded-4"><strong>الصلاحيات:</strong> الطبيب ينشئ الطلب من الزيارة ويسجّل التركيب، والعيادة مسؤولة عن الإرسال والاستلام. المختبرات تديرها إدارة النظام.</div>
+        <% if (labFeedback) { %><div class="alert alert-success rounded-4" role="status"><i class="bi bi-check-circle ms-2"></i><%= labFeedback %></div><% } %>
+        <% if (labError) { %><div class="alert alert-warning rounded-4" role="alert"><i class="bi bi-exclamation-triangle ms-2"></i><%= labError %></div><% } %>
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-xl-3"><div class="soft-card p-3 h-100"><div class="small text-secondary">إجمالي الطلبات</div><div class="h4 fw-bold mt-1 mb-0"><%= stats.total %></div></div></div>
+          <div class="col-6 col-xl-3"><div class="soft-card p-3 h-100"><div class="small text-secondary">بانتظار الإرسال</div><div class="h4 fw-bold mt-1 mb-0"><%= stats.draft %></div></div></div>
+          <div class="col-6 col-xl-3"><div class="soft-card p-3 h-100"><div class="small text-secondary">تم الاستلام</div><div class="h4 fw-bold mt-1 mb-0"><%= stats.received %></div></div></div>
+          <div class="col-6 col-xl-3"><div class="soft-card p-3 h-100"><div class="small text-secondary">اكتمل التركيب</div><div class="h4 fw-bold mt-1 mb-0"><%= stats.installed %></div></div></div>
+        </div>
+<div class="doctor-section-title mb-3"><h2 class="h5 fw-bold mb-0">متابعة الطلبات المخبرية</h2><span class="text-secondary small">اختر المختبر والحالة، ثم افتح تفاصيل العمل عند الحاجة</span></div>
+        <div class="filter-panel mb-4"><div class="row g-3">
+          <div class="col-lg-5"><label class="form-label small" for="doctorLabSearch">بحث</label><input class="form-control" id="doctorLabSearch" type="search" placeholder="رقم الطلب أو المريض أو العمل" autocomplete="off"></div>
+          <div class="col-lg-3"><label class="form-label small" for="doctorLabFilter">المختبر</label><select class="form-select" id="doctorLabFilter"><option value="all">كل المختبرات</option><% for (const lab of labs) { %><option value="<%= lab.id %>"><%= lab.name %></option><% } %></select></div>
+          <div class="col-lg-4"><label class="form-label small" for="doctorLabStatus">الحالة</label><select class="form-select" id="doctorLabStatus"><option value="all">كل الحالات</option><option value="draft">بانتظار الإرسال</option><option value="sent">تم الإرسال</option><option value="received">تم الاستلام</option><option value="installed">تم التركيب</option><option value="cancelled">ملغي</option><option value="archived">مؤرشف</option></select></div>
+        </div></div>
+<div class="doctor-section-title mb-3"><h2 class="h5 fw-bold mb-0">قائمة الطلبات</h2></div>
+        <div class="soft-card p-3"><div class="table-responsive mobile-stack-wrapper table-ui-shell"><table class="table align-middle mb-0 wide-data-table responsive-stack-table system-data-table"><thead class="table-light"><tr><th>الرقم</th><th>المريض</th><th>المختبر</th><th>العمل / الأسنان</th><th>الحالة</th><th>التسليم المتوقع</th><th>إجراء الطبيب</th></tr></thead><tbody>
+        <% const labels={draft:'بانتظار الإرسال',sent:'تم الإرسال',received:'تم الاستلام',installed:'تم تركيب جميع الأعمال',cancelled:'ملغي',archived:'مؤرشف',other:'حالة أخرى'}; %>
+        <% const badges={draft:'text-bg-secondary',sent:'text-bg-primary',received:'text-bg-success',installed:'text-bg-success',cancelled:'text-bg-danger',archived:'text-bg-secondary',other:'text-bg-secondary'}; %>
+        <% for (const order of cases) { %>
+          <tr data-lab-row data-lab="<%= order.laboratory_id %>" data-status="<%= order.display_status %>" data-search="<%= [order.id,order.patient_name,order.laboratory,order.items.map(i=>[i.work,i.tooth,i.material,i.shade].join(' ')).join(' ')].join(' ') %>">
+            <td data-label="الرقم" class="table-primary-cell"><strong>#<%= order.id %></strong><div class="small mt-1"><a href="/doctor/visit?booking_id=<%= order.booking_id %>">فتح الزيارة</a></div></td>
+            <td data-label="المريض"><%= order.patient_name %></td>
+            <td data-label="المختبر"><%= order.laboratory %></td>
+            <td data-label="العمل / الأسنان">
+              <% if (order.items.length) { %><%= order.items.map(i=>i.work).slice(0,2).join('، ') %><% if(order.items.length>2){ %> <span class="text-secondary"><%= sdcT("و") %><%= order.items.length-2 %> <%= sdcT("أخرى") %></span><% } %>
+              <div class="small text-secondary">الأعمال: <%= order.total_items %> — تم التركيب: <%= order.installed_count %></div>
+              <% } else { %><span class="text-secondary">لا توجد أعمال مرتبطة بعد</span><% } %>
+            </td>
+            <td data-label="الحالة" class="table-status-cell"><span class="badge <%= badges[order.display_status]||badges.other %>"><%= labels[order.display_status]||labels.other %></span><% if(order.status==='received'&&order.installed_count>0&&order.installed_count<order.total_items){ %><div class="small text-secondary mt-1">تركيب جزئي</div><% } %></td>
+            <td data-label="التسليم المتوقع"><%= order.due||'—' %></td>
+            <td data-label="إجراء الطبيب" class="table-actions-cell">
+              <details class="sdc-lab-expander"><summary><i class="bi bi-list-check" aria-hidden="true"></i><span>الأعمال المخبرية (<%= order.items.length %>)</span><i class="bi bi-chevron-down sdc-expander-chevron" aria-hidden="true"></i></summary>
+                <section class="sdc-panel sdc-panel--integrated" aria-label="أعمال الطلب المخبري"><div class="sdc-panel-head"><span class="sdc-panel-icon" aria-hidden="true"><i class="bi bi-box-seam"></i></span><div class="sdc-panel-head-copy"><h5>تفاصيل الأعمال المخبرية</h5><p>تسجيل التركيب متاح فقط بعد استلام العيادة للطلب.</p></div></div><div class="sdc-panel-body">
+                <% if(order.notes){ %><p class="small text-secondary"><strong>ملاحظات الطلب:</strong> <%= order.notes %></p><% } %>
+                <% if(order.received_at){ %><p class="small text-secondary"><strong>استلمته العيادة:</strong> <%= order.received_at %></p><% } %>
+                <% for (const item of order.items){ %>
+                  <div class="d-flex justify-content-between align-items-center gap-2 border-bottom py-2 flex-wrap">
+                    <div class="small"><strong><%= item.work %></strong><% if(item.tooth){ %> <%= sdcT("• سن") %> <%= item.tooth %><% } %><% if(item.material){ %> • <%= item.material %><% } %><% if(item.shade){ %> • درجة <%= item.shade %><% } %><% if(item.quantity){ %> • الكمية <%= item.quantity %><% } %>
+                      <% if(item.area){ %><div class="text-secondary"><%= item.area %></div><% } %>
+                      <% if(item.instructions){ %><div class="text-secondary"><%= item.instructions %></div><% } %>
+                    </div>
+                    <% if(item.installed_at){ %><span class="badge text-bg-success"><%= sdcT("تم التركيب") %> <%= item.installed_at %></span>
+                    <% }else if(order.status==='received'&&order.received_at){ %>
+                      <form method="post" action="/doctor/lab-cases/<%= order.id %>/items/<%= item.id %>/install" data-doctor-lab-install>
+                        <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-sm btn-outline-success">تسجيل تركيب</button>
+                      </form>
+                    <% } else { %><span class="small text-secondary">بانتظار استلام العيادة</span><% } %>
+                  </div>
+                <% } %>
+                <% if(!order.items.length){ %><p class="text-secondary small mb-0">لم تضاف أعمال إلى الطلب.</p><% } %>
+                <p class="sdc-lab-summary mt-3 mb-0">تم تركيب <%= order.installed_count %> <%= sdcT("من") %> <%= order.total_items %> أعمال.</p>
+              </div></section></details>
+            </td>
+          </tr>
+        <% } %>
+        </tbody></table></div>
+
+<div class="doctor-pagination soft-card p-3 mt-3" data-doctor-pager="lab-cases" aria-live="polite" hidden>
+  <span class="doctor-pagination-info" data-page-summary></span>
+  <nav aria-label="صفحات lab-cases" class="doctor-pagination-controls" data-page-controls></nav>
+</div><div class="alert alert-light border mt-3" data-doctor-empty="lab-cases" hidden role="status">لا توجد نتائج تطابق البحث أو الفلاتر المحددة.</div>
+        <div class="text-center p-4 <%= cases.length?'d-none':'' %>" id="doctorLabEmpty"><span class="text-secondary"><%= cases.length?'لا توجد حالات مطابقة للفلاتر.':'لا توجد طلبات مخبرية مرتبطة بزيارات مرضاك في العيادة المحددة.' %></span></div></div>
+      </section>
+    </main>
+    <%- include('../partials/doctor/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><script defer src="/assets/i18n.js"></script>
+  </body></html>

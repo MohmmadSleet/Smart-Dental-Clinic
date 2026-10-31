@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>استكمال الملف الصحي | Smart Dental Clinic</title>
+  <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+  <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/styles.css" rel="stylesheet">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+<body class="patient-visual-page patient-page-health-setup">
+  <a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+  <%- include('../partials/patient/header') %>
+  <main class="page-shell bg-light min-vh-100 py-4 py-lg-5" id="main-content">
+    <section class="container" style="max-width:900px">
+      <div class="d-flex align-items-start gap-3 mb-4">
+        <div class="bg-primary-subtle text-primary rounded-3 p-3 fs-3"><i class="bi bi-shield-plus"></i></div>
+        <div><span class="badge badge-soft mb-2">خطوة مطلوبة عند أول دخول</span>
+          <h1 class="fw-bold h3 mb-2">أكمل معلوماتك الصحية</h1>
+          <p class="text-secondary mb-0">قبل البدء بالحجز واستخدام النظام، نحتاج خمس معلومات أساسية حتى يطّلع الطبيب على ملف صحي واضح عند الزيارة.</p>
+        </div>
+      </div>
+      <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 p-lg-5">
+        <div class="alert alert-info border-0 rounded-3 d-flex gap-2 align-items-start small" role="note">
+          <i class="bi bi-info-circle fs-5 flex-shrink-0"></i>
+          <span>كل حقل مطلوب. إن لم تكن لديك حساسية أو أمراض مزمنة أو أدوية، اكتب «لا يوجد». وإذا لم تعرف فصيلة دمك، اختر «غير معروف» بدل التخمين. يمكنك تحديث هذه المعلومات لاحقًا من حسابك.</span>
+        </div>
+        <% if(setupError){ %><div class="alert alert-danger" role="alert"><%= setupError %></div><% } %>
+        <form action="/patient/health-setup" method="post" id="health-setup-form">
+          <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label for="setup-blood" class="form-label fw-bold">فصيلة الدم <span class="text-danger">*</span></label>
+              <select id="setup-blood" name="blood_type" class="form-select" required>
+                <option value="">اختر فصيلة الدم</option>
+                <% for(const choice of ['unknown','O+','O-','A+','A-','B+','B-','AB+','AB-']){ %>
+                  <option value="<%= choice %>" <%= setupValues?.blood_type===choice?'selected':'' %>><%= choice==='unknown'?'غير معروف':choice %></option>
+                <% } %>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="setup-allergies" class="form-label fw-bold">الحساسية <span class="text-danger">*</span></label>
+              <textarea id="setup-allergies" name="allergies" class="form-control" rows="2" required maxlength="7000" placeholder="مثل: البنسلين — أو لا يوجد"><%= setupValues?.allergies||'' %></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="setup-chronic" class="form-label fw-bold">الأمراض المزمنة <span class="text-danger">*</span></label>
+              <textarea id="setup-chronic" name="chronic_diseases" class="form-control" rows="2" required maxlength="7000" placeholder="مثل: السكري — أو لا يوجد"><%= setupValues?.chronic_diseases||'' %></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="setup-medications" class="form-label fw-bold">الأدوية الحالية <span class="text-danger">*</span></label>
+              <textarea id="setup-medications" name="current_medications" class="form-control" rows="2" required maxlength="7000" placeholder="اسم الدواء — أو لا يوجد"><%= setupValues?.current_medications||'' %></textarea>
+            </div>
+            <div class="col-12">
+              <label for="setup-notes" class="form-label fw-bold">الملاحظات الصحية <span class="text-danger">*</span></label>
+              <textarea id="setup-notes" name="health_notes" class="form-control" rows="3" required maxlength="3000" placeholder="أي معلومات أخرى مهمة قبل العلاج، أو لا يوجد"><%= setupValues?.health_notes||'' %></textarea>
+            </div>
+            <div class="col-12">
+              <div class="form-check rounded-3 bg-light p-3 ps-4 border">
+                <input class="form-check-input" type="checkbox" id="setup-confirm" name="health_confirm" value="on" required <%= setupValues?.health_confirm==='on'?'checked':'' %>>
+                <label class="form-check-label fw-semibold" for="setup-confirm">أؤكد أن المعلومات التي أدخلتها صحيحة قدر علمي، وسأقوم بتحديثها عند تغيّر حالتي الصحية.</label>
+              </div>
+            </div>
+            <div class="col-12 d-flex flex-wrap align-items-center justify-content-between gap-3 pt-2 border-top">
+              <span class="text-secondary small"><i class="bi bi-lock ms-1"></i>تُحفظ هذه المعلومات في ملفك الصحي.</span>
+              <button type="submit" class="btn btn-primary px-4 py-2 fw-bold">حفظ المعلومات والمتابعة <i class="bi bi-check2-circle me-1"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <%- include('../partials/patient/footer') %>
+  <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+  <script src="assets/app.js"></script>
+<script defer src="/assets/i18n.js"></script>
+  </body>
+</html>

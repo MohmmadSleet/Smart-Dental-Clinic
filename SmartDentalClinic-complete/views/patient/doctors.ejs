@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>الأطباء | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="patient-visual-page patient-page-doctors"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/patient/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <header class="directory-heading mb-3">
+          <div class="directory-heading-title"><h1 class="fw-bold mb-1">الأطباء</h1><p class="text-secondary small mb-0">اختر الطبيب أو احجز من ملفه مباشرة.</p></div>
+          <div class="directory-search input-group" role="search"><span class="input-group-text bg-white border-end-0 text-primary"><i class="bi bi-search" aria-hidden="true"></i></span><input class="form-control border-start-0 ps-0" id="doctorSearch" type="search" autocomplete="off" aria-label="البحث في الأطباء" placeholder="ابحث باسم الطبيب أو التخصص أو العيادة" value=""></div>
+        </header>
+        <div class="directory-toolbar mb-3"><strong class="text-secondary small" id="doctorResultCount" aria-live="polite"><%= doctors.length %> <%= sdcT("طبيب") %></strong><a href="/patient/clinics" class="btn btn-link btn-sm text-decoration-none">استعراض العيادات <i class="bi bi-arrow-left" aria-hidden="true"></i></a></div>
+        <details class="patient-optional-filters mb-3" id="doctorFiltersPanel">
+          <summary><i class="bi bi-sliders2 ms-2 text-primary" aria-hidden="true"></i>فلاتر إضافية<span class="filter-expand-hint">اختياري</span></summary>
+          <div class="patient-optional-filters-body"><div class="row g-3">
+            <div class="col-md-4"><label for="doctorSpecialtyFilter" class="form-label small fw-bold">التخصص</label><input id="doctorSpecialtyFilter" class="form-control form-control-sm" placeholder="ابحث بالتخصص"></div>
+            <div class="col-md-4"><label for="doctorClinicFilter" class="form-label small fw-bold">العيادة</label><select class="form-select form-select-sm" id="doctorClinicFilter"><option value="all">كل العيادات</option><% for(const c of [...new Map(doctors.map(d=>[d.clinic_id,d.clinic_name])).entries()]){ %><option value="<%= c[0] %>"><%= c[1] %></option><% } %></select></div>
+            <div class="col-md-4"><label for="doctorAvailabilityFilter" class="form-label small fw-bold">التوفر</label><select class="form-select form-select-sm" id="doctorAvailabilityFilter"><option value="all">الجميع</option><option value="available">خدمات متاحة للحجز</option><option value="unavailable">بدون خدمات متاحة</option></select></div>
+          </div><div class="mt-3"><button class="btn btn-light btn-sm border" id="clearDoctorFilters" type="button"><i class="bi bi-arrow-counterclockwise ms-1" aria-hidden="true"></i>مسح الفلاتر</button></div></div>
+        </details>
+        <div class="row g-4" id="doctorsGrid">
+          <% if(!doctors.length){ %><div class="col-12 alert alert-info rounded-4">لا يوجد أطباء معتمدون مرتبطون بعيادات نشطة.</div><% } %>
+          <% for(const d of doctors){ %>
+          <div class="col-sm-6 col-xl-4 doctor-filter-item" data-availability="<%= d.bookable?'available':'unavailable' %>" data-clinic="<%= d.clinic_id %>" data-clinic-name="<%= d.clinic_name %>" data-name="<%= d.name %>" data-specialty="<%= d.specialties %>" data-record-id="<%= d.id %>">
+            <article class="doctor-catalog-card h-100 patient-directory-card patient-doctor-card">
+              <div class="patient-doctor-card-top"><img class="doctor-catalog-img" src="/media/doctors/<%= d.id %>/photo" alt="صورة د. <%= d.name %>" loading="lazy"><div class="min-width-0"><h2 class="h6 fw-bold mb-1"><%= sdcT("د.") %> <%= d.name %></h2><div class="text-secondary small"><%= d.specialties %></div><div class="text-secondary small"><%= d.clinic_name %></div></div></div>
+              <div class="patient-directory-content pt-0"><div class="patient-directory-meta"><span class="badge <%= d.bookable?'text-bg-success':'text-bg-secondary' %>"><%= d.bookable?'الحجز متاح':'الحجز غير متاح' %></span><span><%= d.experience==null?'الخبرة غير محددة':d.experience+' سنوات خبرة' %></span><span><% if(d.rating != null && Number(d.rating_count)>0){ %><span class="patient-rating" aria-label="متوسط التقييم <%= d.rating %> <%= sdcT("من 5 بناء على") %> <%= d.rating_count %> تقييم"><i class="bi bi-star-fill text-warning" aria-hidden="true"></i> <%= d.rating %>/5 <small class="text-secondary">(<%= d.rating_count %> تقييم)</small></span><% }else{ %><span class="small text-secondary">لا توجد تقييمات بعد</span><% } %></span></div><div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm flex-fill" href="/patient/doctor-details?doctor_id=<%= d.id %>&amp;clinic_id=<%= d.clinic_id %>">عرض الملف</a><% if(d.bookable){ %><a class="btn btn-primary btn-sm flex-fill" href="/patient/book-appointment?clinic_id=<%= d.clinic_id %>&amp;doctor_id=<%= d.id %>">حجز موعد</a><% } %></div></div>
+            </article>
+          </div><% } %>
+        </div>
+        <div class="empty-state d-none" id="doctorEmptyState">
+          <i class="bi bi-person-x fs-1"></i>
+          <h5 class="fw-bold mt-3">لا يوجد أطباء مطابقون</h5>
+          <p class="text-secondary mb-0">
+            جرّب تغيير التخصص أو العيادة أو حالة التوفر.
+          </p>
+        </div>
+      </section>
+    </main>
+    <%- include('../partials/patient/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="post" data-ui-unbound="" data-backend-binding="section" hidden=""></form><form id="backend-form-2" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><script defer src="/assets/i18n.js"></script>
+  </body></html>

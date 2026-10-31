@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المواعيد والحجوزات | Smart Dental Clinic</title>
+<!-- Bootstrap fallback retained for all layouts. -->
+<link rel="stylesheet" href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css"><% if (typeof lang === "string" && lang === "en") { %><link rel="stylesheet" href="/assets/vendor/bootstrap.ltr.min.css"><% } %>
+<link rel="stylesheet" href="../assets/vendor/28667e4f82c7-bootstrap-icons.css">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="../assets/vendor/8c34d74036e9-css2-fonts.css">
+<link rel="stylesheet" href="/assets/i18n.css">
+  </head><body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+<%- include('../partials/admin/header') %>
+<main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">الحجوزات</span></nav>
+<% const aRows=typeof appointments!=='undefined'?appointments:[]; const aClinics=typeof appointmentClinics!=='undefined'?appointmentClinics:[]; const aFilters=typeof appointmentFilters!=='undefined'?appointmentFilters:{q:'',clinic:'',status:'',source:'',from:'',to:'',page:1}; const aTotal=typeof appointmentTotal!=='undefined'?appointmentTotal:0; const aPages=typeof appointmentPages!=='undefined'?appointmentPages:1; const aPage=typeof appointmentPage!=='undefined'?appointmentPage:1; const statuses={pending:'بانتظار الموافقة',confirmed:'مؤكد',in_progress:'قيد التنفيذ',completed:'مكتمل',cancelled:'ملغى',rejected:'مرفوض',no_show:'لم يحضر'};const colors={confirmed:'text-bg-primary',completed:'text-bg-success',in_progress:'text-bg-info',pending:'text-bg-warning',cancelled:'text-bg-secondary',rejected:'text-bg-danger',no_show:'text-bg-secondary'}; const base=new URLSearchParams({q:aFilters.q,clinic:aFilters.clinic,status:aFilters.status,source:aFilters.source,from:aFilters.from,to:aFilters.to}); %>
+<div class="mb-4"><span class="badge badge-soft mb-2">المتابعة والرقابة</span><h1 class="fw-bold fs-2 mb-2">المواعيد والحجوزات</h1><p class="text-secondary mb-0">متابعة حجوزات جميع العيادات من مكان واحد. يمكن للمشرف إدارة حجوزات أي عيادة من تبويب المواعيد في ملف العيادة، مع إعادة استخدام قواعد التوافر والتعارض وحماية السجلات التاريخية.</p></div>
+<div class="filter-panel mb-4"><form method="get" action="/admin/appointments" class="row g-3">
+<div class="col-lg-4 col-md-6"><label for="aQuery" class="form-label">بحث</label><input id="aQuery" name="q" type="search" maxlength="100" class="form-control" placeholder="رقم الحجز، المريض، الطبيب أو الخدمة" value="<%= aFilters.q %>"></div>
+<div class="col-lg-4 col-md-6"><label for="aClinic" class="form-label">العيادة</label><select id="aClinic" class="form-select" name="clinic"><option value="">كل العيادات</option><% aClinics.forEach(c=>{ %><option value="<%= c.id %>" <%= aFilters.clinic===c.id?'selected':'' %>><%= c.name %></option><% }) %></select></div>
+<div class="col-lg-2 col-md-6"><label for="aStatus" class="form-label">الحالة</label><select id="aStatus" class="form-select" name="status"><option value="">كل الحالات</option><% Object.entries(statuses).forEach(([key,label])=>{ %><option value="<%= key %>" <%= aFilters.status===key?'selected':'' %>><%= label %></option><% }) %></select></div>
+<div class="col-lg-2 col-md-6"><label for="aSource" class="form-label">المصدر</label><select id="aSource" name="source" class="form-select"><option value="">كل المصادر</option><option value="manual" <%= aFilters.source==='manual'?'selected':'' %>>حجز عادي</option><option value="ai" <%= aFilters.source==='ai'?'selected':'' %>>التشخيص الذكي</option></select></div>
+<div class="col-lg-3 col-md-6"><label for="aFrom" class="form-label">من تاريخ</label><input id="aFrom" class="form-control" name="from" type="date" value="<%= aFilters.from %>"></div>
+<div class="col-lg-3 col-md-6"><label for="aTo" class="form-label">حتى تاريخ</label><input id="aTo" class="form-control" name="to" type="date" value="<%= aFilters.to %>"></div>
+<div class="col-12 d-flex flex-wrap gap-2 align-items-center"><button class="btn btn-primary" type="submit"><i class="bi bi-search ms-1"></i> تطبيق الفلاتر</button><a href="/admin/appointments" class="btn btn-light border">مسح الفلاتر</a><span class="small text-secondary me-auto"><%= aTotal %> <%= sdcT("حجز مطابق") %></span></div></form></div>
+<div class="table-responsive mobile-stack-wrapper table-ui-shell"><table class="table align-middle mb-0 medium-data-table responsive-stack-table system-data-table"><thead><tr><th>الحجز</th><th>المريض والخدمة</th><th>العيادة والطبيب</th><th>الموعد</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody>
+<% if(!aRows.length){ %><tr><td colspan="6" class="text-center text-secondary py-5">لا توجد حجوزات مطابقة للفلاتر الحالية.</td></tr><% } %>
+<% aRows.forEach(b=>{ %><tr><td data-label="الحجز" class="table-primary-cell"><strong>#<%= b.id %></strong><div class="small text-secondary"><%= b.source==='ai'?'تشخيص ذكي':'حجز عادي' %></div></td>
+<td data-label="المريض والخدمة"><strong><%= b.patient_name %></strong><div class="small text-secondary"><%= b.service_name %></div></td>
+<td data-label="العيادة والطبيب"><%= b.clinic_name %><div class="small text-secondary"><%= sdcT("د.") %> <%= b.doctor_name %></div></td>
+<td data-label="الموعد"><span dir="ltr" class="d-inline-block"><%= b.appointment_date %></span><div class="small text-secondary" dir="ltr"><%= b.appointment_time %></div></td>
+<td data-label="الحالة"><span class="badge <%= colors[b.status]||'text-bg-secondary' %>"><%= statuses[b.status]||b.status %></span><% if(b.request_status==='pending'){ %><div class="small text-warning-emphasis mt-1">طلب تغيير معلّق</div><% } %></td>
+<td data-label="تفاصيل"><div class="d-flex flex-wrap gap-2"><a class="btn btn-outline-primary btn-sm" href="/admin/appointment-details?id=<%= b.id %>">التفاصيل</a><a class="btn btn-outline-secondary btn-sm" href="/admin/clinic-details?id=<%= b.clinic_id %>&tab=appointments">حجوزات العيادة</a></div></td></tr><% }) %>
+</tbody></table></div>
+<% if(aPages>1){ %><nav aria-label="صفحات الحجوزات" class="mt-4"><ul class="pagination justify-content-center flex-wrap gap-1"><% if(aPage>1){base.set('page',String(aPage-1));%><li class="page-item"><a class="page-link" href="/admin/appointments?<%= base.toString() %>">السابق</a></li><% } %><li class="page-item disabled"><span class="page-link"><%= sdcT("صفحة") %> <%= aPage %> <%= sdcT("من") %> <%= aPages %></span></li><% if(aPage<aPages){base.set('page',String(aPage+1));%><li class="page-item"><a class="page-link" href="/admin/appointments?<%= base.toString() %>">التالي</a></li><% } %></ul></nav><% } %>
+</section></main>
+<script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script><script src="assets/app.js"></script><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

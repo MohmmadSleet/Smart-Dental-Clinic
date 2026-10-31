@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>طلب اعتماد العيادة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">مراجعة طلب العيادة</span></nav>
+        <nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/admin/approvals">طلبات العيادات</a></li><li class="breadcrumb-item active">CA-<%= clinic.Clinic_ID %></li></ol></nav>
+        <div class="d-flex justify-content-between gap-3 flex-wrap mb-4">
+          <div><div class="d-flex gap-2 mb-2"><span class="badge <%= clinic.status==='approved'?'text-bg-success':clinic.status==='rejected'?'text-bg-danger':'text-bg-warning' %>"><%= clinic.status==='approved'?'معتمدة':clinic.status==='rejected'?'مرفوضة':clinic.status==='needs_info'?'تحتاج استكمال':'قيد المراجعة' %></span><span class="badge text-bg-light border">CA-<%= clinic.Clinic_ID %></span></div>
+          <h1 class="fw-bold fs-2 mb-2"><%= sdcT("طلب اعتماد") %> <%= clinic.Clinic_Name %></h1><p class="text-secondary mb-0">البيانات والوثائق الأصلية المقدمة من الطبيب.</p></div>
+        </div>
+        <% if(reviewResult) { %><div class="alert alert-success" role="status"><%= reviewResult %></div><% } %>
+        <% if(reviewError) { %><div class="alert alert-danger" role="alert"><%= reviewError %></div><% } %>
+        <div class="row g-4">
+          <div class="col-xl-8">
+            <div class="soft-card p-4 mb-4"><h2 class="h5 fw-bold mb-3">بيانات إنشاء العيادة</h2><div class="row g-3">
+              <% for(const item of [['مقدم الطلب','د. '+clinic.First_Name+' '+clinic.Last_Name],['اسم العيادة',clinic.Clinic_Name],['المدينة',clinic.City],['الحي / المنطقة',clinic.Area],['رقم هاتف العيادة',clinic.Clinic_Phone],['البريد الرسمي',clinic.Clinic_Email],['رقم ترخيص المنشأة',clinic.Facility_License_Number],['العنوان',clinic.Address_Text],['الإحداثيات',clinic.Latitude+'، '+clinic.Longitude],['تاريخ التقديم',new Date(clinic.Submitted_At).toLocaleString('ar-PS')]]) { %>
+                <div class="col-md-6"><label class="form-label"><%= item[0] %></label><div class="form-control bg-light" style="height:auto;min-height:40px;overflow-wrap:anywhere"><%= item[1] %></div></div>
+              <% } %>
+              <div class="col-12"><label class="form-label">ملاحظات الطبيب</label><div class="form-control bg-light" style="height:auto;white-space:pre-wrap"><%= clinic.Application_Notes||'لا توجد' %></div></div>
+            </div></div>
+            <% if (clinic.Review_Notes) { %><div class="alert alert-info"><strong>ملاحظة / قرار المراجعة السابق:</strong> <%= clinic.Review_Notes %></div><% } %>
+          </div>
+          <div class="col-xl-4">
+            <div class="soft-card p-4 mb-4"><h2 class="h5 fw-bold mb-3">الوثائق المرفوعة</h2>
+              <% for (const d of documents) { const titles={facility_license:'ترخيص المنشأة',manager_identity:'هوية / وثيقة المدير',general_document:'مستند عام',insurance_certificate:'وثيقة التأمين',clinic_logo:'شعار العيادة',clinic_cover:'صورة العيادة'}; %>
+              <div class="border rounded-3 p-2 mb-3"><div class="action-row"><span class="icon-box"><i class="bi bi-file-earmark-check"></i></span><div class="flex-grow-1"><strong><%= titles[d.Document_Type]||d.Document_Type %> — V<%= d.Version_Number %></strong><small class="d-block text-secondary"><%= d.File_Name %></small><small class="d-block <%= d.Review_Status==='pending'?'text-warning':d.Review_Status==='rejected'?'text-danger':'text-secondary' %>"><%= d.Review_Status==='pending'?'بانتظار المراجعة':d.Review_Status==='rejected'?'مرفوض':d.Review_Status==='approved'?'معتمد':d.Review_Status==='superseded'?'إصدار استُبدل قبل المراجعة':'مرفوع' %><%= d.Is_Current?' • الإصدار الحالي':'' %></small></div><a href="/admin/clinic-document/<%= d.Document_ID %>" class="btn btn-sm btn-outline-primary">تحميل</a></div>
+              <% if(clinic.Approval_Status==='approved' && d.Review_Status==='pending' && ['facility_license','manager_identity'].includes(d.Document_Type)){ %>
+              <form method="post" action="/admin/clinic-document/<%= d.Document_ID %>/review" class="mt-2"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="hidden" name="clinic_id" value="<%= clinic.Clinic_ID %>"><label class="form-label small" for="document-review-reason-<%= d.Document_ID %>">سبب قرار هذا الإصدار</label><textarea id="document-review-reason-<%= d.Document_ID %>" class="form-control form-control-sm" name="reason" required minlength="8" maxlength="1000" rows="2" placeholder="سبب الاعتماد أو الرفض"></textarea><div class="d-flex flex-wrap gap-2 mt-2"><button class="btn btn-success btn-sm" name="decision" value="approve">اعتماد الإصدار</button><button class="btn btn-outline-danger btn-sm" name="decision" value="reject">رفض الإصدار</button></div></form><% } %>
+              </div><% } %>
+              <% if(!documents.length) { %><p class="text-secondary">لم يتم رفع مرفقات.</p><% } %>
+            </div>
+            <% if(clinic.Approval_Status==='pending') { %>
+              <div class="soft-card p-4"><h2 class="h5 fw-bold mb-3">اتخاذ القرار</h2>
+                <p class="text-secondary small">راجع بيانات العيادة ومحتوى الوثائق بنفسك قبل الاعتماد. لا يتم إنشاء الخدمات والمرضى تلقائيًا.</p>
+                <form method="post" action="/admin/clinic-application-details" id="clinicReviewForm">
+                  <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+                  <input type="hidden" name="clinic_id" value="<%= clinic.Clinic_ID %>">
+                  <div class="d-grid gap-2 mb-3">
+                    <label class="admin-check-row"><span>اسم العيادة وبياناتها متطابقة</span><input type="checkbox" name="details"></label>
+                    <label class="admin-check-row"><span>بيانات التواصل والموقع صحيحة</span><input type="checkbox" name="contact"></label>
+                    <label class="admin-check-row"><span>ترخيص المنشأة تم فحصه</span><input type="checkbox" name="license"></label>
+                    <label class="admin-check-row"><span>هوية المدير تم فحصها</span><input type="checkbox" name="manager"></label>
+                  </div>
+                  <label class="form-label" for="reviewReason">السبب / الملاحظة (8 أحرف على الأقل) *</label><textarea class="form-control mb-3" id="reviewReason" name="reason" rows="4" minlength="8" maxlength="1000" required></textarea>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-success" type="submit" name="decision" value="approve">اعتماد وتفعيل العيادة</button>
+                    <button class="btn btn-outline-secondary" type="submit" name="decision" value="needs_info">طلب استكمال</button>
+                    <button class="btn btn-outline-danger" type="submit" name="decision" value="reject">رفض الطلب</button>
+                  </div>
+                </form>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </section>
+    </main>
+<%- include('../partials/admin/footer') %>
+    <script src="/assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="/admin/assets/app.js"></script>
+<script defer src="/assets/i18n.js"></script>
+  </body></html>

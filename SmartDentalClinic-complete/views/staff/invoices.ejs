@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>الفواتير | Clinic Staff</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body data-page-permission="invoices.view" data-staff-account-status="active" data-staff-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>" data-staff-user-id="<%= typeof currentUser !== 'undefined' && currentUser ? currentUser.userId : '' %>" data-rendered-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-active-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-staff-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : '' %>"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/staff/header') %>
+    
+    <main class="page-shell" id="main-content" data-staff-workspace="">
+      <div class="container pt-3"><div class="staff-context-bar"><div class="staff-context-heading"><i class="bi bi-building"></i><div><small class="text-secondary">تعمل الآن في</small><strong><%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.name : 'العيادة' %></strong></div></div><label class="visually-hidden" for="activeClinicContext">العيادة الحالية</label><select class="form-select" id="activeClinicContext" name="active_clinic_id" data-context-switcher="" aria-describedby="staffClinicContextHelp"><% if(typeof activeClinic !== 'undefined' && activeClinic){ %><option value="<%= activeClinic.id %>" data-membership-status="active" data-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : 'موظف' %>" data-clinic-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>"><%= activeClinic.name %></option><% } %></select><a class="btn btn-outline-primary btn-sm" href="choose-clinic" data-choose-clinic-link><i class="bi bi-arrow-left-right ms-1"></i>تبديل العيادة</a><small class="visually-hidden" id="staffClinicContextHelp">تظهر بيانات وصلاحيات العيادة المختارة فقط.</small></div></div><section class="container py-4 py-lg-5 staff-work-content staff-module-page" data-clinic-content="">
+<% const staffInvoiceRows=typeof staffBills==='undefined'?{items:[]}:staffBills; const staffInvoiceCandidates=typeof candidates==='undefined'?[]:candidates; %>
+
+<div class="mb-4"><h1 class="fw-bold fs-2 mb-2">الفواتير والدفعات</h1><p class="text-secondary mb-0">الفواتير الحقيقية للعيادة المختارة؛ الدفع والإصدار يظهران وفق صلاحياتك.</p></div>
+<% if(message){ %><div class="alert alert-success" role="status"><%= message %></div><% } %>
+<div class="staff-live-overview row g-3 mb-4" aria-label="ملخص الفواتير">
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>الفواتير</small><div class="stat-value"><%= staffInvoiceRows.items.length %></div></div></div>
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>مدفوعة</small><div class="stat-value text-success"><%= staffInvoiceRows.items.filter(i=>i.financialState==='paid').length %></div></div></div>
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>غير مسددة بالكامل</small><div class="stat-value text-warning"><%= staffInvoiceRows.items.filter(i=>i.remaining>0&&i.status==='issued').length %></div></div></div>
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>مسودات</small><div class="stat-value"><%= staffInvoiceRows.items.filter(i=>i.status==='draft').length %></div></div></div>
+</div>
+<ul class="nav nav-pills staff-module-tabs mb-3" id="staffInvoiceTabs" role="tablist">
+  <li class="nav-item" role="presentation"><button class="nav-link active" type="button" id="staffInvoicesListTab" data-bs-toggle="tab" data-bs-target="#staffInvoicesListPane" role="tab" aria-controls="staffInvoicesListPane" aria-selected="true"><i class="bi bi-receipt ms-1"></i> قائمة الفواتير</button></li>
+  <% if(hasStaffPermission('invoices.issue')&&staffInvoiceCandidates.length){ %><li class="nav-item" role="presentation"><button class="nav-link" type="button" id="staffInvoicesIssueTab" data-bs-toggle="tab" data-bs-target="#staffInvoicesIssuePane" role="tab" aria-controls="staffInvoicesIssuePane" aria-selected="false"><i class="bi bi-file-earmark-plus ms-1"></i> مراجعة وإعداد فاتورة</button></li><% } %>
+</ul>
+<div class="tab-content staff-invoices-content" id="staffInvoiceTabContent">
+  <div class="tab-pane fade show active" id="staffInvoicesListPane" role="tabpanel" aria-labelledby="staffInvoicesListTab" tabindex="0">
+    <div class="staff-section-heading mb-3"><h2 class="h6 fw-bold mb-0">جميع فواتير العيادة</h2><p class="small text-secondary mt-1 mb-0">حالة كل فاتورة وإجراءاتها وفق صلاحياتك.</p></div>
+<div class="table-responsive mobile-stack-wrapper table-ui-shell staff-main-table"><table class="table align-middle mb-0 wide-data-table responsive-stack-table system-data-table"><thead><tr><th>الفاتورة</th><th>المريض</th><th>الإجمالي</th><th>المدفوع</th><th>المتبقي</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>
+<% if(!staffInvoiceRows.items.length){ %><tr><td colspan="7" class="text-center py-4">لا توجد فواتير للعيادة.</td></tr><% } %>
+<% for(const i of staffInvoiceRows.items){ %><tr><td data-label="الفاتورة" class="table-primary-cell">#<%= i.id %></td><td data-label="المريض"><%= i.patient %></td><td data-label="الإجمالي"><%= Number(i.total).toFixed(2) %> ₪</td><td data-label="المدفوع"><%= Number(i.paid).toFixed(2) %> ₪</td><td data-label="المتبقي"><%= Number(i.remaining).toFixed(2) %> ₪</td><td data-label="الحالة"><%= {paid:'مدفوعة',partial:'مدفوعة جزئيًا',unpaid:'غير مدفوعة',draft:'مسودة',void:'ملغاة'}[i.financialState]||i.financialState %></td><td data-label="إجراء" class="table-actions-cell">
+<% if(hasStaffPermission('payments.record')&&i.status==='issued'&&i.remaining>0){ %><details class="staff-inline-disclosure"><summary class="btn btn-primary btn-sm">تسجيل دفعة</summary><form action="/staff/workspace/payment" method="post" class="staff-disclosure-body d-flex flex-wrap gap-2 align-items-center"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="invoice_id" value="<%= i.id %>"><input class="form-control form-control-sm" style="max-width:100px" type="number" name="amount" min="0.01" max="<%= i.remaining.toFixed(2) %>" step="0.01" aria-label="قيمة الدفعة" required><select class="form-select form-select-sm" name="method" aria-label="طريقة الدفع" style="max-width:110px"><option value="cash">نقدًا</option><option value="card">بطاقة</option><option value="bank_transfer">تحويل</option></select><button class="btn btn-primary btn-sm" type="submit">حفظ الدفعة</button></form></details>
+<% }else if(hasStaffPermission('invoices.issue')&&i.status==='draft'){ %><form method="post" action="/staff/workspace/invoice-issue"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="invoice_id" value="<%= i.id %>"><label class="small d-block"><input type="checkbox" name="service_delivered" required> أؤكد مطابقة البنود للإجراءات المنفذة</label><button class="btn btn-primary btn-sm mt-1" type="submit">إصدار الفاتورة</button></form>
+<% }else{ %><span class="text-secondary small">عرض فقط</span><% } %></td></tr><% } %>
+</tbody></table></div>
+  </div>
+<% if(hasStaffPermission('invoices.issue')&&staffInvoiceCandidates.length){ %><div class="tab-pane fade" id="staffInvoicesIssuePane" role="tabpanel" aria-labelledby="staffInvoicesIssueTab" tabindex="0"><div class="soft-card p-4"><h3 class="section-title mb-3">إعداد فاتورة لزيارة مكتملة</h3><p class="small text-secondary">السعر الأساسي يُقرأ من الحجز، والإضافات من الإجراءات المنفذة فعليًا؛ لا يمكن إدخال مبلغ سعر اعتباطي.</p>
+<% for(const v of staffInvoiceCandidates){ %><form class="border rounded-3 p-3 mb-3" method="post" action="/staff/workspace/invoice-draft"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="visit_id" value="<%= v.id %>"><div class="fw-bold"><%= v.patient %> — <%= v.service_name %></div><div class="small text-secondary mb-2"><%= v.day %> • <%= v.doctor %> • <%= v.base_price %> ₪</div>
+<% for(const p of v.procedures){ %><label class="d-block small mb-1"><input type="checkbox" name="extra_ids" value="<%= p.id %>" <%= p.selected?'checked':'' %>> <%= p.name %> — <%= p.price %> ₪</label><% } %><div class="d-flex align-items-center gap-2 mt-2"><label class="small" for="disc-<%= v.id %>">الخصم</label><input id="disc-<%= v.id %>" name="discount" class="form-control form-control-sm" type="number" min="0" step="0.01" value="<%= v.discount||'0.00' %>" style="max-width:120px"><button class="btn btn-outline-primary btn-sm" type="submit">حفظ المسودة</button></div></form><% } %></div></div><% } %>
+</div>
+      </section>
+    <section class="container py-4" id="staffScopeNotice" hidden><div class="soft-card p-4 text-center"><i class="bi bi-building-lock fs-1 text-primary"></i><h3 class="fw-bold mt-3" id="staffScopeTitle">اختر العيادة للمتابعة</h3><p class="text-secondary" id="staffScopeMessage">حدد عيادة لديك عضوية فعّالة فيها لعرض بياناتها وصلاحياتك.</p><a href="choose-clinic" class="btn btn-primary">اختيار العيادة</a></div></section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><%- include('../partials/staff/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html data-style-sections="section-5" lang="<%= lang === 'en' ? 'en' : 'ar' %>" dir="<%= lang === 'en' ? 'ltr' : 'rtl' %>">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>المساعد الذكي للأسنان | Smart Dental Clinic</title>
+  <link rel="stylesheet" href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css">
+  <% if (lang === 'en') { %><link rel="stylesheet" href="/assets/vendor/bootstrap.ltr.min.css"><% } %>
+  <link rel="stylesheet" href="/assets/vendor/28667e4f82c7-bootstrap-icons.css">
+  <link rel="stylesheet" href="/patient/assets/styles.css">
+  <link rel="stylesheet" href="/assets/vendor/8c34d74036e9-css2-fonts.css">
+  <link rel="stylesheet" href="/assets/i18n.css">
+</head>
+<body class="patient-visual-page sdc-ai-page patient-page-ai-diagnosis">
+  <a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+  <%- include('../partials/patient/header') %>
+  <main class="page-shell ai-chat-page" id="main-content">
+    <div class="container ai-chat-container">
+      <section class="chat-shell ai-chat-shell" aria-label="محادثة المساعد الذكي للأسنان">
+        <header class="ai-chat-header">
+          <div class="ai-chat-profile">
+            <div class="ai-chat-avatar ai-chat-avatar--large" aria-hidden="true"><i class="bi bi-stars"></i></div>
+            <div class="ai-chat-heading">
+              <h1>مساعد الأسنان الذكي</h1>
+              <div class="ai-chat-subtitle"><span class="ai-chat-status-dot" aria-hidden="true"></span><span>تقييم أولي وإرشاد للحجز</span><span class="ai-chat-subtitle-sep" aria-hidden="true">•</span><span>لصحة الفم والأسنان فقط</span></div>
+            </div>
+          </div>
+          <nav class="ai-chat-header-actions" aria-label="إجراءات المساعد">
+            <a href="/patient/diagnosis-history" class="ai-chat-icon-link" title="سجل التقييمات" aria-label="سجل التقييمات"><i class="bi bi-clock-history"></i><span>السجل</span></a>
+            <a href="/patient/ai-diagnosis" class="ai-chat-icon-link ai-chat-new" title="بدء محادثة جديدة"><i class="bi bi-plus-lg"></i><span>محادثة جديدة</span></a>
+          </nav>
+        </header>
+        <div class="ai-chat-context">
+          <% if(aiDemo){ %><div class="ai-chat-demo" role="status"><i class="bi bi-info-circle" aria-hidden="true"></i><span><strong>وضع تجريبي:</strong> الردود محاكاة للاختبار، وليست من OpenAI API.</span></div><% } %>
+          <details class="ai-chat-disclaimer"><summary><i class="bi bi-shield-check" aria-hidden="true"></i><span>خصوصيتك وسلامتك الطبية</span><i class="bi bi-chevron-down ai-details-arrow" aria-hidden="true"></i></summary><div>هذا مساعد للتوجيه الأولي فقط وليس للتشخيص الطبي المؤكد. عند صعوبة التنفس أو البلع أو نزيف شديد لا يتوقف، اطلب الطوارئ فورًا. لا يُرسل اسمك أو موقعك إلى مزود الذكاء الاصطناعي.</div></details>
+        </div>
+        <% const errorText = {conflict:'وصلت رسالة أخرى أثناء التقييم، حدّث المحادثة ثم أعد المحاولة.',invalid:'يرجى إدخال وصف واضح للأعراض (10 إلى 1500 حرف)، أو إجابة على سؤال المتابعة.',not_configured:'خدمة الذكاء الاصطناعي غير مهيأة. يمكن للمطور تفعيل وضع التجربة دون مفتاح API.',provider:'تعذّر الحصول على رد من خدمة الذكاء الاصطناعي حاليًا. لم يُنشأ أي تقييم أو حجز.',rate_limit:'عدد المحاولات كبير خلال دقيقة. جرّب بعد قليل.',unavailable:'الموعد لم يعد متاحًا. اختر وقتًا آخر من تقييم جديد.',reassessment:'تعذّر استخدام التوصية الحالية. أعد فتح التقييم أو اختر موعدًا متاحًا.'}; %>
+        <div id="aiErrorBanner" class="ai-chat-error <%= triageError ? '' : 'd-none' %>" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span><%= triageError ? (errorText[triageError]||'تعذّر إكمال الطلب، حاول مجددًا.') : '' %></span></div>
+        <div class="chat-body ai-chat-thread" id="chatBody" role="log" aria-live="polite" aria-relevant="additions" aria-label="رسائل المحادثة">
+          <div class="ai-chat-line ai-chat-line--assistant">
+            <div class="ai-chat-avatar" aria-hidden="true"><i class="bi bi-stars"></i></div>
+            <div class="ai-chat-message-wrap"><span class="ai-chat-sender">المساعد الذكي</span><div class="ai-chat-bubble ai-chat-bubble--assistant">أهلًا! 👋 أنا مساعدك لصحة الأسنان. احكيلي شو المشكلة اللي بتواجهها ومتى بدأت، ورح أساعدك بتقييم أولي واقتراح عيادة مناسبة.</div></div>
+          </div>
+          <% if(triageFollowup){ %>
+            <div class="ai-chat-line ai-chat-line--user"><div class="ai-chat-message-wrap"><span class="ai-chat-sender">أنت</span><div class="ai-chat-bubble ai-chat-bubble--user" translate="no"><%= triageFollowup.symptoms %></div></div></div>
+            <div class="ai-chat-line ai-chat-line--assistant"><div class="ai-chat-avatar" aria-hidden="true"><i class="bi bi-stars"></i></div><div class="ai-chat-message-wrap"><span class="ai-chat-sender">المساعد الذكي</span><div class="ai-chat-bubble ai-chat-bubble--assistant"><%= triageFollowup.question %></div></div></div>
+          <% } %>
+          <% const savedMessages = assessment && Array.isArray(assessment.messages) ? assessment.messages : []; %>
+          <% const resultMessageIndex = assessment ? savedMessages.findIndex(msg=>msg.sender==='assistant' && msg.text===assessment.advice) : -1; %>
+          <% const initialMessages = resultMessageIndex>=0?savedMessages.slice(0,resultMessageIndex):savedMessages; %>
+          <% const continuedMessages = resultMessageIndex>=0?savedMessages.slice(resultMessageIndex+1):[]; %>
+          <% if(assessment){ %>
+            <% if(initialMessages.length){ %>
+              <% initialMessages.forEach((msg)=>{ %>
+                <div class="ai-chat-line ai-chat-line--<%= msg.sender==='patient'?'user':'assistant' %>">
+                  <% if(msg.sender!=='patient'){ %><div class="ai-chat-avatar" aria-hidden="true"><i class="bi bi-stars"></i></div><% } %>
+                  <div class="ai-chat-message-wrap"><span class="ai-chat-sender"><%= msg.sender==='patient'?'أنت':'المساعد الذكي' %></span><div class="ai-chat-bubble ai-chat-bubble--<%= msg.sender==='patient'?'user':'assistant' %>" <% if(msg.sender==='patient'){ %>translate="no"<% } %>><%= msg.text %></div></div>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <div class="ai-chat-line ai-chat-line--user"><div class="ai-chat-message-wrap"><span class="ai-chat-sender">أنت</span><div class="ai-chat-bubble ai-chat-bubble--user" translate="no"><%= assessment.symptoms %></div></div></div>
+            <% } %>
+          <% } %>
+          <% if(assessment){ %>
+          <div class="ai-chat-final" id="aiFinalResponse">
+            <div class="ai-chat-line ai-chat-line--assistant">
+              <div class="ai-chat-avatar" aria-hidden="true"><i class="bi bi-stars"></i></div>
+              <div class="ai-chat-message-wrap ai-chat-message-wrap--result">
+                <span class="ai-chat-sender">المساعد الذكي</span>
+                <div class="ai-chat-result-card">
+                  <div class="ai-chat-result-top"><span class="ai-chat-result-icon"><i class="bi bi-clipboard2-pulse"></i></span><div><h2><%= assessment.risk==='off_topic'?'خارج اختصاص المساعد':'نتيجة التقييم الأولي' %></h2><p><%= assessment.date %></p></div></div>
+                  <% if(assessment.risk!=='off_topic'){ %>
+                  <div class="ai-chat-risk ai-chat-risk--<%= ['emergency','urgent'].includes(assessment.risk)?'emergency':assessment.risk==='high'?'high':assessment.risk==='medium'?'medium':'low' %>"><i class="bi bi-heart-pulse" aria-hidden="true"></i><span>درجة الاستعجال (توجيه أولي): <%= ({emergency:'طارئة',urgent:'طارئة',high:'عاجلة',medium:'متوسطة',low:'غير عاجلة',unclassified:'غير محددة'})[assessment.risk]||'غير محددة' %></span></div>
+                  <% } %>
+                  <p class="ai-chat-summary"><strong><%= assessment.result %></strong></p>
+                  <p class="ai-chat-advice"><%= assessment.advice %></p>
+                  <% if(['emergency','urgent'].includes(assessment.risk)){ %><div class="ai-chat-clinical-alert ai-chat-clinical-alert--danger" role="alert"><i class="bi bi-exclamation-triangle"></i><span>هذه أعراض قد تستدعي الطوارئ الآن. لا تنتظر موعدًا إلكترونيًا.</span></div><% } %>
+                  <% if(assessment.timeCriticalDental){ %><div class="ai-chat-clinical-alert ai-chat-clinical-alert--danger" role="alert"><i class="bi bi-exclamation-triangle"></i> عند انخلاع سن دائم، تواصل مع طبيب أسنان طوارئ فورًا. لا تنتظر موعدًا إلكترونيًا.</div><% } %>
+                  <% if(assessment.risk==='high'){ %><div class="ai-chat-clinical-alert ai-chat-clinical-alert--warning" role="alert"><i class="bi bi-exclamation-circle"></i><span>اطلب تقييم أسنان عاجلًا اليوم، واتصل بالعيادة إذا لم تجد موعدًا مناسبًا.</span></div><% } %>
+                  <% if(assessment.risk!=='off_topic' && !assessment.timeCriticalDental && !['emergency','urgent'].includes(assessment.risk)){ %>
+                    <div class="ai-chat-reassessment <%= assessment.needsReassessment?'':'d-none' %>" id="aiReassessmentNotice" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i><span>تحتاج بعض التفاصيل لمراجعة التقييم. اقتراحات الحجز القديمة معلّقة لحين نجاح التحديث داخل هذه المحادثة.</span></div>
+                    <div class="ai-chat-recommendations"><p class="ai-chat-recs-foot"><i class="bi bi-clock-history"></i> <%= assessment.risk==='high'?'الأولوية لوقت الموعد خلال 24 ساعة، ثم المسافة.':assessment.risk==='medium'?'المواعيد خلال 7 أيام، ويؤخذ القرب بعين الاعتبار.':'مواعيد روتينية خلال 30 يومًا.' %> وقت الموعد فعلي من جدول الطبيب ويُعاد التحقق منه عند إرسال الطلب.</p>
+                      <div class="ai-chat-recs-heading"><i class="bi bi-geo-alt"></i><h3>عيادات ومواعيد مناسبة</h3><span><%= assessment.recommendations.length %> اقتراحات</span></div>
+                      <% if(!assessment.recommendations.length){ %><div class="ai-chat-empty"><%= assessment.risk==='high'?'لا يوجد موعد متحقق منه خلال 24 ساعة لدى العيادات المطابقة حاليًا. لا تنتظر الحجز الإلكتروني؛ اتصل مباشرة بمقدم رعاية أسنان عاجلة.':assessment.risk==='medium'?'لا يوجد موعد مطابق خلال 7 أيام. تواصل مع طبيب أسنان لتحديد مدى الحاجة إلى رعاية أسرع.':'لا يوجد موعد روتيني مطابق خلال 30 يومًا؛ يمكنك البحث عن عيادات أخرى.' %> <a href="/patient/clinics">استعراض العيادات</a></div><% } %>
+                      <% assessment.recommendations.forEach((rec,i)=>{ %>
+                        <article class="ai-chat-clinic-card">
+                          <div class="ai-chat-clinic-header"><div class="ai-chat-clinic-icon" aria-hidden="true"><i class="bi bi-hospital"></i></div><div class="ai-chat-clinic-title"><h4><%= rec.clinic %></h4><p><%= sdcT('د.') %> <%= rec.doctor %><% if(rec.specialties){ %> · <%= rec.specialties %><% } %></p></div><span class="ai-chat-option-no"><%= i+1 %></span></div>
+                          <div class="ai-chat-clinic-meta"><span><i class="bi bi-bandaid" aria-hidden="true"></i><%= rec.service %></span><span><i class="bi bi-calendar3" aria-hidden="true"></i><%= rec.date %></span><span><i class="bi bi-clock" aria-hidden="true"></i><%= rec.time %></span><span><i class="bi bi-cash" aria-hidden="true"></i><%= rec.price %> ₪</span></div>
+                          <p class="ai-chat-clinic-reason"><%= rec.reason %></p>
+                          <% if(rec.booking_id){ %><a href="/patient/booking-details?id=<%= rec.booking_id %>" class="btn btn-outline-success ai-chat-book-btn"><i class="bi bi-check2-circle"></i> عرض الحجز المنشأ</a><p class="ai-chat-recs-foot">إذا تغيرت الأعراض بعد الحجز، تواصل مع العيادة مباشرة؛ التقييم الجديد لا يعدّل الحجز تلقائيًا.</p>
+                          <% }else if(assessment.needsReassessment){ %><button class="btn btn-outline-secondary ai-chat-book-btn" type="button" disabled><i class="bi bi-shield-exclamation"></i> التوصيات متوقفة مؤقتًا</button>
+                          <% }else{ %><form method="post" action="/patient/ai-diagnosis/book"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="assessment_id" value="<%= assessment.id %>"><input type="hidden" name="recommendation_id" value="<%= rec.id %>"><button class="btn btn-primary ai-chat-book-btn" type="submit"><i class="bi bi-calendar2-check"></i> إرسال طلب الحجز</button></form><% } %>
+                        </article>
+                      <% }); %>
+                      <p class="ai-chat-recs-foot"><i class="bi bi-info-circle"></i> المواعيد تخضع لإعادة التحقق عند إرسال الطلب، ثم تأكيد العيادة.</p>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
+          <% continuedMessages.forEach(msg=>{ %>
+            <div class="ai-chat-line ai-chat-line--<%= msg.sender==='patient'?'user':'assistant' %>">
+              <% if(msg.sender!=='patient'){ %><div class="ai-chat-avatar" aria-hidden="true"><i class="bi bi-stars"></i></div><% } %>
+              <div class="ai-chat-message-wrap"><span class="ai-chat-sender"><%= msg.sender==='patient'?'أنت':'المساعد الذكي' %></span><div class="ai-chat-bubble ai-chat-bubble--<%= msg.sender==='patient'?'user':'assistant' %>" <% if(msg.sender==='patient'){ %>translate="no"<% } %>><%= msg.text %></div></div>
+            </div>
+          <% }); %>
+        </div>
+        <% if(!assessment){ %>
+        <form class="chat-input ai-chat-compose" method="post" action="/patient/ai-diagnosis" id="aiSymptomsForm" data-ai-followup="<%= triageFollowup?'1':'0' %>">
+          <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+          <input type="hidden" name="latitude" id="aiLatitude" value="<%= triageValues.latitude||'' %>">
+          <input type="hidden" name="longitude" id="aiLongitude" value="<%= triageValues.longitude||'' %>">
+          <% if(triageFollowup){ %><input type="hidden" name="symptoms" value="<%= triageFollowup.symptoms %>"><input type="hidden" name="followup_question" value="<%= triageFollowup.question %>"><input type="hidden" name="ai_consent" value="1"><% } %>
+          <% if(!triageFollowup){ %>
+          <div class="ai-chat-chips" id="aiQuickChips" aria-label="أمثلة على الأعراض"><button type="button" class="quick-chip" data-fill-symptom="أشعر بألم في ضرس منذ يومين">ألم بالضرس</button><button type="button" class="quick-chip" data-fill-symptom="أعاني من نزيف باللثة منذ أسبوع">نزيف باللثة</button><button type="button" class="quick-chip" data-fill-symptom="أشعر بحساسية في الأسنان مع الماء البارد">حساسية الأسنان</button></div>
+          <% } %>
+          <div class="ai-chat-compose-row"><label class="visually-hidden" for="patientSymptoms">اكتب رسالتك</label><textarea id="patientSymptoms" class="ai-chat-textarea" name="<%= triageFollowup?'followup_answer':'symptoms' %>" rows="1" maxlength="<%= triageFollowup?'500':'1500' %>" required placeholder="<%= triageFollowup?'اكتب إجابتك هنا...':'اكتب أعراضك هنا...' %>" aria-label="<%= triageFollowup?'اكتب إجابتك هنا':'اكتب أعراضك هنا' %>"></textarea><button class="ai-chat-send" id="aiSendButton" type="submit" aria-label="إرسال الرسالة" title="إرسال الرسالة"><i class="bi bi-send-fill" aria-hidden="true"></i><span class="visually-hidden">إرسال</span></button></div>
+          <% if(!triageFollowup){ %><label class="ai-chat-consent" id="aiConsentRow"><input type="checkbox" id="aiPrivacyConsent" name="ai_consent" value="1" required><span>أوافق على معالجة وصف الأعراض لتقديم تقييم أولي للأسنان. لا يُرسل اسمي أو موقعي إلى خدمة AI.</span></label><% } %>
+          <div class="ai-chat-tools"><button type="button" class="ai-chat-location-btn" id="aiUseLocation"><i class="bi bi-geo-alt"></i><span>مشاركة موقعي لترتيب العيادات (اختياري)</span></button><small id="aiLocationStatus" role="status"><%= triageValues.latitude?'تم تحديد موقع تقريبي.':'بدون مشاركة الموقع سنرتب حسب التوفر.' %></small><span class="ai-chat-enter-hint">Enter للإرسال • Shift+Enter لسطر جديد</span></div>
+        </form>
+        <% }else{ %>
+        <form class="chat-input ai-chat-compose ai-chat-compose--continue" id="aiContinuationForm" method="post" action="/patient/ai-diagnosis/continue">
+          <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+          <input type="hidden" name="assessment_id" value="<%= assessment.id %>"><input type="hidden" name="latitude" id="aiContinueLatitude" value=""><input type="hidden" name="longitude" id="aiContinueLongitude" value="">
+          <p class="ai-chat-continue-hint"><i class="bi bi-chat-dots" aria-hidden="true"></i> التقييم ظاهر فوق، والمحادثة لسه مفتوحة. اسأل أو استفسر براحتك؛ إذا تغيّرت الأعراض، سنحدّث نتيجة التقييم داخل نفس المحادثة دون إنشاء سجل جديد.</p>
+          <div class="ai-chat-compose-row"><label class="visually-hidden" for="aiContinueMessage">تابع المحادثة</label><textarea class="ai-chat-textarea" id="aiContinueMessage" name="message" rows="1" maxlength="1000" required placeholder="اسألني عن التقييم أو احكيلي تفاصيل إضافية..." aria-label="اكتب رسالتك التالية"></textarea><button class="ai-chat-send" id="aiContinueSend" type="submit" title="إرسال الرسالة" aria-label="إرسال الرسالة"><i class="bi bi-send-fill" aria-hidden="true"></i></button></div>
+          <div class="ai-chat-tools"><button type="button" class="ai-chat-location-btn" id="aiContinueUseLocation"><i class="bi bi-geo-alt"></i> مشاركة الموقع مجددًا لتحسين ترتيب العيادات (اختياري)</button><small id="aiContinueLocationStatus" role="status"></small><span class="ai-chat-enter-hint">Enter للإرسال • Shift+Enter لسطر جديد</span></div>
+        </form><% } %>
+      </section>
+    </div>
+  </main>
+  <%- include('../partials/patient/footer') %>
+  <script src="/assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+  <script src="/patient/assets/app.js"></script>
+  <script defer src="/assets/i18n.js"></script>
+</body>
+</html>

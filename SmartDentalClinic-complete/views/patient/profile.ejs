@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>حسابي | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="patient-visual-page patient-page-profile"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/patient/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+          <div>
+            <span class="badge badge-soft mb-2">حساب المريض</span>
+            <h1 class="fw-bold">حسابي</h1>
+            <p class="text-secondary mb-0">
+              إدارة البيانات الشخصية والمعلومات الصحية التي يحتاجها الطبيب قبل
+              الزيارة.
+            </p>
+          </div>
+        </div>
+        <% if(saved==='account'||saved==='health'){ %><div class="alert alert-success" role="status">تم حفظ <%= saved==='health'?'المعلومات الصحية':'بيانات حسابك' %> بنجاح.</div><% } %>
+<% if(profileError){ %><div class="alert alert-danger" role="alert"><%= profileError==='duplicate'?'البريد الإلكتروني مسجل لحساب آخر.':'تحقق من الحقول المطلوبة وصيغة البيانات ثم أعد المحاولة.' %></div><% } %>
+        <div class="patient-section-intro mb-2"><h2 class="h6 fw-bold mb-1">ماذا تريد أن تعدّل؟</h2><p class="text-secondary small mb-0">اختر قسمًا واحدًا لعرض بياناته دون ازدحام بقية الصفحة.</p></div>
+        <!-- تبويبات تنقّل بصري إلى أقسام الحساب نفسها، دون نسخ النماذج أو تغيير مسارات الحفظ. -->
+        <nav class="patient-profile-shortcuts patient-profile-index patient-profile-tabs" aria-label="أقسام حساب المريض">
+          <button class="patient-profile-shortcut is-active" type="button" aria-pressed="true" data-bs-target="#accountInfo" aria-controls="accountInfo" data-patient-profile-jump="accountInfo"><i class="bi bi-person"></i><span>بياناتي</span></button>
+          <button class="patient-profile-shortcut" type="button" aria-pressed="false" data-bs-target="#healthSection" aria-controls="healthSection" data-patient-profile-jump="healthSection"><i class="bi bi-heart-pulse"></i><span>المعلومات الصحية</span></button>
+          <button class="patient-profile-shortcut" type="button" aria-pressed="false" data-bs-target="#passwordSection" aria-controls="passwordSection" data-patient-profile-jump="passwordSection"><i class="bi bi-shield-lock"></i><span>الحماية وكلمة المرور</span></button>
+          <a class="patient-profile-shortcut" href="#sdc-sessions"><i class="bi bi-laptop"></i><span>جلساتي</span></a>
+        </nav>
+<div class="accordion account-accordion" id="accountAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" data-bs-target="#accountInfo" data-bs-toggle="collapse" type="button">
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                  <span class="fs-4">بيانات حسابي</span><small class="text-secondary">البيانات الأساسية</small>
+                </div>
+              </button>
+            </h2>
+            <div class="accordion-collapse collapse show" data-bs-parent="#accountAccordion" id="accountInfo">
+              <div class="accordion-body p-3 p-md-4">
+                <div class="row g-3 g-lg-4">
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-1">الاسم الأول</label><input class="form-control" value="<%= patient.first %>" id="field-1" name="first_name" form="backend-form-15">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-2">الاسم الأخير</label><input class="form-control" value="<%= patient.last %>" id="field-2" name="last_name" form="backend-form-15">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-3">تاريخ الميلاد</label><input class="form-control" type="date" value="<%= patient.dob %>" id="field-3" name="dob" form="backend-form-15">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-4">الجنس</label><select class="form-select" id="field-4" name="gender" form="backend-form-15">
+                      <option value="male" <%= ["male","ذكر"].includes(patient.gender)?"selected":"" %>>ذكر</option>
+                      <option value="female" <%= ["female","أنثى"].includes(patient.gender)?"selected":"" %>>أنثى</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-5">الهاتف</label><input class="form-control" value="<%= patient.phone %>" id="field-5" name="phone" form="backend-form-15">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-6">البريد الإلكتروني</label><input class="form-control" value="<%= patient.email || "" %>" id="field-6" name="email" form="backend-form-15">
+                  </div>
+                  <div class="col-12 text-start">
+                    <button class="btn btn-primary px-4" form="backend-form-15" type="submit">
+                      حفظ بيانات الحساب
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" data-bs-target="#healthSection" data-bs-toggle="collapse" type="button">
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                  <span class="fs-4">المعلومات الصحية</span><span class="badge text-bg-warning">مهمة للطبيب</span>
+                </div>
+              </button>
+            </h2>
+            <div class="accordion-collapse collapse" data-bs-parent="#accountAccordion" id="healthSection">
+              <div class="accordion-body p-3 p-md-4">
+                <div class="health-info-note mb-4">
+                  <i class="bi bi-shield-plus"></i>
+                  <div>
+                    <strong>هذه المعلومات تظهر للطبيب عند فتح زيارتك.</strong>
+                    <div class="small text-secondary">
+                      حدّثها عند حدوث أي تغيير في الحساسية أو الأمراض المزمنة أو
+                      الأدوية الحالية.
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-3 g-lg-4">
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-7">الحساسية</label><textarea class="form-control" placeholder="قيمة واحدة في كل سطر، أو اكتب لا يوجد / غير معروف" rows="3" id="field-7" name="allergies" form="backend-health-form" required aria-required="true" data-multivalue-lines=""><%= patient.allergies.join("\n") %></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-8">الأمراض المزمنة</label><textarea class="form-control" placeholder="قيمة واحدة في كل سطر، أو اكتب لا يوجد / غير معروف" rows="3" id="field-8" name="chronic_diseases" form="backend-health-form" required aria-required="true" data-multivalue-lines=""><%= patient.chronic.join("\n") %></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-9">الأدوية الحالية</label><textarea class="form-control" placeholder="قيمة واحدة في كل سطر، أو اكتب لا يوجد / غير معروف" rows="3" id="field-9" name="current_medications" form="backend-health-form" required aria-required="true" data-multivalue-lines=""><%= patient.medications.join("\n") %></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold" for="field-10">تنبيهات أو ملاحظات صحية مهمة</label><textarea class="form-control" placeholder="أي معلومة مهمة قبل العلاج" rows="3" id="field-10" name="health_notes" form="backend-health-form" required="" minlength="1"><%= patient.notes %></textarea>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold" for="field-11">فصيلة الدم</label><select class="form-select" id="field-11" name="blood_type" form="backend-health-form" required=""><option value="">اختر فصيلة الدم</option><option value="unknown" <%= patient.blood==="unknown"?"selected":"" %>>غير معروف</option><option value="O+" <%= patient.blood==="O+"?"selected":"" %>>O+</option><option value="O-" <%= patient.blood==="O-"?"selected":"" %>>O-</option><option value="A+" <%= patient.blood==="A+"?"selected":"" %>>A+</option><option value="A-" <%= patient.blood==="A-"?"selected":"" %>>A-</option><option value="B+" <%= patient.blood==="B+"?"selected":"" %>>B+</option><option value="B-" <%= patient.blood==="B-"?"selected":"" %>>B-</option><option value="AB+" <%= patient.blood==="AB+"?"selected":"" %>>AB+</option><option value="AB-" <%= patient.blood==="AB-"?"selected":"" %>>AB-</option></select>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-check health-confirm">
+                      <input checked class="form-check-input" id="healthConfirm" type="checkbox" name="health_confirm" form="backend-health-form"><label class="form-check-label" for="healthConfirm">أؤكد أن المعلومات الصحية أعلاه محدثة قدر
+                        الإمكان.</label>
+                    </div>
+                  </div>
+                  <div class="col-12 text-start">
+                    <button class="btn btn-primary px-4" form="backend-health-form" type="submit">
+                      حفظ المعلومات الصحية
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" id="sdc-password">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" data-bs-target="#passwordSection" data-bs-toggle="collapse" type="button">
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                  <span class="fs-4">الأمان وكلمة المرور</span><small class="text-secondary">تغيير كلمة المرور</small>
+                </div>
+              </button>
+            </h2>
+            <% if (typeof passwordChangeError !== "undefined" && passwordChangeError) { %><div class="alert alert-danger mt-2" role="alert"><%= passwordChangeError %><% if (typeof passwordChangeReference !== "undefined" && passwordChangeReference) { %> <small>(رمز التشخيص: <%= passwordChangeReference %>)</small><% } %></div><% } %>
+<div class="accordion-collapse collapse" data-bs-parent="#accountAccordion" id="passwordSection">
+              <div class="accordion-body p-3 p-md-4">
+                <div class="row g-3 g-lg-4">
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold" for="field-12">كلمة المرور الحالية</label><input class="form-control" type="password" required value="" id="field-12" name="current_password" autocomplete="current-password" form="sdc-change-password-form">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold" for="field-13">كلمة المرور الجديدة</label><input class="form-control" type="password" minlength="14" maxlength="128" required value="" id="field-13" name="new_password" autocomplete="new-password" form="sdc-change-password-form">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold" for="field-14">تأكيد كلمة المرور</label><input class="form-control" type="password" minlength="14" maxlength="128" required value="" id="field-14" name="confirm_password" autocomplete="new-password" form="sdc-change-password-form">
+                  </div>
+                  <div class="col-12 text-start">
+                    <button class="btn btn-primary px-4" form="sdc-change-password-form" type="submit">
+                      حفظ كلمة المرور
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-start mt-3">
+          <button class="btn btn-outline-danger" data-logout="" type="button">
+            <i class="bi bi-box-arrow-right ms-1"></i>تسجيل الخروج
+          </button>
+        </div>
+      <%- include('../partials/shared/mfa-manager', {mfaScope:'patient'}) %></section>
+      <section class="container pb-2"><%- include('../partials/shared/active-sessions', {sessionsScope:'patient'}) %></section>
+      <section class="container pb-5">
+        <div class="soft-card p-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-md-center">
+            <div>
+              <h5 class="fw-bold mb-1">تحتاج مساعدة؟</h5>
+              <p class="text-secondary small mb-0">
+                يمكنك مراجعة تفاصيل مواعيدك وفواتيرك وإشعاراتك من حسابك. لا
+                يتضمن النموذج الحالي نظام تذاكر دعم أو محادثات بين المستخدمين.
+              </p>
+            </div>
+            <span class="text-secondary small"><i class="bi bi-bell ms-1"></i>تجد إشعاراتك في جرس القائمة العلوية.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include('../partials/patient/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-15" method="post" action="/patient/profile/account" hidden><input type="hidden" name="csrf_token" value="<%= csrfToken %>"></form><form id="backend-health-form" method="post" action="/patient/profile/health" hidden><input type="hidden" name="csrf_token" value="<%= csrfToken %>"></form><form id="sdc-change-password-form" action="/auth/change-password" method="post" hidden><input type="hidden" name="profile_scope" value="patient"><input type="hidden" name="csrf_token" value="<%= typeof passwordChangeCsrf !== 'undefined' ? passwordChangeCsrf : '' %>"></form><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.hash === '#sdc-password' && window.bootstrap) {
+      var panel = document.getElementById('passwordSection');
+      if (panel) bootstrap.Collapse.getOrCreateInstance(panel, { toggle: false }).show();
+    }
+  });
+</script>
+<script defer src="/assets/i18n.js"></script>
+  </body></html>

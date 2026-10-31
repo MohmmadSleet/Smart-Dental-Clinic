@@ -1,0 +1,20 @@
+{
+  "name": "smart-dental-clinic",
+  "version": "27.42.12",
+  "private": true,
+  "description": "Smart Dental Clinic - secure Express/EJS clinic, staff, doctor, patient and admin website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pg": "^8.13.3",
+    "multer": "^2.0.2"
+  }
+}

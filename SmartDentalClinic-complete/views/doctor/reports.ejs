@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>التقارير الطبية | Smart Dental Doctor</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/doctor/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+        <div class="mb-4">
+          <span class="badge badge-soft mb-2">Medical Reports</span>
+          <h1 class="fw-bold">التقارير الطبية</h1>
+          <p class="text-secondary mb-0">
+            التقارير التي أنشأتها من الزيارات. العيادة تشاهد التقارير المعتمدة
+            فقط للقراءة.
+          </p>
+        </div>
+
+<div class="row g-3 mb-4 doctor-metrics" aria-label="ملخص التقارير الطبية">
+  <div class="col-6 col-lg-4"><div class="soft-card p-3 doctor-metric"><span class="doctor-metric-icon"><i class="bi bi-files"></i></span><div><div class="small text-secondary">جميع التقارير</div><div class="h4 fw-bold mb-0"><%= reports.length %></div></div></div></div>
+  <div class="col-6 col-lg-4"><div class="soft-card p-3 doctor-metric"><span class="doctor-metric-icon"><i class="bi bi-pencil-square"></i></span><div><div class="small text-secondary">مسودات</div><div class="h4 fw-bold mb-0"><%= reports.filter(r=>!r.approved).length %></div></div></div></div>
+  <div class="col-6 col-lg-4"><div class="soft-card p-3 doctor-metric"><span class="doctor-metric-icon"><i class="bi bi-patch-check"></i></span><div><div class="small text-secondary">معتمدة</div><div class="h4 fw-bold mb-0"><%= reports.filter(r=>r.approved).length %></div></div></div></div>
+</div>
+<div class="doctor-section-title mb-3"><h2 class="h5 fw-bold mb-0">البحث والتصفية</h2><span class="small text-secondary">عرض 10 تقارير لكل صفحة</span></div>
+        <div class="filter-panel mb-4">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input class="form-control" id="reportSearch" type="search" aria-label="بحث في التقارير" placeholder="ابحث بالمريض أو رقم التقرير" value=""  name="report_search">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <select class="form-select" id="reportFilter" aria-label="تصفية حالة التقرير" name="report_filter">
+                <option value="all" selected>كل الحالات</option>
+                <option value="draft">مسودة</option>
+                <option value="approved">معتمد</option>
+              </select>
+            </div>
+          </div>
+        </div>
+<div class="doctor-section-title mb-3"><h2 class="h5 fw-bold mb-0">قائمة التقارير</h2></div>
+        <div class="soft-card p-3">
+          <div class="table-responsive mobile-stack-wrapper table-ui-shell">
+            <table class="table align-middle mb-0 medium-data-table responsive-stack-table system-data-table">
+              <thead class="table-light">
+                <tr>
+                  <th>رقم التقرير</th>
+                  <th>المريض</th>
+                  <th>الزيارة</th>
+                  <th>التشخيص</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if(!reports.length){ %><tr><td colspan="6" class="text-center text-secondary py-4">لا توجد زيارات موثقة لهذا الطبيب في العيادة المختارة.</td></tr><% } %>
+              <% for(const r of reports){ %>
+                <tr class="report-filter-item" data-search="<%= r.id+' '+r.patient_name+' '+r.service %>" data-status="<%= r.approved?'approved':'draft' %>">
+                <td data-label="رقم التقرير" class="table-primary-cell"><strong>RPT-<%= r.id %></strong></td>
+                <td data-label="المريض"><%= r.patient_name %></td>
+                <td data-label="الزيارة"><%= r.date %> • <%= r.service %></td>
+                <td data-label="التشخيص"><%= r.diagnosis %></td>
+                <td data-label="الحالة"><span class="badge <%= r.approved?'text-bg-success':'text-bg-warning' %>"><%= r.approved?'معتمد':'مسودة' %></span></td>
+                <td data-label="إجراء"><a class="btn btn-outline-primary btn-sm" href="/doctor/visit?booking_id=<%= r.booking_id %>#report">عرض بيانات التقرير</a></td>
+                </tr>
+              <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+<div class="doctor-pagination soft-card p-3 mt-3" data-doctor-pager="reports" aria-live="polite" hidden>
+  <span class="doctor-pagination-info" data-page-summary></span>
+  <nav aria-label="صفحات reports" class="doctor-pagination-controls" data-page-controls></nav>
+</div><div class="alert alert-light border mt-3" data-doctor-empty="reports" hidden role="status">لا توجد نتائج تطابق البحث أو الفلاتر المحددة.</div>
+      </section>
+    </main>
+    <%- include('../partials/doctor/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><script defer src="/assets/i18n.js"></script>
+  </body></html>

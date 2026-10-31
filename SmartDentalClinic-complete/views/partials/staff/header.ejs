@@ -1,0 +1,82 @@
+
+<link rel="stylesheet" href="/assets/form-errors.css">
+<script defer src="/assets/form-errors.js"></script>
+<% const allowStaff = code => typeof hasStaffPermission === 'function' ? hasStaffPermission(code) : String(typeof staffPermissions !== 'undefined' ? staffPermissions : '').split(/\s+/).includes(code); %>
+<% const staffChoosingClinic = navVariant === 2; %>
+<% const _staffNotices = typeof staffNotifications !== 'undefined' && Array.isArray(staffNotifications) ? staffNotifications : []; %>
+<% const _staffUnread = typeof staffUnreadCount !== 'undefined' ? staffUnreadCount : 0; %>
+<% const _staffNoticeCsrf = typeof staffNotificationCsrf !== 'undefined' ? staffNotificationCsrf : ''; %>
+<nav class="navbar clinic-navbar bg-white border-bottom sticky-top" aria-label="التنقل الرئيسي لموظف العيادة">
+  <div class="container-fluid clinic-nav-layout px-3 px-lg-4">
+    <a aria-label="مساحة العمل الرئيسية" class="clinic-brand clinic-brand-left<%= navActiveClass('0') %>" href="<%= staffChoosingClinic ? 'choose-clinic' : 'index' %>"<%- navAriaCurrent('0') %>>
+      <span class="clinic-brand-mark"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span>
+      <span class="clinic-brand-copy"><strong><%= !staffChoosingClinic && typeof activeClinic !== 'undefined' && activeClinic?.name ? activeClinic.name : 'مساحة موظف العيادة' %></strong><small>Smart Dental Clinic • موظف العيادة</small></span>
+    </a>
+    <div class="clinic-desktop-nav d-none d-xl-flex justify-content-center">
+      <ul class="navbar-nav flex-row align-items-center">
+        <li class="nav-item"><a class="nav-link<%= navActiveClass('1') %>" href="<%= staffChoosingClinic ? 'choose-clinic' : 'index' %>"<%- navAriaCurrent('1') %>>الرئيسية</a></li>
+        <% if(!staffChoosingClinic && allowStaff('appointments.view')){ %><li class="nav-item"><a class="nav-link<%= navActiveClass('2') %>" data-requires-permission="appointments.view" href="appointments"<%- navAriaCurrent('2') %>>المواعيد</a></li><% } %>
+        <% if(!staffChoosingClinic && allowStaff('patients.page')){ %><li class="nav-item"><a class="nav-link<%= navActiveClass('3') %>" data-requires-permission="patients.page" href="patients"<%- navAriaCurrent('3') %>>المرضى</a></li><% } %>
+        <% if(!staffChoosingClinic && allowStaff('invoices.view')){ %><li class="nav-item"><a class="nav-link<%= navActiveClass('4') %>" data-requires-permission="invoices.view" href="invoices"<%- navAriaCurrent('4') %>>الفواتير</a></li><% } %>
+        <% if(!staffChoosingClinic && allowStaff('lab_orders.view')){ %><li class="nav-item"><a class="nav-link<%= navActiveClass('5') %>" data-requires-permission="lab_orders.view" href="lab-cases"<%- navAriaCurrent('5') %>>المختبرات</a></li><% } %>
+      </ul>
+    </div>
+    <div class="clinic-nav-actions">
+      <div class="dropdown sdc-nav-language-dropdown">
+        <button class="top-action mobile-compact-action sdc-nav-language-trigger" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="اختيار اللغة"><i class="bi bi-globe2" aria-hidden="true"></i></button>
+        <ul class="dropdown-menu dropdown-menu-end clean-dropdown sdc-nav-language-menu">
+          <li><button class="dropdown-item active" type="button" data-language="ar" data-ui-pending="">العربية</button></li>
+          <li><button class="dropdown-item" type="button" data-language="en" data-ui-pending="">English</button></li>
+        </ul>
+      </div>
+      <% if(!staffChoosingClinic){ %>
+      <div class="dropdown staff-notification-dropdown">
+        <button aria-label="الإشعارات<%= _staffUnread ? '، '+_staffUnread+' غير مقروءة' : '' %>" class="top-action mobile-compact-action staff-notification-trigger" type="button" data-bs-toggle="dropdown" data-bs-display="static" data-bs-auto-close="outside" aria-expanded="false" title="الإشعارات"><i class="bi bi-bell" aria-hidden="true"></i><% if(_staffUnread){ %><span class="notification-dot"><%= _staffUnread > 99 ? '99+' : _staffUnread %></span><% } %></button>
+        <div class="dropdown-menu clean-dropdown notification-menu mobile-notification-menu notification-menu-safe staff-notification-menu" aria-label="قائمة إشعارات موظف العيادة">
+          <div class="d-flex justify-content-between align-items-center gap-2 px-3 py-2 staff-notification-toolbar"><strong>الإشعارات</strong><span class="badge text-bg-primary rounded-pill"><%= _staffUnread %> <%= sdcT("غير مقروءة") %></span></div>
+          <div class="dropdown-divider"></div>
+          <% if(!_staffNotices.length){ %><div class="small text-secondary px-3 py-3 text-center"><i class="bi bi-bell-slash d-block fs-4 mb-2"></i>لا توجد إشعارات.</div><% } %>
+          <% for(const n of _staffNotices){ %>
+          <div class="notification-entry staff-notification-entry <%= n.Read_At ? '' : 'is-unread' %>">
+            <div class="d-flex justify-content-between align-items-center gap-2 staff-notification-entry-head"><strong class="small"><%= n.Title %></strong><% if(!n.Read_At){ %><span class="badge text-bg-primary">جديد</span><% } %></div>
+            <p class="small text-secondary staff-notification-body mb-2"><%= n.Body %></p>
+            <div class="d-flex flex-wrap gap-2 staff-notification-actions">
+              <form method="post" action="/staff/notifications/<%= n.Notification_ID %>/open"><input type="hidden" name="csrf_token" value="<%= _staffNoticeCsrf %>"><button class="btn btn-sm btn-outline-primary" type="submit">فتح</button></form>
+              <form method="post" action="/staff/notifications/<%= n.Notification_ID %>/read"><input type="hidden" name="csrf_token" value="<%= _staffNoticeCsrf %>"><button class="btn btn-sm btn-light border" type="submit" <%= n.Read_At ? 'disabled' : '' %>>مقروء</button></form>
+              <form method="post" action="/staff/notifications/<%= n.Notification_ID %>/delete"><input type="hidden" name="csrf_token" value="<%= _staffNoticeCsrf %>"><button class="btn btn-sm btn-light border text-danger" type="submit">حذف</button></form>
+            </div>
+          </div>
+          <% } %>
+          <form method="post" action="/staff/notifications/read-all" class="px-3 py-2"><input type="hidden" name="csrf_token" value="<%= _staffNoticeCsrf %>"><button class="btn btn-sm btn-outline-primary w-100" type="submit" <%= _staffUnread ? '' : 'disabled' %>>تحديد الكل كمقروء</button></form>
+        </div>
+      </div><% } %>
+      <div class="dropdown profile-action-dropdown">
+        <button class="clinic-profile-trigger compact-profile-trigger" type="button" data-bs-display="static" data-bs-toggle="dropdown" aria-label="قائمة حساب الموظف" aria-expanded="false"><span class="clinic-avatar"><%= currentUser?.fullName?.trim()?.slice(0,1) || 'م' %></span><i class="bi bi-chevron-down small text-secondary d-none d-sm-inline"></i></button>
+        <div class="dropdown-menu dropdown-menu-end clean-dropdown profile-dropdown-menu">
+          <div class="px-3 py-2"><strong class="d-block"><%= typeof currentUser !== 'undefined' && currentUser?.fullName ? currentUser.fullName : 'الموظف' %></strong><small class="text-secondary"><%= staffChoosingClinic ? 'موظف العيادة' : (typeof staffClinicRole !== 'undefined' && staffClinicRole ? staffClinicRole : 'موظف العيادة') %></small></div>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item<%= navActiveClass('6') %>" href="<%= staffChoosingClinic ? 'choose-clinic' : 'profile' %>"<%- navAriaCurrent('6') %>><i class="bi bi-person-gear"></i>الملف والصلاحيات</a>
+          <% if(!staffChoosingClinic){ %><a class="dropdown-item" href="choose-clinic"><i class="bi bi-arrow-left-right"></i>تبديل العيادة</a><% } %>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item text-danger" data-logout="" type="button"><i class="bi bi-box-arrow-right"></i>تسجيل الخروج</button>
+        </div>
+      </div>
+      <button class="btn btn-outline-primary sections-trigger mobile-sections-trigger" data-bs-target="#sectionsDrawer" data-bs-toggle="offcanvas" type="button" aria-label="كل الأقسام" aria-controls="sectionsDrawer"><i class="bi bi-grid-3x3-gap"></i><span class="d-none d-xxl-inline me-1">كل الأقسام</span></button>
+    </div>
+  </div>
+</nav>
+<div class="offcanvas offcanvas-start mobile-drawer sections-drawer" id="sectionsDrawer" tabindex="-1" aria-label="قائمة أقسام موظف العيادة">
+  <div class="drawer-header"><div class="drawer-clinic"><div class="drawer-avatar"><%= currentUser?.fullName?.trim()?.slice(0,1) || 'م' %></div><div><h6 class="mb-1 fw-bold"><%= typeof activeClinic !== 'undefined' && activeClinic?.name && !staffChoosingClinic ? activeClinic.name : 'مساحة موظف العيادة' %></h6><small class="opacity-75"><%= typeof staffClinicRole !== 'undefined' && staffClinicRole ? staffClinicRole : 'موظف العيادة' %></small></div></div><button class="drawer-close" data-bs-dismiss="offcanvas" type="button" aria-label="إغلاق"><i class="bi bi-x-lg"></i></button></div>
+  <div class="offcanvas-body p-0"><div class="drawer-content">
+    <div class="drawer-title">الأساسية</div>
+    <a class="drawer-link<%= drawerActiveClass('0') %>" href="<%= staffChoosingClinic ? 'choose-clinic' : 'index' %>"<%- drawerAriaCurrent('0') %>><span class="drawer-icon"><i class="bi bi-house"></i></span><span class="flex-grow-1">الرئيسية</span><i class="bi bi-chevron-left text-secondary small"></i></a>
+    <% if(!staffChoosingClinic && allowStaff('appointments.view')){ %><a class="drawer-link<%= drawerActiveClass('1') %>" data-requires-permission="appointments.view" href="appointments"<%- drawerAriaCurrent('1') %>><span class="drawer-icon"><i class="bi bi-calendar2-check"></i></span><span class="flex-grow-1">المواعيد</span><i class="bi bi-chevron-left text-secondary small"></i></a><% } %>
+    <% if(!staffChoosingClinic && allowStaff('patients.page')){ %><a class="drawer-link<%= drawerActiveClass('2') %>" data-requires-permission="patients.page" href="patients"<%- drawerAriaCurrent('2') %>><span class="drawer-icon"><i class="bi bi-people"></i></span><span class="flex-grow-1">المرضى</span><i class="bi bi-chevron-left text-secondary small"></i></a><% } %>
+    <% if(!staffChoosingClinic && allowStaff('invoices.view')){ %><a class="drawer-link<%= drawerActiveClass('3') %>" data-requires-permission="invoices.view" href="invoices"<%- drawerAriaCurrent('3') %>><span class="drawer-icon"><i class="bi bi-receipt"></i></span><span class="flex-grow-1">الفواتير</span><i class="bi bi-chevron-left text-secondary small"></i></a><% } %>
+    <% if(!staffChoosingClinic && allowStaff('lab_orders.view')){ %><a class="drawer-link<%= drawerActiveClass('4') %>" data-requires-permission="lab_orders.view" href="lab-cases"<%- drawerAriaCurrent('4') %>><span class="drawer-icon"><i class="bi bi-box-seam"></i></span><span class="flex-grow-1">المختبرات</span><i class="bi bi-chevron-left text-secondary small"></i></a><% } %>
+    <div class="drawer-title mt-3">الحساب</div>
+    <a class="drawer-link<%= drawerActiveClass('5') %>" href="<%= staffChoosingClinic ? 'choose-clinic' : 'profile' %>"<%- drawerAriaCurrent('5') %>><span class="drawer-icon"><i class="bi bi-person-gear"></i></span><span class="flex-grow-1">الملف والصلاحيات</span><i class="bi bi-chevron-left text-secondary small"></i></a>
+    <% if(!staffChoosingClinic){ %><a class="drawer-link" href="choose-clinic"><span class="drawer-icon"><i class="bi bi-arrow-left-right"></i></span><span class="flex-grow-1">تبديل العيادة</span><i class="bi bi-chevron-left text-secondary small"></i></a><% } %>
+  </div></div>
+</div>
+<% if(typeof logoutCsrf !== 'undefined' && logoutCsrf){ %><form id="sdcUnifiedLogoutForm" action="/auth/logout" method="post" hidden><input type="hidden" name="csrf_token" value="<%= logoutCsrf %>"></form><script defer src="/assets/logout.js"></script><% } %>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>فواتيري | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="patient-visual-page patient-page-invoices"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/patient/header') %>
+    
+    <main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+  <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-end mb-4"><div><span class="badge badge-soft mb-2">الفواتير والمدفوعات</span><h1 class="fw-bold">فواتيري</h1><p class="text-secondary mb-0">الفواتير الصادرة ومدفوعاتها الفعلية؛ السداد يتم لدى العيادة.</p></div><div class="invoice-status-legend"><span><i class="bi bi-circle-fill text-danger"></i> غير مدفوعة</span><span><i class="bi bi-circle-fill text-warning"></i> مدفوعة جزئياً</span><span><i class="bi bi-circle-fill text-success"></i> مدفوعة</span></div></div>
+  <div class="row g-3 mb-4"><% [['إجمالي الفواتير',billing.total],['المدفوع',billing.paid],['المتبقي',billing.remaining]].forEach(card=>{ %><div class="col-md-4"><div class="soft-card p-4 h-100"><small class="text-secondary"><%= card[0] %></small><div class="fs-2 fw-bold mt-2"><%= card[1].toFixed(2) %> ₪</div></div></div><% }); %></div>
+  <div class="alert alert-primary border-0 rounded-4 mb-4"><i class="bi bi-info-circle ms-2"></i>تظهر المدفوعات المسجلة من العيادة فقط؛ إذا دفعت ولم يظهر المبلغ، تواصل مع العيادة.</div>
+  <div class="soft-card p-3 p-md-4 mb-4 patient-invoice-filter-panel">
+    <div class="row g-3 align-items-end"><div class="col-lg-5"><label class="form-label fw-bold small" for="patientInvoiceSearch">البحث في فواتيري</label><input id="patientInvoiceSearch" class="form-control" type="search" autocomplete="off" placeholder="رقم الفاتورة أو اسم العيادة"></div>
+    <div class="col-lg-7"><div class="small fw-bold mb-2">الحالة المالية</div><div class="d-flex gap-2 flex-wrap" role="group" aria-label="تصفية الفواتير حسب الحالة"><button type="button" class="btn btn-sm btn-primary active" data-patient-invoice-filter="all" aria-pressed="true">الكل</button><button type="button" class="btn btn-sm btn-outline-secondary" data-patient-invoice-filter="unpaid" aria-pressed="false">غير مدفوعة</button><button type="button" class="btn btn-sm btn-outline-secondary" data-patient-invoice-filter="partial" aria-pressed="false">مدفوعة جزئياً</button><button type="button" class="btn btn-sm btn-outline-secondary" data-patient-invoice-filter="paid" aria-pressed="false">مدفوعة</button></div></div></div>
+  </div>
+  <div class="patient-subsection-heading d-flex flex-wrap justify-content-between align-items-center gap-2"><div><h2>تفاصيل الفواتير</h2><p>افتح أي فاتورة للاطلاع على تفاصيلها ودفعاتها المسجلة.</p></div><span class="text-secondary small" id="patientInvoiceCount" aria-live="polite"><%= sdcT("عدد الفواتير:") %> <%= billing.items.length %></span></div>
+        <div class="accordion invoice-accordion" id="invoiceAccordion"><% if(!billing.items.length){ %><div class="soft-card p-4 text-secondary">لا توجد فواتير صادرة لحسابك.</div><% } %>
+  <% billing.items.forEach((inv,i)=>{ const state=inv.remaining<=0?'paid':inv.paid>0?'partial':'unpaid';%>
+   <div class="accordion-item patient-invoice-item" data-invoice-status="<%= state %>" data-invoice-search="<%= inv.id %> <%= inv.clinic %>"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-target="#inv-<%= inv.id %>" data-bs-toggle="collapse" type="button"><div class="w-100 d-flex flex-column flex-md-row justify-content-between gap-2 align-items-md-center"><div class="fw-bold fs-4"><%= sdcT("فاتورة #") %><%= inv.id %></div><div class="text-secondary small"><%= inv.clinic %> • <%= inv.issued %> • <span class="badge <%= state==='paid'?'text-bg-success':state==='partial'?'text-bg-warning':'text-bg-danger' %>"><%= state==='paid'?'مدفوعة':state==='partial'?'مدفوعة جزئياً':'غير مدفوعة' %></span></div></div></button></h2>
+   <div class="accordion-collapse collapse" id="inv-<%= inv.id %>" data-bs-parent="#invoiceAccordion"><div class="accordion-body"><div class="table-responsive mb-4 mobile-stack-wrapper table-ui-shell"><table class="table mb-0 responsive-stack-table system-data-table"><thead class="table-light"><tr><th>البيان</th><th>الكمية</th><th>القيمة</th></tr></thead><tbody>
+    <% inv.lines.forEach(line=>{ %><tr><td data-label="البيان"><%= line.description %></td><td data-label="الكمية"><%= line.qty %></td><td data-label="القيمة"><%= (Number(line.qty)*Number(line.price)-Number(line.discount)).toFixed(2) %> ₪</td></tr><% }); %>
+    <% if(!inv.lines.length){ %><tr><td colspan="3">لا توجد بنود مسجلة.</td></tr><% } %></tbody></table></div>
+    <div class="row g-4 align-items-start"><div class="col-lg-4"><div class="invoice-summary-box"><div class="d-flex justify-content-between py-2"><span>الإجمالي</span><strong><%= inv.total.toFixed(2) %> ₪</strong></div><div class="d-flex justify-content-between py-2"><span>المدفوع</span><strong><%= inv.paid.toFixed(2) %> ₪</strong></div><hr><div class="d-flex justify-content-between py-2 text-danger fs-5 fw-bold"><span>المتبقي</span><span><%= inv.remaining.toFixed(2) %> ₪</span></div></div></div>
+     <div class="col-lg-8"><h5 class="fw-bold mb-3">الدفعات المسجلة</h5><div class="table-responsive"><table class="table table-sm"><thead><tr><th>الرقم</th><th>التاريخ</th><th>الطريقة</th><th>المبلغ</th></tr></thead><tbody><% inv.payments.forEach(p=>{ %><tr><td><%= p.payment_id %></td><td><%= p.paid_at %></td><td><%= {cash:'نقدًا',card:'بطاقة',bank_transfer:'تحويل بنكي'}[p.method]||p.method %></td><td><%= Number(p.amount).toFixed(2) %> ₪</td></tr><% }); %><% if(!inv.payments.length){ %><tr><td colspan="4">لا توجد دفعات مسجلة.</td></tr><% } %></tbody></table></div></div></div></div></div></div>
+  <% }); %></div>
+  <div id="patientInvoiceEmptyState" class="soft-card p-4 text-center text-secondary d-none mt-3" role="status">لا توجد فواتير مطابقة للبحث أو الحالة المختارة.</div>
+  <nav id="patientInvoicePagination" aria-label="صفحات الفواتير" class="patient-list-pagination mt-4 d-none"><div id="patientInvoicePageButtons" class="patient-page-buttons d-flex align-items-center justify-content-center flex-wrap gap-2"></div></nav>
+  </section></main>
+    <%- include('../partials/patient/footer') %>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast" role="alert">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية بنجاح</div>
+          <button class="btn-close btn-close-white ms-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><script defer src="/assets/i18n.js"></script>
+  </body></html>

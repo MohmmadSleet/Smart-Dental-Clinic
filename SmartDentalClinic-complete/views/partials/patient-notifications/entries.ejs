@@ -1,0 +1,35 @@
+<% const _patientNotices = typeof patientNotifications !== 'undefined' && Array.isArray(patientNotifications) ? patientNotifications : []; %>
+<% const _patientReturn = typeof patientReturnTo === 'string' ? patientReturnTo : '/patient/index'; %>
+<div class="dropdown-menu dropdown-menu-end clean-dropdown notification-menu patient-notification-menu shadow-sm" aria-label="إشعارات المريض">
+  <div class="px-3 py-2 border-bottom d-flex align-items-center justify-content-between gap-2">
+    <strong class="fs-6">الإشعارات</strong>
+    <span class="badge rounded-pill text-bg-primary"><%= typeof patientUnreadCount!=='undefined' ? patientUnreadCount : 0 %> <%= sdcT("غير مقروءة") %></span>
+  </div>
+  <div class="patient-notification-scroll">
+    <% if (!_patientNotices.length) { %>
+      <div class="text-secondary text-center small p-4"><i class="bi bi-bell-slash d-block fs-4 mb-2"></i>لا توجد إشعارات حاليًا.</div>
+    <% } %>
+    <% _patientNotices.forEach(note => { %>
+      <div class="notification-entry border-bottom px-3 py-3 <%= note.read?'':'fw-bold' %>">
+        <form method="post" action="/patient/notifications/open" class="mb-2">
+          <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+          <input type="hidden" name="notice_id" value="<%= note.id %>">
+          <button type="submit" class="btn btn-link text-start text-body text-decoration-none p-0 w-100">
+            <span class="d-block"><%= note.title %></span>
+            <span class="d-block text-secondary small fw-normal"><%= note.body %></span>
+            <span class="d-block text-muted small fw-normal mt-1"><%= note.date %></span>
+          </button>
+        </form>
+        <div class="d-flex align-items-center gap-2">
+          <% if (!note.read) { %><form method="post" action="/patient/notifications/read"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="notice_id" value="<%= note.id %>"><input type="hidden" name="return_to" value="<%= _patientReturn %>"><button type="submit" class="btn btn-sm btn-outline-secondary">مقروء</button></form><% } %>
+          <form method="post" action="/patient/notifications/delete"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="notice_id" value="<%= note.id %>"><input type="hidden" name="return_to" value="<%= _patientReturn %>"><button type="submit" class="btn btn-sm btn-link text-danger">حذف</button></form>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+  <form method="post" action="/patient/notifications/all" class="p-3 border-top">
+    <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+    <input type="hidden" name="return_to" value="<%= _patientReturn %>">
+    <button type="submit" class="btn btn-sm btn-outline-primary w-100" <%= typeof patientUnreadCount!=='undefined' && patientUnreadCount ? '' : 'disabled' %>>تحديد الكل كمقروء</button>
+  </form>
+</div>

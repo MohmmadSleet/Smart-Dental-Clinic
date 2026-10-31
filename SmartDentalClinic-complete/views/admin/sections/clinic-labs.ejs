@@ -1,0 +1,55 @@
+<section class="soft-card p-4 mb-4" aria-labelledby="adminClinicLabHeading">
+ <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+  <div><h2 id="adminClinicLabHeading" class="h4 fw-bold mb-1">المختبرات والحالات المخبرية</h2><p class="small text-secondary mb-0">إدارة علاقة المختبر بالعيادة والطلبات المرتبطة بزياراتها، دون تغيير تشخيص الطبيب أو مسح الحالات السابقة.</p></div>
+  <span class="badge text-bg-light border"><%= labs.length %> <%= sdcT("مختبر مرتبط") %></span>
+ </div>
+ <details class="mb-4"><summary class="btn btn-outline-primary">ربط مختبر بالعيادة</summary>
+  <form method="post" action="/admin/clinics/<%= clinic.id %>/labs/link" class="row g-2 mt-2">
+   <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+   <div class="col-md-6"><label class="form-label">المختبر<select name="laboratory_id" class="form-select" required><option value="">اختر مختبرًا</option><% for(const l of catalogue){ %><option value="<%= l.Laboratory_ID %>"><%= l.Laboratory_Name %></option><% } %></select></label></div>
+   <div class="col-md-6"><label class="form-label">ملاحظة للعلاقة<input name="internal_notes" maxlength="4000" class="form-control"></label></div>
+   <div class="col-12"><label class="form-label w-100">سبب إجراء المشرف<input name="reason" class="form-control" required minlength="8" maxlength="1000"></label></div>
+   <div class="col-12"><button class="btn btn-primary">ربط المختبر</button></div>
+  </form>
+ </details>
+ <div class="table-responsive"><table class="table align-middle"><thead><tr><th>المختبر</th><th>العلاقة</th><th>حالات مفتوحة</th><th>حالات مستلمة</th><th>تفاصيل</th></tr></thead><tbody>
+ <% for(const l of labs){ %><tr><td><%= l.Laboratory_Name %></td><td><%= l.Relationship_Status %></td><td><%= l.open_cases %></td><td><%= l.received_cases %></td><td><a class="btn btn-sm btn-outline-primary" href="/admin/clinic-details?id=<%= clinic.id %>&tab=labs&lab_id=<%= l.Laboratory_ID %>">إدارة الحالات</a></td></tr><% } %>
+ <% if(!labs.length){ %><tr><td colspan="5" class="text-center text-secondary">لم يتم ربط مختبر بهذه العيادة.</td></tr><% } %>
+ </tbody></table></div>
+</section>
+<% if(labDetail){ const selectedLab=labDetail.lab; %>
+<section class="soft-card p-4 mb-4" aria-labelledby="labDetailsTitle">
+ <h3 class="h5 fw-bold" id="labDetailsTitle"><%= sdcT("إدارة مختبر") %> <%= selectedLab.Laboratory_Name %></h3>
+ <details class="mb-3"><summary class="btn btn-outline-secondary">تعديل علاقة المختبر</summary>
+ <form method="post" action="/admin/clinics/<%= clinic.id %>/labs/<%= selectedLab.Laboratory_ID %>/relationship" class="row g-2 mt-2">
+  <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+  <div class="col-md-4"><label class="form-label">الحالة<select class="form-select" name="relationship_status"><option value="active" <%= selectedLab.Relationship_Status==='active'?'selected':'' %>>فعالة</option><option value="inactive" <%= selectedLab.Relationship_Status==='inactive'?'selected':'' %>>غير فعالة</option></select></label></div>
+  <div class="col-md-8"><label class="form-label">ملاحظات العلاقة<input class="form-control" name="edit_lab_notes" maxlength="4000" value="<%= selectedLab.Internal_Notes||'' %>"></label></div>
+  <div class="col-12"><label class="form-label w-100">السبب الإداري<input class="form-control" name="reason" required minlength="8" maxlength="1000"></label></div><div class="col-12"><button class="btn btn-primary">حفظ العلاقة</button></div>
+ </form></details>
+ <% if(selectedLab.Relationship_Status==='active'){ %>
+ <details class="mb-3"><summary class="btn btn-outline-primary">إنشاء طلب مخبري لزيارة</summary>
+ <form method="post" action="/admin/clinics/<%= clinic.id %>/labs/<%= selectedLab.Laboratory_ID %>/create" class="row g-2 mt-2">
+  <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+  <div class="col-md-5"><label class="form-label">الزيارة<select name="visit_id" class="form-select" required><option value="">اختر زيارة</option><% for(const v of labDetail.visits){ %><option value="<%= v.Visit_ID %>">V-<%= v.Visit_ID %> — <%= v.First_Name %> <%= v.Last_Name %></option><% } %></select></label></div>
+  <div class="col-md-3"><label class="form-label">التسليم المتوقع<input type="date" name="delivery_date" class="form-control" required></label></div>
+  <div class="col-md-4"><label class="form-label">العمل المطلوب<input name="work_type" class="form-control" maxlength="150" required></label></div>
+  <div class="col-md-2"><label class="form-label">رقم السن<input name="tooth" type="number" min="11" max="85" class="form-control"></label></div>
+  <div class="col-md-4"><label class="form-label">اللون<input name="shade" class="form-control" maxlength="150"></label></div>
+  <div class="col-md-6"><label class="form-label">ملاحظات<input name="notes" class="form-control" maxlength="4000"></label></div>
+  <div class="col-12"><label class="form-label w-100">سبب الإنشاء الإداري<input name="reason" class="form-control" required minlength="8" maxlength="1000"></label></div><div class="col-12"><button class="btn btn-primary">إنشاء الطلب</button></div>
+ </form></details>
+ <% } %>
+ <div class="table-responsive"><table class="table align-middle"><thead><tr><th>رقم الطلب</th><th>العمل</th><th>المريض</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>
+ <% for(const c of labDetail.cases){ %><tr><td>LC-<%= c.Lab_Order_ID %></td><td><%= c.work %></td><td><%= c.patient_first %> <%= c.patient_last %></td><td><%= c.Order_Status %></td><td>
+ <% if(['draft','sent'].includes(c.Order_Status)){ %><form method="post" action="/admin/clinics/<%= clinic.id %>/labs/<%= selectedLab.Laboratory_ID %>/case/<%= c.Lab_Order_ID %>" class="d-flex flex-wrap gap-2">
+ <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="hidden" name="action" value="<%= c.Order_Status==='draft'?'send':'receive' %>"><input name="reason" class="form-control form-control-sm" required minlength="8" maxlength="1000" placeholder="سبب القرار الإداري"><button class="btn btn-sm btn-outline-primary"><%= c.Order_Status==='draft'?'إرسال للمختبر':'تأكيد الاستلام' %></button></form>
+ <% if(c.Order_Status==='draft'&&labDetail.targetLabs.length){ %><form method="post" action="/admin/clinics/<%= clinic.id %>/labs/<%= selectedLab.Laboratory_ID %>/case/<%= c.Lab_Order_ID %>" class="d-flex gap-1 flex-wrap mt-2">
+ <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><input type="hidden" name="action" value="transfer">
+ <select name="transfer_lab_select" class="form-select form-select-sm" required><option value="">انقل إلى مختبر</option><% for(const target of labDetail.targetLabs){ %><option value="<%= target.Laboratory_ID %>"><%= target.Laboratory_Name %></option><% } %></select>
+ <input name="reason" class="form-control form-control-sm" minlength="8" maxlength="1000" placeholder="سبب نقل الحالة" required><button class="btn btn-sm btn-outline-secondary">نقل</button></form><% } %>
+ <% }else{ %>—<% } %>
+ </td></tr><% } %><% if(!labDetail.cases.length){ %><tr><td colspan="5" class="text-center text-secondary">لا توجد طلبات مخبرية في المختبر المحدد.</td></tr><% } %>
+ </tbody></table></div>
+</section>
+<% } %>

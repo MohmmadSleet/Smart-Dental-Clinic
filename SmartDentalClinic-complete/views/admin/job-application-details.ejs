@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>طلب وظيفة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+<main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">طلب التوظيف</span></nav>
+        <nav><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/admin/jobs">الوظائف</a></li><li class="breadcrumb-item"><a href="/admin/job-details?id=<%= application.job_id %>">J-<%= application.job_id %></a></li><li class="breadcrumb-item active">JA-<%= application.id %></li></ol></nav>
+        <% const noticeMap={noted:'تم توثيق الملاحظة الرقابية في سجل النظام دون تغيير قرار العيادة.',invalid:'اكتب ملاحظة من 8 إلى 1000 حرف.',unchanged:'لم يطرأ أي تغيير.',failed:'تعذر حفظ الملاحظة. يرجى مراجعة سجل الخادم.',schema:'تعذر الحفظ بسبب قاعدة البيانات.',permission:'غير مصرح بإجراء العملية.'}; %>
+        <% if(jobNotice&&noticeMap[jobNotice]){ %><div class="alert <%= jobNotice==='noted'?'alert-success':'alert-warning' %>" role="status"><%= noticeMap[jobNotice] %></div><% } %>
+        <div class="mb-4"><span class="badge <%= application.status==='accepted'?'text-bg-success':application.status==='rejected'?'text-bg-danger':'text-bg-warning' %> mb-2"><%= ({pending:'بانتظار قرار العيادة',accepted:'مقبول',rejected:'مرفوض',withdrawn:'مسحوب'})[application.status]||application.status %></span>
+          <h1 class="fw-bold fs-2"><%= sdcT("طلب وظيفة JA-") %><%= application.id %></h1><p class="text-secondary mb-0"><%= application.full_name %> → <%= application.job_title %> • <%= application.clinic %></p>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="soft-card p-4 mb-4"><h4 class="fw-bold mb-3">بيانات المتقدم</h4>
+              <div class="summary-row"><span>الطبيب</span><a href="/admin/doctor-details?id=<%= application.doctor_id %>"><%= application.full_name %></a></div>
+              <div class="summary-row"><span>البريد الإلكتروني</span><strong><%= application.email %></strong></div>
+              <div class="summary-row"><span>الهاتف</span><strong><%= application.phone %></strong></div>
+              <div class="summary-row"><span>المدينة</span><strong><%= application.city %></strong></div>
+              <div class="summary-row"><span>التخصص عند التقديم</span><strong><%= application.specialty %></strong></div>
+              <div class="summary-row"><span>الترخيص وقت التقديم</span><strong><%= application.license %> • <%= application.license_status %></strong></div>
+              <div class="summary-row"><span>التحقق الحالي من الترخيص</span><strong><%= application.current_license_status %></strong></div>
+              <div class="summary-row"><span>حالة الحساب</span><strong><%= application.doctor_account_status %></strong></div>
+              <div class="summary-row"><span>الخبرة</span><strong><%= application.years_experience %> <%= sdcT("سنة") %></strong></div>
+              <div class="summary-row"><span>الراتب المتوقع</span><strong><%= application.expected_salary==null?'غير محدد':application.expected_salary %></strong></div>
+              <div class="summary-row"><span>تاريخ التقديم</span><strong><%= application.applied_at %></strong></div>
+              <div class="summary-row"><span>الوظيفة</span><a href="/admin/job-details?id=<%= application.job_id %>"><%= application.job_title %></a></div>
+              <div class="summary-row"><span>العيادة</span><a href="/admin/clinic-details?id=<%= application.clinic_id %>"><%= application.clinic %></a></div>
+              <h5 class="fw-bold mt-4">الرسالة التعريفية</h5><p class="text-secondary" style="white-space:pre-wrap"><%= application.cover_letter||'لم يكتب المتقدم رسالة.' %></p>
+              <h5 class="fw-bold mt-4">رد العيادة على الطلب</h5><p class="text-secondary" style="white-space:pre-wrap"><%= application.feedback||'لم تسجّل العيادة ردًا بعد.' %></p>
+            </div>
+            <div class="soft-card p-4 mb-4"><h4 class="fw-bold mb-3">مرفقات طلب التوظيف</h4>
+              <% if(!attachments.length){ %><p class="text-secondary mb-0">لا توجد مرفقات.</p><% } %>
+              <% attachments.forEach(function(f){ %><div class="summary-row"><span><%= f.type %> — <%= f.name %></span><a class="btn btn-sm btn-outline-primary" href="/admin/job-application-details/<%= application.id %>/attachment/<%= f.id %>">تنزيل</a></div><% }); %>
+            </div>
+            <div class="soft-card p-4"><h4 class="fw-bold mb-3">سجل الملاحظات الرقابية</h4>
+              <% if(!oversightNotes.length){ %><p class="text-secondary">لا توجد ملاحظات رقابية بعد.</p><% } %>
+              <% oversightNotes.forEach(function(n){ %><div class="border-bottom py-2"><strong><%= n.actor||'مشرف' %></strong> <span class="text-secondary small"><%= n.occurred %></span><p class="mb-0" style="white-space:pre-wrap"><%= n.reason %></p></div><% }); %>
+            </div>
+          </div>
+          <div class="col-lg-4"><div class="soft-card p-4"><h4 class="fw-bold mb-3">صلاحية المشرف العام</h4>
+            <p class="small text-secondary">قبول أو رفض طلب التوظيف من اختصاص العيادة. يمكن للمشرف توثيق ملاحظة رقابية في سجل النظام دون تغيير حالة الطلب.</p>
+            <form method="post" action="/admin/job-application-details/<%= application.id %>/note">
+              <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+              <label for="adminApplicationReason" class="form-label">الملاحظة الرقابية *</label>
+              <textarea name="reason" id="adminApplicationReason" class="form-control mb-3" required minlength="8" maxlength="1000" rows="4" placeholder="سبب رقابي واضح ومحدد"></textarea>
+              <button class="btn btn-outline-primary w-100" type="submit">حفظ ملاحظة رقابية</button>
+            </form>
+          </div></div>
+        </div>
+      </section>
+    </main>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+    <button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+    <%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

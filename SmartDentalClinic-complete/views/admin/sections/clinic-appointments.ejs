@@ -1,0 +1,8 @@
+<section class="soft-card p-4 mb-4" id="adminClinicBookings" aria-labelledby="adminClinicBookingsTitle">
+<h2 class="h4 fw-bold mb-2" id="adminClinicBookingsTitle">رقابة حجوزات العيادة</h2><p class="text-secondary small">تُنشأ المواعيد والمتابعات من حساب العيادة أو المريض. يستخدم المشرف تفاصيل الحجز للتدخل الاستثنائي الموثّق.</p>
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>الحجز</th><th>المريض</th><th>الطبيب والخدمة</th><th>التاريخ والحالة</th><th>التفاصيل</th></tr></thead><tbody>
+<% for(const b of bookings){ %><tr><td>#<%= b.id %></td><td><%= b.patient_name %></td><td><%= b.doctor_name %><div class="small text-secondary"><%= b.service_name %></div></td><td><%= b.date %> <%= b.time %><div><%= b.status %></div></td><td><a href="/admin/appointment-details?id=<%= b.id %>" class="btn btn-sm btn-outline-primary">عرض وتدخل إداري</a></td></tr><% } %>
+<% if(!bookings.length){ %><tr><td colspan="5" class="text-center text-secondary">لا توجد حجوزات مسجلة.</td></tr><% } %></tbody></table></div>
+<h3 class="h5 fw-bold mt-4">المتابعات المقترحة</h3><div class="table-responsive"><table class="table align-middle"><thead><tr><th>المريض</th><th>الطبيب</th><th>التاريخ المقترح</th><th>الحالة</th></tr></thead><tbody>
+<% for(const f of recalls.slice(0,30)){ %><tr><td><%= f.patient_name %></td><td><%= f.doctor_name %></td><td><%= f.suggested_date %></td><td><%= f.status==='booked'?'محجوزة':f.status==='overdue'?'متأخرة':'بانتظار الحجز' %></td></tr><% } %>
+<% if(!recalls.length){ %><tr><td colspan="4" class="text-center text-secondary">لا توجد متابعات.</td></tr><% } %></tbody></table></div></section>

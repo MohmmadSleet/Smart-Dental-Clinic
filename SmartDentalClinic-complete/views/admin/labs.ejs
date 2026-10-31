@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المختبرات | Smart Dental Clinic</title>
+<!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+<link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/i18n.css">
+  </head><body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+<%- include('../partials/admin/header') %>
+<main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">المختبرات</span></nav>
+
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+ <div><span class="badge badge-soft mb-2">Labs Administration</span><h1 class="fw-bold fs-2 mb-2">كتالوج المختبرات الموحّد</h1>
+ <p class="text-secondary mb-0">المشرف العام يدير بيانات المختبرات، والعيادة تختار من الكتالوج وتدير ارتباطها الخاص.</p></div>
+ <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#adminAddLabModal"><i class="bi bi-plus-lg ms-1"></i>إضافة مختبر</button>
+</div>
+<% const msgs={deleted:'حُذف المختبر غير المرتبط بأي عيادة أو حالة بعد توثيق العملية.',created:'تمت إضافة المختبر بنجاح.',update:'تم حفظ بيانات المختبر.',activate:'تم تفعيل المختبر.',deactivate:'تم تعطيل المختبر مع إبقاء الحالات القديمة.',invalid:'تحقق من البيانات وسبب الإجراء (ثمانية أحرف على الأقل).',duplicate:'مختبر بنفس الاسم والهاتف موجود بالفعل.',unchanged:'حالة المختبر لم تتغير.',schema:'قاعدة البيانات لم تستكمل تحديث المختبرات؛ شغّل ملف SQL الخاص بـv27.12.',permission:'تعذر إثبات صلاحية Super Admin داخل قاعدة البيانات. راجع سجل CMD.',constraint:'رفضت قاعدة البيانات الإجراء بسبب أحد قيودها. راجع سجل CMD.',failed:'تعذر حفظ الإجراء. راجع رسالة [ADMIN_LAB_MUTATION_FAILED] في CMD.'}; %>
+<% if(msgs[labNotice]){ %><div class="alert <%= ['invalid','duplicate','unchanged','schema','permission','constraint','failed'].includes(labNotice)?'alert-warning':'alert-success' %> rounded-4" role="status"><%= msgs[labNotice] %></div><% } %>
+
+<div class="row g-3 mb-4">
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">إجمالي المختبرات</small><div class="stat-value" id="adminLabsTotal"><%= stats.total %></div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">مختبرات نشطة</small><div class="stat-value text-success" id="adminLabsActive"><%= stats.active %></div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">مختبرات معطلة</small><div class="stat-value" id="adminLabsArchived"><%= stats.inactive %></div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">حالات مفتوحة</small><div class="stat-value text-primary" id="adminLabsOpenCases"><%= stats.open %></div></div></div>
+</div>
+<div class="filter-panel mb-4"><div class="row g-3 align-items-end">
+ <div class="col-lg-7"><label for="adminLabSearch" class="form-label">بحث</label><div class="input-group"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input class="form-control" id="adminLabSearch" placeholder="اسم المختبر، العيادة، الهاتف أو المدينة"></div></div>
+ <div class="col-lg-5"><label for="adminLabStatusFilter" class="form-label">الحالة</label><select id="adminLabStatusFilter" class="form-select"><option value="all">الكل</option><option value="active">نشط</option><option value="inactive">معطل</option></select></div>
+</div></div>
+<div class="row g-4" id="adminLabsGrid">
+ <% for(const l of labs){ %>
+ <div class="col-md-6 col-xl-4" data-admin-lab-card data-status="<%= l.Is_Active?'active':'inactive' %>" data-search="<%= [l.Laboratory_Name,l.Phone,l.Address,l.clinics].join(' ').toLowerCase() %>">
+  <div class="soft-card p-4 h-100 d-flex flex-column">
+   <div class="d-flex justify-content-between gap-3 mb-3"><div><h5 class="fw-bold mb-1"><%= l.Laboratory_Name %></h5><div class="small text-secondary"><%= l.clinics||'غير مرتبط بعيادة' %></div></div>
+   <span class="badge <%= l.Is_Active?'text-bg-success':'text-bg-secondary' %>"><%= l.Is_Active?'نشط':'معطل' %></span></div>
+   <div class="small text-secondary mb-3"><i class="bi bi-geo-alt ms-1"></i><%= l.Address %><br><i class="bi bi-telephone ms-1"></i><%= l.Phone %></div>
+   <div class="row g-2 text-center mb-3"><div class="col-4"><div class="border rounded-3 p-2"><small class="text-secondary d-block">الحالات</small><strong><%= l.case_total %></strong></div></div>
+   <div class="col-4"><div class="border rounded-3 p-2"><small class="text-secondary d-block">مفتوحة</small><strong><%= l.open_cases %></strong></div></div>
+   <div class="col-4"><div class="border rounded-3 p-2"><small class="text-secondary d-block">متأخرة</small><strong class="text-danger"><%= l.overdue_cases %></strong></div></div></div>
+   <div class="mt-auto d-flex gap-2"><a class="btn btn-primary flex-grow-1" href="/admin/lab-details?id=<%= l.Laboratory_ID %>">فتح المختبر</a> <a class="btn btn-outline-danger" href="/admin/lab-details?id=<%= l.Laboratory_ID %><%= Number(l.case_total)>0 || l.clinics ? '#adminDeleteDecision' : '' %>">حذف</a></div>
+  </div>
+ </div>
+ <% } %>
+</div>
+<div class="soft-card p-5 text-center <%= labs.length?'d-none':'' %>" id="adminLabsEmpty"><i class="bi bi-building-x fs-1 text-secondary"></i><h5 class="fw-bold mt-3">لا توجد مختبرات مطابقة</h5><p class="text-secondary mb-0">غيّر البحث أو أضف مختبرًا.</p></div>
+<div class="alert alert-light border rounded-4 mt-4"><i class="bi bi-shield-check ms-1"></i>تعطيل المختبر يمنع اختيارَه لطلبات جديدة مع بقاء البيانات والحالات القديمة. يمكن حذف المختبر غير المرتبط فقط، من صفحة تفاصيله وبسبب إداري موثق.</div>
+<div class="modal fade" id="adminAddLabModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content border-0 rounded-4">
+<form action="/admin/labs/create" method="post">
+ <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+ <div class="modal-header"><h5 class="modal-title fw-bold">إضافة مختبر بواسطة Super Admin</h5><button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="إغلاق"></button></div>
+ <div class="modal-body"><div class="row g-3">
+  <div class="col-md-6"><label class="form-label">اسم المختبر *</label><input class="form-control" name="name" maxlength="150" required></div>
+  <div class="col-md-6"><label class="form-label">الهاتف *</label><input class="form-control" name="phone" maxlength="30" required></div>
+  <div class="col-md-6"><label class="form-label">العنوان *</label><input class="form-control" name="address" maxlength="150" required></div>
+  <div class="col-md-6"><label class="form-label">واتساب / بريد</label><input class="form-control" name="contact" maxlength="150"></div>
+  <div class="col-12"><label class="form-label">سبب الإضافة الإدارية *</label><textarea class="form-control" name="reason" rows="2" minlength="8" maxlength="1000" required></textarea></div>
+ </div></div>
+ <div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إلغاء</button><button class="btn btn-primary" type="submit">حفظ المختبر</button></div>
+</form></div></div></div>
+</section></main><script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+<script src="assets/app.js"></script><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

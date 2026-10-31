@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html data-style-sections="section-3" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>المواعيد | Clinic Staff</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body data-page-permission="appointments.view" data-staff-account-status="active" data-staff-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>" data-staff-user-id="<%= typeof currentUser !== 'undefined' && currentUser ? currentUser.userId : '' %>" data-rendered-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-active-clinic-id="<%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.id : '' %>" data-staff-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : '' %>"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/staff/header') %>
+    
+    <main class="page-shell" id="main-content" data-staff-workspace="">
+      <div class="container pt-3"><div class="staff-context-bar"><div class="staff-context-heading"><i class="bi bi-building"></i><div><small class="text-secondary">تعمل الآن في</small><strong><%= typeof activeClinic !== 'undefined' && activeClinic ? activeClinic.name : 'العيادة' %></strong></div></div><label class="visually-hidden" for="activeClinicContext">العيادة الحالية</label><select class="form-select" id="activeClinicContext" name="active_clinic_id" data-context-switcher="" aria-describedby="staffClinicContextHelp"><% if(typeof activeClinic !== 'undefined' && activeClinic){ %><option value="<%= activeClinic.id %>" data-membership-status="active" data-clinic-role="<%= typeof staffClinicRole !== 'undefined' ? staffClinicRole : 'موظف' %>" data-clinic-permissions="<%= typeof staffPermissions !== 'undefined' ? staffPermissions : '' %>"><%= activeClinic.name %></option><% } %></select><a class="btn btn-outline-primary btn-sm" href="choose-clinic" data-choose-clinic-link><i class="bi bi-arrow-left-right ms-1"></i>تبديل العيادة</a><small class="visually-hidden" id="staffClinicContextHelp">تظهر بيانات وصلاحيات العيادة المختارة فقط.</small></div></div><section class="container py-4 py-lg-5 staff-work-content staff-module-page" data-clinic-content="">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+          <div>
+            <h1 class="fw-bold fs-2 mb-2">المواعيد</h1>
+            <p class="text-secondary mb-0">
+              إدارة المواعيد ضمن الصلاحيات التشغيلية الممنوحة لك.
+            </p>
+          </div>
+          
+        </div>
+        <% const bookDate=typeof bookingDate==='undefined'?'':bookingDate; const bookOptions=typeof bookingOptions==='undefined'?[]:bookingOptions;
+const bookChoice=typeof bookingChoice==='undefined'?{doctor_id:'',service_id:''}:bookingChoice;
+const bookSelected=typeof bookingSelected==='undefined'?null:bookingSelected;
+const bookSlots=typeof bookingSlots==='undefined'?[]:bookingSlots;
+const bookPatients=typeof bookingPatients==='undefined'?[]:bookingPatients;
+const bookError=typeof bookingAvailabilityMessage==='undefined'?'':bookingAvailabilityMessage; const staffFilters=typeof filters==='undefined'?{q:'',state:''}:filters; const staffCan=code=>typeof hasStaffPermission==='function'&&hasStaffPermission(code); %>
+<% if(message){ %><div class="alert alert-info" role="status"><%= message %></div><% } %>
+<div class="staff-live-overview row g-3 mb-4" aria-label="ملخص حالة المواعيد">
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>إجمالي المواعيد المعروضة</small><div class="stat-value"><%= bookings.length %></div><span class="small text-secondary">حسب البحث والتصفية</span></div></div>
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>بانتظار التأكيد</small><div class="stat-value text-warning"><%= bookings.filter(b=>b.status==='pending'&&!b.expired_unconfirmed).length %></div><span class="small text-secondary">طلبات تحتاج متابعة</span></div></div>
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>مؤكدة</small><div class="stat-value"><%= bookings.filter(b=>b.status==='confirmed').length %></div><span class="small text-secondary">ضمن النتائج الحالية</span></div></div>
+  <div class="col-6 col-xl-3"><div class="stat-card"><small>مواعيد اليوم</small><div class="stat-value"><%= bookings.filter(b=>b.date===now.date).length %></div><span class="small text-secondary">ضمن النتائج الحالية</span></div></div>
+</div>
+
+<% if(staffCan('appointments.manage')){ %>
+<details class="soft-card p-3 p-lg-4 mb-4 staff-creation-panel" <%= bookDate?'open':'' %>><summary class="fw-bold" style="cursor:pointer"><i class="bi bi-calendar-plus ms-1"></i> إضافة موعد جديد</summary>
+<p class="small text-secondary mt-2">اختيار المريض والطبيب والخدمة ثم التاريخ، وسيعرض النظام الأوقات المتاحة فقط.</p>
+<form method="get" action="/staff/appointments" class="row g-2 align-items-end mt-2">
+<div class="col-md-5"><label class="form-label small">الطبيب والخدمة</label><select name="selection" class="form-select" required><option value="">اختر الطبيب والخدمة</option><% for(const r of bookOptions){ %><option value="<%= r.doctor_id %>:<%= r.service_id %>" <%= bookChoice.doctor_id===r.doctor_id&&bookChoice.service_id===r.service_id?'selected':'' %>><%= sdcT("د.") %> <%= r.doctor_name %> — <%= r.service_name %> (<%= r.duration %> دقيقة)</option><% } %></select></div>
+<div class="col-md-4"><label class="form-label small">التاريخ</label><input class="form-control" type="date" name="appointment_date" value="<%= bookDate %>" min="<%= now.date %>" required></div><div class="col-md-3"><button type="submit" class="btn btn-outline-primary w-100">عرض الأوقات المتاحة</button></div>
+</form>
+<% if(bookError){ %><div class="alert alert-warning mt-3"><%= bookError %></div><% } %>
+<% if(bookSelected&&bookSlots.length){ %><form class="row g-2 align-items-end mt-3 border-top pt-3" action="/staff/workspace/appointment" method="post">
+<input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="doctor_id" value="<%= bookSelected.doctor_id %>"><input type="hidden" name="service_id" value="<%= bookSelected.service_id %>"><input type="hidden" name="appointment_date" value="<%= bookDate %>">
+<div class="col-md-5"><label class="form-label small">المريض</label><select class="form-select" name="patient_id" required><option value="">اختر المريض</option><% for(const p of bookPatients){ %><option value="<%= p.id %>"><%= p.name %></option><% } %></select></div>
+<div class="col-md-3"><label class="form-label small">الوقت</label><select class="form-select" name="appointment_time" required><% for(const slot of bookSlots){ %><option value="<%= slot %>"><%= slot %></option><% } %></select></div>
+<div class="col-md-4"><button class="btn btn-primary w-100" type="submit">تأكيد الحجز</button></div>
+</form><% } %></details>
+<% } %>
+
+        <div class="staff-section-heading mb-3"><h2 class="h5 fw-bold mb-1">قائمة المواعيد</h2><p class="small text-secondary mb-0">ابحث أو اختر حالة؛ تظهر النتائج على صفحات منظمة.</p></div>
+        <form class="filter-panel mb-3 row g-2" action="/staff/appointments" method="get">
+          <div class="col-md-6"><input class="form-control" name="q" value="<%= staffFilters.q %>" maxlength="100" placeholder="ابحث باسم المريض أو الطبيب أو الخدمة"></div>
+          <div class="col-md-4"><select class="form-select" name="state"><option value="">كل الحالات</option><% for(const st of ['pending','confirmed','in_progress','completed','cancelled','rejected','no_show']){ %><option value="<%= st %>" <%= staffFilters.state===st?'selected':'' %>><%= labels[st]||st %></option><% } %></select></div>
+          <div class="col-md-2"><button class="btn btn-outline-primary w-100" type="submit">تصفية</button></div>
+        </form>
+        <div class="table-responsive mobile-stack-wrapper table-ui-shell staff-main-table">
+          <table class="table align-middle mb-0 responsive-stack-table system-data-table" data-staff-paginated="10">
+            <thead>
+              <tr>
+                <th>المريض</th>
+                <th>الطبيب / الخدمة</th>
+                <th>الموعد</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody><% if(!bookings.length){ %><tr><td colspan="5" class="text-center py-4">لا توجد مواعيد بهذه العيادة.</td></tr><% } %><% for(const b of bookings){ %><tr data-status="<%= b.status %>" data-staff-record><td data-label="المريض" class="table-primary-cell"><%= b.patient_name %></td><td data-label="الطبيب / الخدمة"><%= sdcT("د.") %> <%= b.doctor_name %><br><small><%= b.service_name %></small></td><td data-label="الموعد"><%= b.time %> • <%= b.date %></td><td data-label="الحالة"><%= b.expired_unconfirmed?'انتهى قبل التأكيد':labels[b.status]||b.status %></td><td data-label="الإجراءات" class="table-actions-cell"><% if(b.status==='confirmed'&&!b.arrived&&b.date===now.date&&String(staffPermissions||'').split(' ').includes('appointments.manage')){ %>
+<form method="post" action="/staff/operations/action">
+  <input type="hidden" name="csrf_token" value="<%= csrfToken %>">
+  <input type="hidden" name="booking_id" value="<%= b.id %>">
+  <button class="btn btn-primary btn-sm" type="submit" name="action" value="check_in">تسجيل وصول المريض</button>
+</form>
+<% if(b.time<=now.time){ %><form method="post" action="/staff/operations/action" class="mt-1"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="booking_id" value="<%= b.id %>"><button class="btn btn-sm btn-outline-danger" type="submit" name="action" value="no_show">تسجيل عدم الحضور</button></form><% } %>
+<% }else if(b.status==='confirmed'&&!b.arrived&&(b.date<now.date||(b.date===now.date&&b.time<=now.time))&&b.request_status!=='pending'&&staffCan('appointments.manage')){ %>
+<form method="post" action="/staff/operations/action" onsubmit="return confirm('تأكيد عدم حضور المريض لهذا الموعد؟')"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="booking_id" value="<%= b.id %>"><button class="btn btn-sm btn-outline-danger" type="submit" name="action" value="no_show">تسجيل عدم الحضور</button></form>
+<% }else if(b.status==='confirmed'&&b.arrived){ %><span class="badge text-bg-warning">حضر • ينتظر الطبيب</span>
+<% }else{ %><span class="text-secondary small">عرض فقط</span><% } %><% if(staffCan('appointments.manage')){ %>
+<div class="d-flex gap-1 flex-wrap mt-2"><% if(b.status==='pending'&&(b.date>now.date||(b.date===now.date&&b.time>now.time))){ %>
+<form method="post" action="/staff/workspace/booking-action"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="booking_id" value="<%= b.id %>"><button class="btn btn-success btn-sm" name="action" value="confirm">تأكيد</button></form>
+<details class="staff-inline-disclosure"><summary class="btn btn-outline-danger btn-sm">رفض الطلب</summary><form method="post" action="/staff/workspace/booking-action" class="staff-disclosure-body"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="booking_id" value="<%= b.id %>"><label class="small" for="reason-<%= b.id %>">سبب الرفض</label><input id="reason-<%= b.id %>" class="form-control form-control-sm mb-2" name="reason" maxlength="2000" placeholder="اكتب سبب الرفض" required><button class="btn btn-outline-danger btn-sm" name="action" value="reject">تأكيد الرفض</button></form></details>
+<% } %><% if(b.request_status==='pending'){ %>
+<form method="post" action="/staff/workspace/booking-action"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="booking_id" value="<%= b.id %>"><button class="btn btn-outline-success btn-sm" name="action" value="approve_change">قبول تغيير الموعد</button><button class="btn btn-outline-danger btn-sm" name="action" value="reject_change">رفض التغيير</button></form>
+<% } %>
+<% if(['pending','confirmed'].includes(b.status)&&!b.arrived&&b.request_status!=='pending'){ %><form method="post" action="/staff/workspace/booking-action" onsubmit="return confirm('هل تريد إلغاء الموعد؟')"><input type="hidden" name="csrf_token" value="<%= csrfToken %>"><input type="hidden" name="booking_id" value="<%= b.id %>"><button class="btn btn-sm btn-outline-secondary" name="action" value="cancel" type="submit">إلغاء الموعد</button></form><% } %></div><% } %></td></tr><% } %></tbody>
+          </table>
+        </div>
+        <nav class="staff-pagination mt-3" data-staff-pagination aria-label="صفحات المواعيد" hidden></nav>
+      </section>
+    <section class="container py-4" id="staffScopeNotice" hidden><div class="soft-card p-4 text-center"><i class="bi bi-building-lock fs-1 text-primary"></i><h3 class="fw-bold mt-3" id="staffScopeTitle">اختر العيادة للمتابعة</h3><p class="text-secondary" id="staffScopeMessage">حدد عيادة لديك عضوية فعّالة فيها لعرض بياناتها وصلاحياتك.</p><a href="choose-clinic" class="btn btn-primary">اختيار العيادة</a></div></section></main>
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><span hidden="" id="sdcV19StaffMarker"></span><%- include('../partials/staff/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

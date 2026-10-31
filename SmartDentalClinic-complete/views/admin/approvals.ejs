@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>العيادات وطلبات الاعتماد | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">العيادات وطلبات الاعتماد</span></nav>
+        <div class="d-flex align-items-center justify-content-between gap-3 mb-4 flex-wrap">
+          <div><h1 class="fw-bold fs-2 mb-2">العيادات وطلبات الاعتماد</h1><p class="text-secondary mb-0">طلبات العيادات الحقيقية المسجلة في PostgreSQL. الاعتماد والتفعيل يتمان بعد مراجعة الوثائق.</p></div>
+        </div>
+        <% if(typeof clinicDeletionResult!=='undefined' && clinicDeletionResult){ %>
+          <div class="alert <%= clinicDeletionResult==='deleted'?'alert-success':'alert-warning' %>" role="status"><%= clinicDeletionResult==='deleted'?'تم حذف طلب العيادة المرفوض غير المرتبط بسجلات، مع تسجيل السبب.':'تم حذف الطلب من قاعدة البيانات، لكن تعذّر تنظيف بعض المرفقات الخاصة ويجب مراجعة سجل الخادم.' %></div>
+        <% } %>
+        <ul class="nav admin-tabs mb-4" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pendingClinics" type="button" role="tab">طلبات الاعتماد <span class="badge text-bg-warning me-1"><%= clinics.filter(c=>['pending','needs_info'].includes(c.status)).length %></span></button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#approvedClinics" type="button" role="tab">العيادات المعتمدة</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="pendingClinics" role="tabpanel">
+            <div class="filter-panel mb-4"><input class="form-control" id="approvalSearch" placeholder="بحث في الاسم أو المدينة أو مقدم الطلب..."></div>
+            <div class="row g-4" id="approvalList">
+              <% const awaiting=clinics.filter(c=>c.Approval_Status==='pending'); %>
+              <% for(const clinic of awaiting) { %>
+                <div class="col-lg-6" data-approval-card data-search="<%= clinic.Clinic_Name+' '+clinic.City+' '+clinic.First_Name+' '+clinic.Last_Name %>">
+                  <div class="patient-card h-100">
+                    <div class="d-flex justify-content-between gap-3"><div>
+                      <span class="badge <%= clinic.status==='needs_info'?'text-bg-warning':'text-bg-info' %> mb-2"><%= clinic.status==='needs_info'?'طلب استكمال':'بانتظار المراجعة' %></span>
+                      <h4 class="fw-bold mb-1"><%= clinic.Clinic_Name %></h4>
+                      <div class="small text-secondary"><%= clinic.City %> • <%= sdcT("مقدم الطلب:") %> <%= sdcT("د.") %> <%= clinic.First_Name %> <%= clinic.Last_Name %> • CA-<%= clinic.Clinic_ID %></div>
+                    </div><span class="icon-box"><i class="bi bi-hospital"></i></span></div>
+                    <div class="row g-2 mt-3 text-center"><div class="col-md-4"><div class="admin-mini-metric text-start"><small>تاريخ التقديم</small><strong><%= new Date(clinic.Submitted_At).toLocaleDateString('ar-PS') %></strong></div></div>
+                    <div class="col-md-4"><div class="admin-mini-metric text-start"><small>المرفقات</small><strong><%= clinic.doc_count %> <%= sdcT("وثائق") %></strong></div></div></div>
+                    <a class="btn btn-sm btn-primary mt-3" href="/admin/clinic-application-details?id=<%= clinic.Clinic_ID %>">مراجعة الطلب</a>
+                  </div>
+                </div>
+              <% } %>
+              <% if(!awaiting.length) { %><div class="col-12"><div class="alert alert-light border">لا توجد طلبات اعتماد قيد المراجعة.</div></div><% } %>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="approvedClinics" role="tabpanel">
+            <div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell"><table class="table mb-0 admin-master-table responsive-stack-table"><thead><tr><th>العيادة</th><th>المدينة</th><th>المدير</th><th>الحالة</th><th>تفاصيل الطلب</th></tr></thead><tbody>
+              <% for(const clinic of clinics.filter(c=>c.Approval_Status==='approved')) { %>
+                <tr><td data-label="العيادة"><%= clinic.Clinic_Name %></td><td data-label="المدينة"><%= clinic.City %></td><td data-label="المدير"><%= clinic.First_Name %> <%= clinic.Last_Name %></td><td data-label="الحالة"><span class="badge <%= clinic.Clinic_Status==='active'?'text-bg-success':clinic.Clinic_Status==='suspended'?'text-bg-warning':'text-bg-secondary' %>"><%= clinic.Clinic_Status==='active'?'نشطة':clinic.Clinic_Status==='suspended'?'معلّقة':'غير نشطة' %></span></td><td><a href="/admin/clinic-details?id=<%= clinic.Clinic_ID %>" class="btn btn-sm btn-light">عرض وتعديل</a> <a href="/admin/clinic-details?id=<%= clinic.Clinic_ID %>#adminDeleteDecision" class="btn btn-sm btn-outline-danger">حذف</a></td></tr>
+              <% } %><% if(!clinics.some(c=>c.Approval_Status==='approved')) { %><tr><td colspan="5" class="text-center">لا توجد عيادات معتمدة حتى الآن.</td></tr><% } %>
+            </tbody></table></div>
+          </div>
+          <% const rejected=clinics.filter(c=>c.Approval_Status==='rejected'); %>
+          <% if(rejected.length) { %><div class="mt-4"><h2 class="h5">طلبات مرفوضة</h2><div class="soft-card p-3"><% for(const clinic of rejected) { %><p class="mb-2"><%= clinic.Clinic_Name %> — <a href="/admin/clinic-application-details?id=<%= clinic.Clinic_ID %>"><%= sdcT("عرض قرار الرفض CA-") %><%= clinic.Clinic_ID %></a> · <a href="/admin/clinic-details?id=<%= clinic.Clinic_ID %>">إدارة الطلب</a></p><% } %></div></div><% } %>
+        </div>
+      </section>
+    </main>
+<%- include('../partials/admin/footer') %>
+    <script src="/assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="/admin/assets/app.js"></script>
+<script defer src="/assets/i18n.js"></script>
+  </body></html>

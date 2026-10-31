@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>الأطباء والتراخيص | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">الأطباء والتراخيص</span></nav>
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-start mb-4">
+          <div>
+            <h1 class="fw-bold fs-2 mb-2"><%= showJobs ? 'الوظائف وطلبات التوظيف' : 'الأطباء والتراخيص' %></h1>
+            <p class="text-secondary mb-0">
+              <%= showJobs ? 'متابعة الوظائف التي تنشرها العيادات وطلبات المتقدمين وإجراءات الرقابة.' : 'ملفات الأطباء والتخصصات والتحقق من أرقام التراخيص الطبية.' %>
+            </p>
+          </div>
+
+        </div>
+        <div class="tab-content">
+          <% if(!showJobs){ %><div class="tab-pane fade show active" id="doctorsTab" role="tabpanel">
+            <div class="filter-panel mb-4">
+              <div class="row g-3">
+                <div class="col-lg-4">
+                  <input class="form-control" id="doctorSearch" placeholder="الاسم، التخصص، رقم الترخيص..." value="" name="doctor_search">
+                </div>
+                <div class="col-md-4 col-lg-3">
+                  <select class="form-select" id="doctorLicenseFilter" data-record-select="doctor" name="doctor_license_filter"><option value="" selected>كل حالات التحقق</option><option value="pending">بانتظار المراجعة</option><option value="verified">معتمد</option><option value="rejected">مرفوض</option></select>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                  <select class="form-select" id="doctorStatusFilter" name="doctor_status_filter">
+                    <option value="" selected>كل الحالات</option>
+                    <option value="active">فعال</option>
+                    <option value="suspended">موقوف</option>
+                    <option value="pending">بانتظار المراجعة</option>
+                    <option value="disabled">معطّل</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell">
+              <table class="table mb-0 admin-master-table wide-data-table responsive-stack-table system-data-table">
+                <thead>
+                  <tr>
+                    <th>الطبيب</th>
+                    <th>التخصص</th>
+                    <th>العيادة</th>
+                    <th>رقم الترخيص</th>
+                    <th>حالة التحقق</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="doctorTableBody">
+                  <% if(!doctors.length) { %><tr><td colspan="7" class="text-center text-secondary py-4">لا يوجد أطباء مسجلون بعد.</td></tr><% } %>
+                  <% doctors.forEach(function(d) { %>
+                  <tr data-doctor-row data-license="<%= d.License_Status %>" data-status="<%= d.Account_Status %>"
+                    data-search="<%= d.First_Name %> <%= d.Last_Name %> <%= d.License_Number %> <%= d.specialties %> <%= d.clinics %>">
+                    <td data-label="الطبيب" class="table-primary-cell"><%= sdcT("د.") %> <%= d.First_Name %> <%= d.Last_Name %></td>
+                    <td data-label="التخصص"><%= d.specialties || 'غير محدد' %></td>
+                    <td data-label="العيادة"><%= d.clinics || 'غير مرتبط بعيادة' %></td>
+                    <td data-label="رقم الترخيص"><%= d.License_Number %></td>
+                    <td data-label="حالة التحقق" class="table-status-cell"><span class="badge <%= d.License_Status==='verified'?'text-bg-success':d.License_Status==='rejected'?'text-bg-danger':'text-bg-warning' %>"><%= d.License_Status==='verified'?'معتمد':d.License_Status==='rejected'?'مرفوض':'بانتظار المراجعة' %></span></td>
+                    <td data-label="الحالة" class="table-status-cell"><span class="badge <%= d.Account_Status==='active'?'text-bg-success':d.Account_Status==='suspended'?'text-bg-warning':'text-bg-secondary' %>"><%= d.Account_Status==='active'?(d.Login_Enabled?'فعال':'الدخول معطّل'):d.Account_Status==='suspended'?'موقوف':d.Account_Status==='pending'?'بانتظار التفعيل':'معطّل' %></span></td>
+                    <td data-label="الإجراءات" class="table-actions-cell"><div class="d-flex flex-wrap gap-1">
+                      <a class="btn btn-sm btn-light" href="/admin/doctor-details?id=<%= d.Doctor_ID %>">عرض التفاصيل</a>
+                      <a class="btn btn-sm btn-outline-primary" href="/admin/doctor-license-review?id=<%= d.Doctor_ID %>"><%= d.License_Status==='pending'?'مراجعة الترخيص':'عرض قرار الترخيص' %></a>
+                    </div></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <div class="empty-state d-none" id="doctorEmpty">
+                لا يوجد أطباء مطابقون للفلاتر.
+              </div>
+            </div>
+          </div>
+          <% } %>
+          <% if(showJobs){ %><div class="tab-pane fade show active" id="jobsTab" role="tabpanel">
+            <div class="alert alert-light border mb-3">يمكن للمشرف إنشاء أو تعديل إعلان بالنيابة عن العيادة مع تسجيل السبب. قرارات قبول المتقدمين والتوظيف الفعلي تبقى للعيادة.</div>
+            <% if(jobListNotice==='saved'){ %><div class="alert alert-success">تم حفظ الإعلان وتوثيق التدخل الإداري.</div><% }else if(['invalid','failed'].includes(jobListNotice)){ %><div class="alert alert-warning">تعذّر حفظ الإعلان. راجع البيانات وسجل الخادم.</div><% } %>
+            <% if(typeof jobListNotice!=='undefined'&&jobListNotice==='deleted'){ %><div class="alert alert-success" role="status">تم حذف إعلان وظيفة غير مرتبط بأي طلب توظيف، وسُجّلت العملية إداريًا.</div><% } %>
+            <form method="get" action="/admin/jobs" class="filter-panel mb-3" aria-label="تصفية الوظائف">
+              
+              <div class="row g-2 align-items-end">
+                <div class="col-md-4"><label class="form-label" for="jobQ">ابحث عن وظيفة أو عيادة</label><input id="jobQ" name="job_q" class="form-control" maxlength="100" value="<%= jobFilters.q %>" placeholder="المسمى، التخصص، العيادة..." /></div>
+                <div class="col-md-2"><label class="form-label" for="jobStatus">الحالة</label><select id="jobStatus" name="job_status" class="form-select"><option value="">كل الحالات</option><% [['draft','مسودة'],['open','منشور'],['closed','مغلق']].forEach(function(item){ %><option value="<%= item[0] %>" <%= jobFilters.status===item[0]?'selected':'' %>><%= item[1] %></option><% }); %></select></div>
+                <div class="col-md-3"><label class="form-label" for="jobClinic">العيادة</label><select id="jobClinic" name="job_clinic" class="form-select"><option value="">كل العيادات</option><% jobClinics.forEach(function(c){ %><option value="<%= c.id %>" <%= jobFilters.clinic===c.id?'selected':'' %>><%= c.name %></option><% }); %></select></div>
+                <div class="col-md-3"><button class="btn btn-primary" type="submit">بحث وتصفية</button> <a class="btn btn-light" href="/admin/jobs">مسح</a></div>
+                <div class="col-md-3"><label class="form-label" for="jobFrom">الموعد النهائي من</label><input type="date" id="jobFrom" class="form-control" name="job_from" value="<%= jobFilters.from %>"></div>
+                <div class="col-md-3"><label class="form-label" for="jobTo">الموعد النهائي إلى</label><input type="date" id="jobTo" class="form-control" name="job_to" value="<%= jobFilters.to %>"></div>
+              </div>
+            </form>
+            <p class="text-secondary small"><%= sdcT("عدد الوظائف المطابقة:") %> <%= jobPager.total %></p>
+            <div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell">
+              <table class="table mb-0 admin-master-table medium-data-table responsive-stack-table system-data-table">
+                <thead>
+                  <tr>
+                    <th>الوظيفة</th>
+                    <th>العيادة</th>
+                    <th>الموقع</th>
+                    <th>المتقدمون</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="jobTableBody">
+                  <% if(!jobs.length) { %><tr><td class="text-center text-secondary py-4" colspan="6">لا توجد وظائف مسجلة.</td></tr><% } %>
+                  <% jobs.forEach(function(job){ %>
+                    <tr data-job-row data-search="<%= job.title %> <%= job.clinic %> <%= job.city %>" data-status="<%= job.status %>">
+                      <td data-label="الوظيفة" class="table-primary-cell"><strong><%= job.title %></strong><small class="d-block text-secondary"><%= job.id %></small></td>
+                      <td data-label="العيادة"><%= job.clinic %></td><td data-label="الموقع"><%= job.city %></td>
+                      <td data-label="المتقدمون"><%= job.applicants %></td>
+                      <td data-label="الحالة"><span class="badge <%= job.status==='open'?'text-bg-success':'text-bg-secondary' %>"><%= job.status==='open'?'منشور':job.status==='draft'?'مسودة':job.status==='closed'?'مغلق':'مؤرشف' %></span><% if(job.admin_suspended_at){ %><span class="badge text-bg-warning me-1">تعليق إداري</span><% } %></td>
+                      <td data-label="الإجراءات"><a class="btn btn-sm btn-light" href="/admin/job-details?id=<%= job.id %>">عرض التفاصيل</a></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            <nav class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2" aria-label="صفحات الوظائف"><span class="text-secondary small"><%= sdcT("صفحة") %> <%= jobPager.page %> <%= sdcT("من") %> <%= jobPager.pages %></span><div class="d-flex gap-2">
+              <% const jobUrl=(n)=>'/admin/jobs?'+new URLSearchParams({job_q:jobFilters.q,job_status:jobFilters.status,job_clinic:jobFilters.clinic,job_from:jobFilters.from,job_to:jobFilters.to,job_page:String(n)}).toString(); %>
+              <% if(jobPager.page>1){ %><a class="btn btn-sm btn-outline-secondary" href="<%= jobUrl(jobPager.page-1) %>">السابق</a><% } %>
+              <% if(jobPager.page<jobPager.pages){ %><a class="btn btn-sm btn-outline-secondary" href="<%= jobUrl(jobPager.page+1) %>">التالي</a><% } %>
+            </div></nav>
+            </div>
+          </div>
+        <% } %>
+        </div>
+      </section>
+      
+    
+    
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

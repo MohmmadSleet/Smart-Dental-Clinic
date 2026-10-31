@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تفاصيل العيادة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+<main class="page-shell" id="main-content">
+<section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">ملف العيادة</span></nav>
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item">
+<a href="approvals#approvedClinics">العيادات</a>
+</li>
+<li class="breadcrumb-item active">C-<%= liveClinic.Clinic_ID %></li>
+</ol>
+</nav>
+<div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+<div>
+<div class="d-flex gap-2 flex-wrap mb-2">
+<span class="badge <%= liveClinic.Clinic_Status==='active'?'text-bg-success':liveClinic.Clinic_Status==='suspended'?'text-bg-warning':'text-bg-secondary' %>" id="adminPrimaryEntityStatus"><%= liveClinic.Clinic_Status==="active"?"مفعّلة":liveClinic.Clinic_Status==="suspended"?"معلّقة":"غير نشطة" %></span><span class="badge text-bg-light border" id="detailClinicCode"><%= sdcT("الكود العام: C-") %><%= liveClinic.Clinic_ID %></span>
+</div>
+<h1 class="fw-bold fs-2 mb-2" id="detailClinicName"><%= liveClinic.Clinic_Name %></h1>
+<p class="text-secondary mb-0">
+              ملف إداري مختصر للعيادة، مع روابط رقابية وتدخلات موثّقة فقط؛ لا تشغيل يومي من حساب المنصة.
+            </p>
+</div>
+<span class="badge text-bg-light border align-self-start">رقابة مركزية • بيانات فعلية</span>
+</div>
+<% const statusNotices={ok:'تم تنفيذ التعديل الإداري بنجاح.',invalid:'اختر إجراءً صحيحًا واكتب سببًا بين 8 و1000 حرف.',not_approved:'لا يمكن تغيير التشغيل قبل اعتماد طلب العيادة.',unchanged:'العيادة بهذه الحالة بالفعل.',invalid_state:'الحالة الحالية لا تسمح بهذه العملية.',open_bookings:'لا يمكن تعليق عيادة لديها مواعيد قيد الانتظار أو مؤكدة أو قيد العلاج. عالج المواعيد المفتوحة أولًا.',failed:'تعذّر تنفيذ الإجراء. راجع سجل الخادم.',invalid_profile:'حقول بيانات العيادة غير صالحة.',not_deletable:'الحذف متاح فقط لطلب عيادة مرفوضة وغير نشطة.',in_use:'لا يمكن حذف طلب مرتبط بحجوزات أو عضويات أو سجلات أخرى.'}; %>
+<% if(clinicStatusResult==='invalid')statusNotices.invalid='تحقق من البيانات والسبب (8 أحرف على الأقل).'; statusNotices.unchanged='البيانات أو الحالة لم تتغير.'; %>
+<% if((typeof adminClinicTab==='undefined'||adminClinicTab==='profile') && clinicStatusResult && statusNotices[clinicStatusResult]) { %>
+<div class="alert <%= clinicStatusResult==='ok'?'alert-success':'alert-warning' %>" role="status"><%= statusNotices[clinicStatusResult] %></div>
+<% } %>
+<% const cid=encodeURIComponent(String(liveClinic.Clinic_ID)); const activeTab=typeof adminClinicTab==='string'?adminClinicTab:'profile'; const sections=[['profile','نظرة عامة','bi-building'],['staff','الصلاحيات والتدخلات','bi-shield-check'],['doctors','عضويات الأطباء','bi-person-badge'],['appointments','رقابة الحجوزات','bi-calendar3']]; %>
+<nav class="admin-workspace-tabs mb-4" aria-label="إدارة العيادة">
+ <% for(const [key,label,ico] of sections){ %><a href="/admin/clinic-details?id=<%= cid %>&tab=<%= key %>" class="admin-workspace-tab <%= activeTab===key?'is-active':'' %>" <%- activeTab===key?'aria-current="page"':'' %>><i class="bi <%= ico %>" aria-hidden="true"></i><span><%= label %></span></a><% } %>
+</nav>
+<% const opsNotices={ok:'تم تنفيذ الإجراء وحفظه وتوثيقه.',invalid:'يرجى التحقق من البيانات وكتابة سبب لا يقل عن 8 أحرف.',duplicate:'الحساب أو الرابط موجود مسبقًا.',not_found:'السجل غير موجود.',already:'ارتباط الطبيب موجود سابقًا.',unavailable:'هذا الطبيب أو الوقت أو الخدمة غير متاح.',forbidden:'لا يمكن تنفيذ العملية في هذه الحالة.',in_use:'توجد بيانات مرتبطة تمنع الحذف.',stale:'تم تغيير السجل بواسطة طرف آخر، حدّث الصفحة.',bookings:'هناك حجوزات مفتوحة تمنع الإجراء.',closed:'الحجز مغلق أو قيد التنفيذ.',conflict:'منعت العلاقات أو قيود قاعدة البيانات التغيير.',exists:'يوجد ملف مريض بهذه البيانات؛ لا يمكن ربطه تلقائيًا دون التحقق.',role_missing:'دور المريض غير متوفر في قاعدة البيانات.',doctors:'يجب اختيار أطباء نشطين مرتبطين بالعيادة.',insufficient:'لا يوجد رصيد كافٍ للصرف.',ai_pending:'لا يمكن إيقاف الحجوزات بوجود حجوزات ذكية مفتوحة.',failed:'تعذّر تنفيذ الإجراء؛ راجع سجل تشغيل السيرفر.',unchanged:'لم تتغير البيانات.',reason_required:'سبب القرار الإداري إلزامي.',bookings_affected:'لا يمكن تعديل الدوام أو الغياب قبل معالجة الحجوزات الموجودة.',absence_overlap:'توجد فترة غياب متداخلة.'}; %>
+<% if(activeTab!=='profile' && clinicStatusResult && opsNotices[clinicStatusResult]){ %><div class="alert <%= clinicStatusResult==='ok'?'alert-success':'alert-warning' %>" role="status"><%= opsNotices[clinicStatusResult] %></div><% } %>
+<% if(activeTab==='profile'){ %>
+<section class="mb-4" aria-label="نظرة تشغيلية على العيادة">
+ <h2 class="h5 fw-bold mb-3">ملخص العيادة</h2>
+ <div class="row g-3">
+ <% const overview=typeof clinicOverview==='object'&&clinicOverview?clinicOverview:{}; const stats=[['الأطباء',overview.doctors||0,'bi-person-badge'],['الموظفون',overview.staff||0,'bi-people'],['الحجوزات',overview.bookings||0,'bi-calendar3'],['الخدمات',overview.services||0,'bi-clipboard2']]; for(const [title,count,ico] of stats){ %>
+  <div class="col-6 col-lg-3"><div class="soft-card p-3 h-100"><i class="bi <%= ico %> text-primary" aria-hidden="true"></i><div class="h3 fw-bold mt-2 mb-0"><%= count %></div><div class="text-secondary small"><%= title %></div></div></div>
+ <% } %>
+ </div>
+ <div class="small text-secondary mt-2">أرقام تشغيلية للعرض الرقابي فقط؛ تبقى العمليات اليومية لدى حساب العيادة.</div>
+</section>
+
+<div class="row g-4">
+<div class="col-12">
+<div class="soft-card p-4">
+<h4 class="fw-bold mb-3">بيانات العيادة</h4>
+<div class="row g-3">
+<div class="col-md-6">
+<label class="form-label">مدير العيادة</label><input class="form-control" id="detailClinicManager" name="detail_clinic_manager" readonly="" value="<%= "د. "+liveClinic.First_Name+" "+liveClinic.Last_Name %>"/>
+</div>
+<div class="col-md-6">
+<label class="form-label">المدينة</label><input class="form-control" id="detailClinicCity" name="detail_clinic_city" readonly="" value="<%= liveClinic.City||"—" %>"/>
+</div>
+<div class="col-md-6">
+<label class="form-label">الهاتف</label><input class="form-control" id="detailClinicPhone" name="detail_clinic_phone" readonly="" value="<%= liveClinic.Clinic_Phone||"—" %>"/>
+</div>
+<div class="col-md-6">
+<label class="form-label">البريد</label><input class="form-control" id="detailClinicEmail" name="detail_clinic_email" readonly="" value="<%= liveClinic.Clinic_Email||"—" %>"/>
+</div>
+<div class="col-12">
+<label class="form-label">العنوان</label><input class="form-control" id="detailClinicAddress" name="detail_clinic_address" readonly="" value="<%= liveClinic.Address_Text||"—" %>"/>
+</div>
+</div>
+<div class="alert alert-light border mt-3 mb-0">
+<div><strong>حالة الاعتماد:</strong> <%= liveClinic.Approval_Status==="approved"?"معتمدة":liveClinic.Approval_Status==="rejected"?"مرفوضة":"قيد المراجعة" %></div>
+<div><strong>رقم ترخيص المنشأة:</strong> <%= liveClinic.Facility_License_Number||"—" %></div>
+<div><strong>الوصف:</strong> <%= liveClinic.Description||"—" %></div>
+<div class="mt-2"><a class="btn btn-outline-primary btn-sm" href="/admin/clinic-application-details?id=<%= liveClinic.Clinic_ID %>">الاطلاع على طلب الاعتماد ووثائقه</a></div>
+</div></div>
+</div>
+
+</div>
+<% if(liveClinic.Approval_Status==='approved' && ['active','suspended'].includes(liveClinic.Clinic_Status)) { %>
+<details class="soft-card p-4 mb-4" aria-label="التحكم بحالة تشغيل العيادة">
+ <summary class="fw-bold h5 mb-2">حالة تشغيل العيادة وإجراءاتها</summary>
+ <p class="small text-secondary mb-3">يمكن للمشرف العام تعليق تشغيل العيادة أو إعادة تفعيله مع الاحتفاظ بسجلاتها. تعليق التشغيل غير متاح طالما توجد حجوزات مفتوحة.</p>
+ <form method="post" action="/admin/clinic-details/status" class="d-flex flex-column gap-2">
+  <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+  <input type="hidden" name="clinic_id" value="<%= liveClinic.Clinic_ID %>">
+  <input type="hidden" name="action" value="<%= liveClinic.Clinic_Status==='active'?'suspend':'activate' %>">
+  <label class="form-label mb-0" for="clinicStatusReason">سبب القرار الإداري (إلزامي)</label>
+  <textarea class="form-control" id="clinicStatusReason" name="reason" rows="2" minlength="8" maxlength="1000" required placeholder="اكتب سببًا واضحًا لا يقل عن 8 أحرف"></textarea>
+  <div><button type="submit" class="btn <%= liveClinic.Clinic_Status==='active'?'btn-outline-warning':'btn-success' %>" onclick="return confirm('هل تريد تأكيد تحديث حالة هذه العيادة؟')"><i class="bi bi-shield-check ms-1"></i><%= liveClinic.Clinic_Status==='active'?'تعليق تشغيل العيادة':'إعادة تفعيل العيادة' %></button></div>
+ </form>
+</details>
+<% } %>
+<div class="alert alert-primary rounded-4 border-0">
+<i class="bi bi-info-circle ms-2"></i>هذه صفحة رقابة إدارية. إدارة الدوام والمخزون والخدمات والأسعار وطلبات المختبر من مسؤوليات العيادة والطبيب. يمكن للمشرف اتخاذ إجراءات إدارية محددة وموثقة دون تغيير التاريخ الطبي أو المالي.
+        </div>
+
+<details class="soft-card p-4 mb-4" aria-labelledby="clinicAdminEditTitle">
+<summary id="clinicAdminEditTitle" class="fw-bold h5 mb-2">تعديل بيانات العيادة</summary>
+<p class="text-secondary small">تصحيح بيانات التواصل والاسم والوصف فقط. لا يغيّر هذا النموذج ملكية العيادة أو الترخيص أو حالة الاعتماد أو موقعها الجغرافي.</p>
+<form method="post" action="/admin/clinic-details/<%= liveClinic.Clinic_ID %>/update" class="row g-3">
+<input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+<div class="col-md-6"><label for="editClinicName" class="form-label">اسم العيادة</label><input id="editClinicName" name="name" class="form-control" maxlength="150" value="<%= liveClinic.Clinic_Name %>" required></div>
+<div class="col-md-6"><label for="editClinicPhone" class="form-label">هاتف العيادة</label><input id="editClinicPhone" name="phone" class="form-control" maxlength="30" value="<%= liveClinic.Clinic_Phone %>" required></div>
+<div class="col-md-6"><label for="editClinicEmail" class="form-label">البريد الإلكتروني</label><input type="email" id="editClinicEmail" name="email" class="form-control" maxlength="254" value="<%= liveClinic.Clinic_Email %>" required></div>
+<div class="col-md-3"><label for="editClinicCity" class="form-label">المدينة</label><input id="editClinicCity" name="city" class="form-control" maxlength="150" value="<%= liveClinic.City %>" required></div>
+<div class="col-md-3"><label for="editClinicArea" class="form-label">المنطقة</label><input id="editClinicArea" name="area" class="form-control" maxlength="150" value="<%= liveClinic.Area %>" required></div>
+<div class="col-12"><label for="editClinicAddress" class="form-label">العنوان</label><input id="editClinicAddress" name="address" class="form-control" maxlength="2000" value="<%= liveClinic.Address_Text %>" required></div>
+<div class="col-12"><label for="editClinicDescription" class="form-label">وصف العيادة</label><textarea id="editClinicDescription" name="description" maxlength="4000" rows="3" class="form-control"><%= liveClinic.Description||'' %></textarea></div>
+<div class="col-12"><label for="editClinicReason" class="form-label">سبب التعديل الإداري (إلزامي)</label><textarea id="editClinicReason" name="reason" minlength="8" maxlength="1000" rows="2" class="form-control" required></textarea></div>
+<div class="col-12"><button type="submit" class="btn btn-primary" onclick="return confirm('تأكيد تعديل بيانات هذه العيادة؟')"><i class="bi bi-check-circle ms-1"></i>حفظ البيانات</button></div>
+</form>
+</details>
+<% if(!(liveClinic.Approval_Status==='rejected' && liveClinic.Clinic_Status==='inactive')){ %>
+<section id="adminDeleteDecision" class="alert alert-light border border-danger-subtle mb-4"><strong>حذف العيادة:</strong> الحذف النهائي لعيادة معتمدة أو مرتبطة بسجلات غير متاح لحماية الحجوزات والبيانات الطبية والمالية. يمكن تعليق العيادة عبر إجراء حالة التشغيل أعلاه.</section>
+<% } %>
+<% if(liveClinic.Approval_Status==='rejected' && liveClinic.Clinic_Status==='inactive'){ %>
+<section class="soft-card p-4 mb-4 border border-danger-subtle" id="adminDeleteDecision" aria-label="حذف طلب عيادة مرفوض">
+ <h2 class="h5 fw-bold text-danger">حذف طلب عيادة مرفوض</h2>
+ <p class="small text-secondary">هذا الإجراء متاح فقط للطلب المرفوض وغير النشط، وبشرط عدم وجود حجوزات أو عضويات أو سجلات مرتبطة. تُحذف وثائق الطلب الخاصة به بعد نجاح العملية، ويبقى أثر التدقيق الإداري.</p>
+ <form method="post" action="/admin/clinic-details/<%= liveClinic.Clinic_ID %>/delete-rejected">
+ <input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+ <label for="clinicDeletionReason" class="form-label">سبب الحذف</label><textarea id="clinicDeletionReason" name="reason" class="form-control mb-3" minlength="8" maxlength="1000" required rows="2"></textarea>
+ <label for="clinicDeleteConfirm" class="form-label">اكتب DELETE للتأكيد</label><input id="clinicDeleteConfirm" name="confirmation" class="form-control mb-3" pattern="DELETE" required autocomplete="off">
+ <button class="btn btn-outline-danger" type="submit" onclick="return confirm('تأكيد حذف طلب العيادة المرفوض ووثائقه إن لم توجد ارتباطات؟')">حذف الطلب المرفوض</button>
+ </form>
+</section>
+<% } %>
+<% }else if(clinicOperationsError){ %>
+ <div class="alert alert-warning" role="alert"><strong>تعذّر تحميل هذا القسم.</strong> باقي بيانات العيادة لم تتأثر. راجع سجل السيرفر الذي يبدأ بـ <code>[ADMIN_CLINIC_TAB_FAILED]</code>، أو افتح تبويبًا آخر.</div>
+<% }else if(activeTab==='staff'){ %>
+ <%- include('./sections/clinic-staff',clinicOperations) %>
+<% }else if(activeTab==='doctors'){ %>
+ <%- include('./sections/clinic-doctors',clinicOperations) %>
+<% }else if(activeTab==='appointments'){ %>
+ <%- include('./sections/clinic-appointments',clinicOperations) %>
+<% } %>
+
+</section>
+
+
+</main>
+    
+    
+    
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div class="toast align-items-center text-bg-primary border-0" id="appToast">
+        <div class="d-flex">
+          <div class="toast-body">تمت العملية</div>
+          <button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

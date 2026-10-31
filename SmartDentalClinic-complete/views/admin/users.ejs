@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>المستخدمون | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">المستخدمون</span></nav>
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-start mb-4">
+          <div><h1 class="fw-bold fs-2 mb-2">إدارة المستخدمين</h1>
+            <p class="text-secondary mb-0">المرضى والأطباء وموظفو العيادات ومشرفو المنصة، مع حالة الحساب والارتباطات الفعلية.</p></div>
+          <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#accountCreationInfoModal"><i class="bi bi-person-plus ms-1"></i>إضافة مستخدم</button>
+        </div>
+        <% if(typeof userListNotice!=='undefined' && userListNotice==='deleted'){ %><div role="status" class="alert alert-success">تم حذف حساب تسجيل غير مكتمل وخالٍ من الارتباطات، مع توثيق السبب في سجل النظام.</div><% } %>
+        <form class="filter-panel mb-4" action="/admin/users" method="get">
+          <div class="row g-3 align-items-end">
+            <div class="col-lg-4"><label class="form-label" for="userSearch">بحث</label><input class="form-control" id="userSearch" name="q" maxlength="100" value="<%= filters.q %>" placeholder="الاسم، البريد، رقم الحساب..."></div>
+            <div class="col-md-4 col-lg-3"><label class="form-label" for="userRoleFilter">الدور</label><select class="form-select" id="userRoleFilter" name="role">
+              <option value="">كل الأدوار</option><% [['patient','مريض'],['doctor','طبيب'],['staff','موظف عيادة'],['admin','مشرف المنصة']].forEach(([v,label])=>{ %><option value="<%= v %>" <%= filters.role===v?'selected':'' %>><%= label %></option><% }); %></select></div>
+            <div class="col-md-4 col-lg-3"><label class="form-label" for="userStatusFilter">الحالة</label><select class="form-select" id="userStatusFilter" name="status">
+              <option value="">كل الحالات</option><% [['active','فعال'],['pending','بانتظار التفعيل'],['suspended','معلّق'],['disabled','معطّل']].forEach(([v,label])=>{ %><option value="<%= v %>" <%= filters.status===v?'selected':'' %>><%= label %></option><% }); %></select></div>
+            <div class="col-md-4 col-lg-2"><button class="btn btn-primary w-100" type="submit">تطبيق</button></div>
+          </div>
+        </form>
+        <div class="d-flex justify-content-between gap-3 align-items-center mb-3"><span class="text-secondary"><%= sdcT("النتائج:") %> <strong><%= total %></strong> <%= sdcT("مستخدم") %></span><span class="text-secondary"><%= sdcT("صفحة") %> <%= page %> <%= sdcT("من") %> <%= pages %></span></div>
+        <% const statuses={active:'فعال',pending:'بانتظار التفعيل',suspended:'معلّق',disabled:'معطّل'};
+           const roles={admin:'مشرف المنصة',doctor:'طبيب',patient:'مريض',staff:'موظف عيادة'}; %>
+        <div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell">
+          <table class="table mb-0 admin-master-table wide-data-table responsive-stack-table system-data-table">
+            <thead><tr><th>المستخدم</th><th>الدور</th><th>التواصل</th><th>الارتباط</th><th>الحالة</th><th>آخر دخول</th><th>الإجراءات</th></tr></thead>
+            <tbody id="userTableBody">
+              <% users.forEach(function(u){ const link=u.role==='doctor'&&u.doctor_id?'/admin/doctor-details?id='+u.doctor_id:'/admin/user-details?id='+u.id;
+                 const relation=u.role==='staff'?u.staff_clinics||'لا توجد عضويات فعّالة':u.role==='doctor'?(u.doctor_clinics||'الطبيب #'+u.doctor_id):u.role==='patient'?(u.patient_clinics||'المريض #'+u.patient_id):'المنصة'; %>
+                <tr>
+                  <td data-label="المستخدم" class="table-primary-cell"><%= u.first_name %> <%= u.last_name %> — #<%= u.id %></td>
+                  <td data-label="الدور" class="table-status-cell"><%= roles[u.role]||u.role_name %></td>
+                  <td data-label="التواصل"><%= u.email||'لا يوجد بريد' %><% if(u.phone){ %><div class="small text-secondary"><%= u.phone %></div><% } %></td>
+                  <td data-label="الارتباط"><%= relation %></td>
+                  <td data-label="الحالة" class="table-status-cell"><span class="badge <%= u.status==='active'?'text-bg-success':u.status==='suspended'?'text-bg-warning':'text-bg-secondary' %>"><%= statuses[u.status]||u.status %></span></td>
+                  <td data-label="آخر دخول"><%= u.last_login?new Date(u.last_login).toLocaleString('ar-PS',{dateStyle:'medium',timeStyle:'short'}):'لم يسجّل دخولًا' %></td>
+                  <td data-label="الإجراءات" class="table-actions-cell"><div class="d-flex gap-1 flex-wrap table-action-grid">
+                    <a class="btn btn-sm btn-light" href="<%= link %>">عرض</a>
+                    <% if(u.role==='doctor'){ %><a class="btn btn-sm btn-outline-primary" href="<%= link %>">تعديل</a><% } %>
+                    <% if(u.role!=='admin'&&u.role!=='doctor'){ %><a class="btn btn-sm btn-outline-primary" href="<%= link %>#adminUserEdit">تعديل</a><% if(['active','suspended'].includes(u.status)){ %><a class="btn btn-sm btn-outline-warning" href="<%= link %>"><%= u.status==='active'?'تعليق':'إعادة تفعيل' %></a><% } %><% } %>
+                    <% if(u.role!=='admin'){ %><a class="btn btn-sm btn-outline-danger" href="/admin/user-details?id=<%= u.id %>#adminDeleteDecision" aria-label="فحص إمكانية حذف المستخدم رقم <%= u.id %>">حذف</a><% } %>
+                  </div></td>
+                </tr>
+              <% }); %>
+              <% if(!users.length){ %><tr><td colspan="7" class="text-center text-secondary py-5">لا توجد حسابات مطابقة للفلاتر.</td></tr><% } %>
+            </tbody>
+          </table>
+        </div>
+        <% if(pages>1){ %><nav aria-label="صفحات المستخدمين" class="d-flex justify-content-center gap-3 mt-4">
+          <% if(page>1){ %><a class="btn btn-outline-primary" href="/admin/users?<%= new URLSearchParams({q:filters.q,role:filters.role,status:filters.status,page:String(page-1)}).toString() %>">السابق</a><% } %>
+          <span class="pt-2 text-secondary"><%= page %> / <%= pages %></span>
+          <% if(page<pages){ %><a class="btn btn-outline-primary" href="/admin/users?<%= new URLSearchParams({q:filters.q,role:filters.role,status:filters.status,page:String(page+1)}).toString() %>">التالي</a><% } %>
+        </nav><% } %>
+      </section>
+      <div class="modal fade" id="accountCreationInfoModal" tabindex="-1" aria-labelledby="userFormTitle"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+        <div class="modal-header"><h5 class="modal-title fw-bold" id="userFormTitle">إضافة مستخدم</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
+        <div class="modal-body"><p>لمنع إنشاء حسابات دون بيانات اعتماد أو موافقات صحيحة، كل نوع من الحسابات يُنشأ عبر مساره المعتمد:</p>
+          <div class="d-grid gap-2"><a href="/auth/register/patient" class="btn btn-outline-primary">تسجيل مريض جديد (بموافقته)</a>
+          <a href="/auth/register/doctor" class="btn btn-outline-primary">تسجيل طبيب جديد ورقم الترخيص</a>
+          <div class="alert alert-light border mb-0">موظف العيادة يضيفه مدير العيادة من قسم الموظفين. إنشاء مشرفين جدد أو تغيير الدور ليس متاحًا من هذه الشاشة.</div></div>
+        </div><div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">إغلاق</button></div>
+      </div></div></div>
+    </main>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+<script src="assets/app.js"></script>
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+<%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

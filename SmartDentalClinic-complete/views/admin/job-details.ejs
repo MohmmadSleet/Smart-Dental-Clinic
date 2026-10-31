@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>تفاصيل الوظيفة | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+<main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">تفاصيل الوظيفة</span></nav>
+        <nav><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/admin/jobs">وظائف الأطباء</a></li><li class="breadcrumb-item active">J-<%= job.id %></li></ol></nav>
+        <% const statusName={open:'منشور',draft:'مسودة',closed:'مغلق',archived:'مؤرشف'}; %>
+        <% const noticeMap={suspended:'تم تعليق الإعلان إداريًا ومنع العيادة من إعادة نشره حتى رفع التعليق.',resumed:'تم رفع التعليق الإداري وإعادة نشر الإعلان.',deleted:'تم حذف إعلان غير مرتبط بطلبات.',expired:'لا يمكن إعادة نشر إعلان انتهى موعد التقديم عليه.',in_use:'لا يمكن الحذف لوجود طلبات أو ارتباطات.',invalid:'اكتب سببًا واضحًا من 8 إلى 1000 حرف.',unchanged:'الحالة الحالية لا تسمح بهذا الإجراء أو لم يحدث تغيير.',failed:'تعذّر تنفيذ الإجراء. يرجى مراجعة سجل الخادم.',schema:'تعذر تنفيذ العملية بسبب عدم تطابق قاعدة البيانات.',permission:'ليس لديك صلاحية تنفيذ الإجراء.',saved:'تم تحديث إعلان الوظيفة وتوثيق التعديل.',admin_suspended:'لا يمكن تعديل إعلان معلّق قبل رفع التعليق الإداري.'}; %>
+        <% if(jobNotice&&noticeMap[jobNotice]){ %><div class="alert <%= ['suspended','resumed','deleted'].includes(jobNotice)?'alert-success':'alert-warning' %>" role="status"><%= noticeMap[jobNotice] %></div><% } %>
+        <div class="d-flex justify-content-between gap-3 flex-wrap mb-4">
+          <div><span class="badge <%= job.status==='open'?'text-bg-success':job.status==='archived'?'text-bg-danger':'text-bg-secondary' %> mb-2"><%= statusName[job.status]||job.status %></span>
+            <% if(job.admin_suspended_at){ %><span class="badge text-bg-warning ms-2">معلّق إداريًا</span><% } %><h1 class="fw-bold fs-2"> <%= job.title %> — J-<%= job.id %></h1>
+            <p class="text-secondary mb-0"><%= job.clinic %> • <%= job.city||'غير محدد' %></p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+          <% if(job.status==='open'&&!job.admin_suspended_at){ %><button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#adminSuspendJobModal">تعليق الإعلان</button><% } %>
+          <% if(job.admin_suspended_at){ %><button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#adminResumeJobModal">رفع التعليق</button><% } %>
+          <% if(!job.admin_suspended_at && Number(counts.total)===0){ %><button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#adminDeleteJobModal">حذف إعلان غير مستخدم</button><% } %>
+          </div>
+        </div>
+        <div class="alert alert-light border mb-3"><i class="bi bi-shield-check ms-1"></i> التعديل والنشر من مسؤوليات العيادة. هذه الواجهة للرقابة والتعليق الإداري وحذف الإعلان غير المستخدم فقط.</div>
+        <div class="soft-card p-4 mb-4">
+          <h4 class="fw-bold mb-3">تفاصيل الوظيفة</h4>
+          <div class="summary-row"><span>العيادة</span><a href="/admin/clinic-details?id=<%= job.clinic_id %>"><%= job.clinic %></a></div>
+          <div class="summary-row"><span>التخصص</span><strong><%= job.specialty %></strong></div>
+          <div class="summary-row"><span>الدوام</span><strong><%= ({full_time:'دوام كامل',part_time:'دوام جزئي',contract:'تعاقد'})[job.employment]||job.employment %></strong></div>
+          <div class="summary-row"><span>سنوات الخبرة المطلوبة</span><strong><%= job.experience %></strong></div>
+          <div class="summary-row"><span>آخر موعد للتقديم</span><strong><%= job.deadline %></strong></div>
+          <div class="summary-row"><span>جدول الدوام</span><strong><%= job.schedule||'غير محدد' %></strong></div>
+          <div class="summary-row"><span>الراتب</span><strong><%= job.salary||'غير محدد' %></strong></div>
+          <div class="summary-row"><span>قرار التوظيف</span><strong>يخص العيادة فقط؛ المشرف يتدخل رقابيًا عند الضرورة</strong></div>
+          <hr><h5 class="fw-bold">وصف الوظيفة</h5><p class="text-secondary" style="white-space:pre-wrap"><%= job.summary||'لا يوجد وصف' %></p>
+          <h5 class="fw-bold">المسؤوليات</h5><p class="text-secondary" style="white-space:pre-wrap"><%= job.responsibilities||'لا توجد مسؤوليات مدخلة' %></p>
+          <h5 class="fw-bold">المتطلبات</h5><p class="text-secondary" style="white-space:pre-wrap"><%= job.requirements||'لا توجد متطلبات مدخلة' %></p>
+        </div>
+        <div class="soft-card p-3 mb-3">
+          <div class="d-flex justify-content-between flex-wrap gap-2"><strong><%= sdcT("طلبات التوظيف:") %> <%= counts.total %></strong><span class="text-secondary small"><%= sdcT("قيد مراجعة العيادة:") %> <%= counts.pending %> | <%= sdcT("مقبولة:") %> <%= counts.accepted %></span></div>
+          <form method="get" action="/admin/job-details" class="row g-2 mt-2 align-items-end">
+            <input type="hidden" name="id" value="<%= job.id %>">
+            <div class="col-md-3"><label class="form-label" for="appStatus">حالة الطلب</label><select class="form-select" name="app_status" id="appStatus"><option value="">كل الحالات</option><% [['pending','بانتظار القرار'],['accepted','مقبول'],['rejected','مرفوض'],['withdrawn','مسحوب']].forEach(function(item){ %><option value="<%= item[0] %>" <%= appFilters.status===item[0]?'selected':'' %>><%= item[1] %></option><% }); %></select></div>
+            <div class="col-md-3"><label class="form-label" for="appFrom">تاريخ التقديم من</label><input type="date" id="appFrom" class="form-control" name="app_from" value="<%= appFilters.from %>"></div>
+            <div class="col-md-3"><label class="form-label" for="appTo">تاريخ التقديم إلى</label><input type="date" id="appTo" class="form-control" name="app_to" value="<%= appFilters.to %>"></div>
+            <div class="col-md-3"><button class="btn btn-primary" type="submit">تصفية</button> <a class="btn btn-light" href="/admin/job-details?id=<%= job.id %>">مسح</a></div>
+          </form>
+        </div>
+        <div class="soft-card table-responsive mobile-stack-wrapper table-ui-shell">
+          <table class="table mb-0 admin-master-table responsive-stack-table system-data-table"><thead><tr><th>الطلب</th><th>الطبيب</th><th>التخصص</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+            <tbody id="detailJobApplicantsBody">
+              <% if(!applications.length){ %><tr><td colspan="6" class="text-center text-secondary py-4">لا توجد طلبات مطابقة.</td></tr><% } %>
+              <% applications.forEach(function(a){ %><tr>
+                <td data-label="الطلب" class="table-primary-cell">JA-<%= a.id %></td><td data-label="الطبيب"><%= a.name %></td>
+                <td data-label="التخصص"><%= a.specialty %></td><td data-label="التاريخ"><%= a.applied_at %></td>
+                <td data-label="الحالة" class="table-status-cell"><span class="badge <%= a.status==='accepted'?'text-bg-success':a.status==='rejected'?'text-bg-danger':'text-bg-secondary' %>"><%= ({pending:'بانتظار القرار',accepted:'مقبول',rejected:'مرفوض',withdrawn:'مسحوب'})[a.status]||a.status %></span></td>
+                <td data-label="الإجراءات"><a class="btn btn-sm btn-outline-primary" href="/admin/job-application-details?id=<%= a.id %>">فتح</a></td>
+              </tr><% }); %>
+            </tbody>
+          </table>
+        </div>
+        <nav class="d-flex justify-content-between align-items-center mt-3" aria-label="صفحات طلبات الوظيفة">
+          <span class="text-secondary small"><%= sdcT("صفحة") %> <%= appPager.page %> <%= sdcT("من") %> <%= appPager.pages %> — <%= appPager.total %> <%= sdcT("طلب مطابق") %></span><div class="d-flex gap-2">
+          <% const appUrl=(n)=>'/admin/job-details?'+new URLSearchParams({id:job.id,app_status:appFilters.status,app_from:appFilters.from,app_to:appFilters.to,app_page:String(n)}).toString(); %>
+          <% if(appPager.page>1){ %><a class="btn btn-sm btn-outline-secondary" href="<%= appUrl(appPager.page-1) %>">السابق</a><% } %>
+          <% if(appPager.page<appPager.pages){ %><a class="btn btn-sm btn-outline-secondary" href="<%= appUrl(appPager.page+1) %>">التالي</a><% } %>
+          </div>
+        </nav>
+      </section>
+    </main>
+    <% const moderation=[
+      {action:'suspend',modal:'adminSuspendJobModal',title:'تعليق الإعلان',button:'تأكيد التعليق',explanation:'سيُغلق الإعلان وسيُمنع تعديل حالته أو إعادة نشره من حساب العيادة حتى يرفع المشرف التعليق.'},
+      {action:'resume',modal:'adminResumeJobModal',title:'رفع التعليق',button:'إعادة النشر',explanation:'سيُسمح بنشر الإعلان مجددًا ما دام موعد التقديم لم ينتهِ.'},
+      {action:'delete',modal:'adminDeleteJobModal',title:'حذف الإعلان غير المستخدم',button:'تأكيد الحذف',explanation:'يُسمح بالحذف فقط للإعلانات التي ليس لها طلبات توظيف أو ارتباطات أخرى.'}
+    ]; %>
+    <% moderation.filter(a=>a.action==='suspend'?job.status==='open'&&!job.admin_suspended_at:a.action==='resume'?!!job.admin_suspended_at:!job.admin_suspended_at&&Number(counts.total)===0).forEach(a=>{ %>
+    <div class="modal fade" id="<%= a.modal %>" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4">
+      <div class="modal-header"><h5 class="modal-title fw-bold"><%= a.title %></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+      <form method="post" action="/admin/job-details/<%= job.id %>/<%= a.action %>"><input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>">
+      <div class="modal-body"><p class="text-secondary"><%= a.explanation %></p><label for="reason_<%= a.action %>" class="form-label">السبب *</label><textarea id="reason_<%= a.action %>" name="reason" class="form-control" minlength="8" maxlength="1000" rows="3" required></textarea></div>
+      <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button type="submit" class="btn <%= a.action==='delete'?'btn-danger':'btn-primary' %>"><%= a.button %></button></div></form>
+    </div></div></div>
+    <% }); %>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    <script src="assets/app.js"></script>
+    <button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button>
+    <%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

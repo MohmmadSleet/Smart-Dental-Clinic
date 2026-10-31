@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html data-style-sections="section-4" dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1" name="viewport">
+<title>إدارة المواعيد | Smart Dental Clinic</title>
+<!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+<link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+<!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+<link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+<body><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+<%- include('../partials/clinic/header') %>
+
+<main class="page-shell clinic-appointments-page" id="main-content">
+<section class="container py-4 py-lg-5">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+    <div>
+      <span class="badge badge-soft mb-2">Appointments</span>
+      <h1 class="fw-bold">إدارة المواعيد</h1>
+      <p class="text-secondary mb-0">راجع الحجوزات وطلبات تغيير المواعيد، وتابع الحالات من مكان واحد.</p>
+    </div>
+    <a class="btn btn-primary" href="new-appointment"><i class="bi bi-calendar2-plus ms-1" aria-hidden="true"></i>إضافة موعد من العيادة</a>
+  </div>
+  <% if(message){ %><div class="alert alert-success" role="status"><%= message %></div><% } %>
+  <% const pendingCount=bookings.filter(b=>b.status==='pending'&&!b.expired_unconfirmed).length; %>
+  <% const changeCount=bookings.filter(b=>b.request_status==='pending').length; %>
+  <% const confirmedCount=bookings.filter(b=>b.status==='confirmed').length; %>
+  <% const completedCount=bookings.filter(b=>b.status==='completed').length; %>
+  <% const noShowCount=bookings.filter(b=>b.status==='no_show').length; %>
+  <% const orderedBookings=bookings.slice().sort((a,b)=>{ const priority=x=>x.request_status==='pending'?0:x.status==='pending'&&!x.expired_unconfirmed?1:2; return priority(a)-priority(b) || String(b.date||'').localeCompare(String(a.date||'')) || String(b.time||'').localeCompare(String(a.time||'')); }); %>
+
+  <section class="clinic-appt-overview mb-4" aria-labelledby="clinicAppointmentsOverviewTitle">
+    <div class="clinic-appt-section-title mb-3">
+      <div><h2 class="h5 fw-bold mb-1" id="clinicAppointmentsOverviewTitle">ملخص الحجوزات</h2><p class="small text-secondary mb-0">اضغط على أي بطاقة لعرض المواعيد المرتبطة بها.</p></div>
+      <span class="small text-secondary"><%= bookings.length %> <%= sdcT("موعد في القائمة") %></span>
+    </div>
+    <div class="clinic-appt-stat-grid" aria-label="تصفية سريعة حسب حالة الموعد">
+      <button type="button" class="clinic-appt-stat" data-appointment-filter="pending" aria-pressed="false"><span class="clinic-appt-stat-icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></span><span class="clinic-appt-stat-copy"><span class="clinic-appt-stat-label">بانتظار الموافقة</span><strong><%= pendingCount %></strong></span></button>
+      <button type="button" class="clinic-appt-stat" data-appointment-filter="reschedule" aria-pressed="false"><span class="clinic-appt-stat-icon"><i class="bi bi-calendar2-week" aria-hidden="true"></i></span><span class="clinic-appt-stat-copy"><span class="clinic-appt-stat-label">طلبات تغيير الموعد</span><strong><%= changeCount %></strong></span></button>
+      <button type="button" class="clinic-appt-stat" data-appointment-filter="confirmed" aria-pressed="false"><span class="clinic-appt-stat-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span><span class="clinic-appt-stat-copy"><span class="clinic-appt-stat-label">مواعيد مؤكدة</span><strong><%= confirmedCount %></strong></span></button>
+      <button type="button" class="clinic-appt-stat" data-appointment-filter="completed" aria-pressed="false"><span class="clinic-appt-stat-icon"><i class="bi bi-check2-circle" aria-hidden="true"></i></span><span class="clinic-appt-stat-copy"><span class="clinic-appt-stat-label">مواعيد مكتملة</span><strong><%= completedCount %></strong></span></button>
+      <button type="button" class="clinic-appt-stat" data-appointment-filter="no_show" aria-pressed="false"><span class="clinic-appt-stat-icon"><i class="bi bi-person-x" aria-hidden="true"></i></span><span class="clinic-appt-stat-copy"><span class="clinic-appt-stat-label">لم يحضر</span><strong><%= noShowCount %></strong></span></button>
+    </div>
+  </section>
+
+  <% if(pendingCount || changeCount){ %>
+  <section class="clinic-appt-attention mb-4" aria-labelledby="clinicApptAttentionTitle">
+    <div>
+      <h2 class="h6 fw-bold mb-1" id="clinicApptAttentionTitle"><i class="bi bi-exclamation-circle ms-2" aria-hidden="true"></i>طلبات تحتاج مراجعة</h2>
+      <p class="small text-secondary mb-0">راجع الطلبات من تفاصيل الموعد لاتخاذ الإجراء المناسب. لا يتم تغيير أي حجز من هذه الفلاتر.</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <% if(pendingCount){ %><button type="button" class="btn btn-sm btn-outline-primary" data-appointment-filter="pending">الحجوزات المعلقة (<%= pendingCount %>)</button><% } %>
+      <% if(changeCount){ %><button type="button" class="btn btn-sm btn-outline-primary" data-appointment-filter="reschedule">طلبات التعديل (<%= changeCount %>)</button><% } %>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="filter-panel mb-4" aria-labelledby="clinicApptFiltersTitle">
+    <div class="clinic-appt-section-title mb-3">
+      <div><h2 class="h5 fw-bold mb-1" id="clinicApptFiltersTitle">البحث والتصفية</h2><p class="small text-secondary mb-0">ابحث عن المريض أو الطبيب أو الخدمة، وحدد الفترة والحالة.</p></div>
+      <button class="btn btn-light btn-sm border" type="button" id="appointmentResetFilters"><i class="bi bi-arrow-counterclockwise ms-1" aria-hidden="true"></i>إعادة ضبط</button>
+    </div>
+    <div class="row g-3 align-items-end">
+      <div class="col-lg-8 col-md-7">
+        <label class="form-label small fw-bold" for="appointmentSearch">بحث</label>
+        <div class="input-group"><span class="input-group-text bg-white"><i class="bi bi-search" aria-hidden="true"></i></span><input class="form-control" id="appointmentSearch" type="search" placeholder="اسم المريض، الطبيب أو الخدمة" autocomplete="off"></div>
+      </div>
+      <div class="col-lg-4 col-md-5">
+        <label class="form-label small fw-bold" for="appointmentDateFilter">الفترة</label>
+        <select class="form-select" id="appointmentDateFilter"><option value="all">كل التواريخ</option><option value="today">اليوم</option><option value="upcoming">اليوم والقادمة</option><option value="past">السابقة</option></select>
+      </div>
+      <div class="col-12">
+        <span class="form-label small fw-bold d-block">الحالة</span>
+        <div class="appointment-filter-buttons" role="group" aria-label="حالة المواعيد">
+          <button type="button" class="btn btn-primary active" data-appointment-filter="all" aria-pressed="true">الكل</button>
+          <button type="button" class="btn btn-light" data-appointment-filter="pending" aria-pressed="false">بانتظار الموافقة</button>
+          <button type="button" class="btn btn-light" data-appointment-filter="reschedule" aria-pressed="false">طلبات تعديل</button>
+          <button type="button" class="btn btn-light" data-appointment-filter="confirmed" aria-pressed="false">مؤكدة</button>
+          <button type="button" class="btn btn-light" data-appointment-filter="completed" aria-pressed="false">مكتملة</button>
+          <button type="button" class="btn btn-light" data-appointment-filter="no_show" aria-pressed="false">لم يحضر</button>
+          <button type="button" class="btn btn-light" data-appointment-filter="closed" aria-pressed="false">ملغاة / مرفوضة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="clinicApptListTitle">
+    <div class="clinic-appt-section-title mb-3">
+      <div><h2 class="h5 fw-bold mb-1" id="clinicApptListTitle">قائمة المواعيد</h2><p class="small text-secondary mb-0">تظهر طلبات التعديل والحجوزات المعلقة أولًا، ثم بقية المواعيد.</p></div>
+      <span class="small text-secondary" id="appointmentCount" aria-live="polite"><%= bookings.length %> من أصل <%= bookings.length %> <%= sdcT("موعد") %></span>
+    </div>
+    <div class="d-grid gap-3" id="clinicAppointmentsList" data-today="<%= now.date %>">
+      <% if(!orderedBookings.length){ %><div class="soft-card p-4 text-center">لا توجد مواعيد في هذه العيادة بعد.</div><% } %>
+      <% for(const b of orderedBookings){ %>
+      <article class="status-strip appointment-item" data-appointment-id="<%= b.id %>" data-search="<%= b.patient_name %> <%= b.doctor_name %> <%= b.service_name %>" data-date="<%= b.date %>" data-status="<%= b.status %>" data-request-status="<%= b.request_status||'' %>" data-expired="<%= b.expired_unconfirmed?'true':'false' %>">
+        <div class="p-4">
+          <div class="row g-3 align-items-center">
+            <div class="col-lg-4">
+              <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                <span class="badge <%= b.expired_unconfirmed?'text-bg-secondary':b.status==='pending'?'text-bg-warning':b.status==='confirmed'?'text-bg-primary':b.status==='completed'?'text-bg-success':b.status==='no_show'?'text-bg-danger':'text-bg-secondary' %>"><%= b.expired_unconfirmed?'انتهى قبل التأكيد':labels[b.status]||b.status %></span>
+                <% if(b.request_status==='pending'){ %><span class="badge text-bg-info">طلب تغيير موعد</span><% } %>
+              </div>
+              <h3 class="h5 fw-bold mb-1"><%= b.patient_name %></h3>
+              <div class="small text-secondary"><%= b.service_name %> <%= sdcT("• د.") %> <%= b.doctor_name %></div>
+            </div>
+            <div class="col-lg-3 entity-meta-block"><small class="text-secondary">موعد الحجز</small><div class="fw-bold"><i class="bi bi-calendar3 ms-1" aria-hidden="true"></i><%= b.date %></div><div class="small text-secondary mt-1"><i class="bi bi-clock ms-1" aria-hidden="true"></i><%= b.time %></div></div>
+            <div class="col-lg-2 entity-meta-block">
+              <% if(b.request_status==='pending'){ %><small class="text-secondary">التاريخ المطلوب</small><div class="fw-bold"><%= b.requested_date||'—' %></div><div class="small text-secondary mt-1"><%= b.requested_time||'' %></div>
+              <% }else{ %><small class="text-secondary">قيمة الخدمة وقت الحجز</small><div class="fw-bold"><%= b.price %> ₪</div><% } %>
+            </div>
+            <div class="col-lg-3 card-action-group"><a class="btn btn-outline-primary btn-sm" href="/clinic/appointment-details?id=<%= b.id %>" aria-label="عرض تفاصيل موعد <%= b.patient_name %>"><i class="bi bi-eye ms-1" aria-hidden="true"></i>عرض التفاصيل</a></div>
+          </div>
+        </div>
+      </article>
+      <% } %>
+    </div>
+    <div class="empty-state d-none" id="appointmentEmpty" role="status" aria-live="polite"><i class="bi bi-calendar-x fs-1" aria-hidden="true"></i><h3 class="h5 fw-bold mt-3">لا توجد مواعيد مطابقة</h3><p class="small text-secondary mb-0">جرّب تغيير حالة الموعد أو الفترة، أو امسح البحث.</p></div>
+    <div class="text-center small text-secondary mt-3" id="appointmentPageStatus" aria-live="polite"></div>
+    <nav class="clinic-appt-pagination d-flex justify-content-center align-items-center flex-wrap gap-2 mt-3" id="appointmentPagination" aria-label="صفحات المواعيد" hidden></nav>
+  </section>
+</section>
+</main>
+<%- include('../partials/clinic/footer') %>
+<div class="toast-container position-fixed bottom-0 start-0 p-3">
+<div class="toast align-items-center text-bg-primary border-0" id="appToast">
+<div class="d-flex">
+<div class="toast-body">تمت العملية</div>
+<button class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" type="button"></button>
+</div>
+</div>
+</div>
+<script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+
+<!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><div class="toast-container position-fixed bottom-0 start-0 p-3"><div id="backendPendingNotice" class="toast align-items-center text-bg-secondary border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body">هذه العملية بانتظار ربط الباك إند. لم تُحفظ أو تتغيّر أي بيانات.</div><button type="button" class="btn-close btn-close-white m-auto ms-2" data-bs-dismiss="toast" aria-label="إغلاق"></button></div></div></div><form id="backend-form-1" method="get" data-ui-unbound="" data-backend-binding="filter" hidden=""></form><script defer src="/assets/i18n.js"></script>
+  </body></html>

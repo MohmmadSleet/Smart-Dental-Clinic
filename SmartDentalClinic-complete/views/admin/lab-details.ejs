@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تفاصيل المختبر | Smart Dental Clinic</title>
+<!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+<link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/i18n.css">
+  </head><body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+<%- include('../partials/admin/header') %>
+<main class="page-shell" id="main-content"><section class="container py-4 py-lg-5">
+<nav class="admin-crumbs" aria-label="مسار الصفحة"><a href="/admin/index"><i class="bi bi-house-door ms-1"></i>الرئيسية</a><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="admin-crumb-current">ملف المختبر</span></nav>
+
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/admin/labs">المختبرات</a></li><li class="breadcrumb-item active"><%= lab.Laboratory_Name %></li></ol></nav>
+<% const msgs={created:'تمت إضافة المختبر بنجاح.',update:'تم حفظ بيانات المختبر.',activate:'تم تفعيل المختبر.',deactivate:'تم تعطيل المختبر مع إبقاء الحالات القديمة.',invalid:'تحقق من البيانات وسبب الإجراء (ثمانية أحرف على الأقل).',duplicate:'مختبر بنفس الاسم والهاتف موجود بالفعل.',unchanged:'حالة المختبر لم تتغير.',schema:'قاعدة البيانات لم تستكمل تحديث المختبرات؛ شغّل ملف SQL الخاص بـv27.12.',permission:'تعذر إثبات صلاحية Super Admin داخل قاعدة البيانات. راجع سجل CMD.',constraint:'رفضت قاعدة البيانات الإجراء بسبب أحد قيودها. راجع سجل CMD.',failed:'تعذر حفظ الإجراء. راجع رسالة [ADMIN_LAB_MUTATION_FAILED] في CMD.',in_use:'لا يمكن حذف مختبر مرتبط بعيادات أو حالات مخبرية؛ يمكنك تعطيله مع حفظ السجلات.'}; %>
+<% if(msgs[labNotice]){ %><div class="alert <%= ['invalid','duplicate','unchanged','schema','permission','constraint','failed','in_use'].includes(labNotice)?'alert-warning':'alert-success' %> rounded-4" role="status"><%= msgs[labNotice] %></div><% } %>
+
+<div class="soft-card p-4 mb-4"><div class="d-flex flex-column flex-xl-row justify-content-between gap-3 align-items-xl-start">
+ <div class="d-flex gap-3 align-items-start"><div class="icon-box flex-shrink-0"><i class="bi bi-building"></i></div>
+ <div><div class="d-flex gap-2 align-items-center flex-wrap mb-1"><h1 class="fw-bold fs-2 mb-0" id="adminLabDetailName"><%= lab.Laboratory_Name %></h1><span class="badge <%= lab.Is_Active?'text-bg-success':'text-bg-secondary' %>"><%= lab.Is_Active?'نشط':'معطل' %></span></div>
+ <div class="text-secondary"><%= lab.clinics||'غير مرتبط بعيادة' %></div><div class="small text-secondary mt-2"><%= lab.Address %> • <%= lab.Phone %></div></div></div>
+ <div class="d-flex gap-2 flex-wrap"><button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#adminEditLabModal"><i class="bi bi-pencil-square ms-1"></i>تعديل</button>
+ <button class="btn <%= lab.Is_Active?'btn-outline-secondary':'btn-outline-success' %>" type="button" data-bs-toggle="modal" data-bs-target="#adminToggleLabModal"><i class="bi <%= lab.Is_Active?'bi-pause-circle':'bi-check-circle' %> ms-1"></i><%= lab.Is_Active?'تعليق المختبر':'إعادة تفعيل المختبر' %></button>
+ <% if(Number(lab.case_total)===0 && !lab.clinics){ %><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#adminDeleteLabModal"><i class="bi bi-trash3 ms-1"></i>حذف نهائي</button><% } else { %><a class="btn btn-outline-danger" href="#adminDeleteDecision">حذف المختبر</a><% } %></div>
+</div></div>
+<% if(Number(lab.case_total)>0 || lab.clinics){ %><div id="adminDeleteDecision" class="alert alert-light border border-danger-subtle mb-3"><strong>الحذف غير متاح:</strong> المختبر مرتبط بحالات أو عيادات؛ لا يمكن إتلاف سجلات العلاج. يمكن تعليق المختبر لإيقاف استخدامه الجديد.</div><% } %>
+<div class="row g-3 mb-4">
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">كل الحالات</small><div class="stat-value"><%= lab.case_total %></div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">مفتوحة</small><div class="stat-value text-primary"><%= lab.open_cases %></div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">تم الاستلام</small><div class="stat-value text-success"><%= lab.received_cases %></div></div></div>
+ <div class="col-6 col-lg-3"><div class="stat-card h-100"><small class="text-secondary">متأخرة</small><div class="stat-value text-danger"><%= lab.overdue_cases %></div></div></div>
+</div>
+<div class="row g-4 mb-4">
+ <div class="col-lg-5"><div class="soft-card p-4 h-100"><h4 class="fw-bold mb-3">بيانات المختبر</h4>
+ <div class="summary-row"><span>العيادات المرتبطة</span><strong><%= lab.clinics||'—' %></strong></div>
+ <div class="summary-row"><span>الهاتف</span><strong><%= lab.Phone %></strong></div>
+ <div class="summary-row"><span>العنوان</span><strong><%= lab.Address %></strong></div>
+ <div class="summary-row"><span>واتساب / بريد</span><strong><%= lab.Additional_Contact||'—' %></strong></div></div></div>
+ <div class="col-lg-7"><div class="soft-card p-4 h-100"><h4 class="fw-bold mb-3">صلاحية Super Admin</h4><div class="alert alert-warning rounded-4 mb-0">التعطيل يمنع الطلبات الجديدة، ولا يحذف الحالات أو علاقات المختبر بالعيادات. إرسال واستلام الحالات القديمة يبقى وفق صلاحيات العيادة.</div></div></div>
+</div>
+<div class="soft-card p-4"><div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-3"><div><h4 class="fw-bold mb-1">الحالات المرتبطة بالمختبر</h4><small class="text-secondary">عرض رقابي فقط؛ إدارة الطلبات من صلاحية العيادة.</small></div><input class="form-control" style="max-width:340px" id="adminLabCaseSearch" placeholder="ابحث برقم الحالة أو المريض أو الطبيب"></div>
+<div class="table-responsive mobile-stack-wrapper table-ui-shell"><table class="table align-middle mb-0 responsive-stack-table system-data-table medium-data-table"><thead><tr><th>الرقم</th><th>المريض</th><th>الطبيب</th><th>العمل</th><th>الحالة</th><th>التسليم المتوقع</th></tr></thead><tbody id="adminLabCasesBody">
+<% for(const c of cases){ %><tr data-admin-lab-case><td data-label="الرقم"><strong>LAB-<%= c.Lab_Order_ID %></strong></td><td data-label="المريض"><%= c.patient %></td><td data-label="الطبيب"><%= c.doctor %></td><td data-label="العمل"><%= c.work %></td><td data-label="الحالة"><span class="badge text-bg-secondary"><%= ({draft:'بانتظار الإرسال',sent:'مرسل',received:'مستلم',cancelled:'ملغى'})[c.Order_Status]||c.Order_Status %></span></td><td data-label="التسليم المتوقع"><%= c.due||'—' %></td></tr><% } %>
+</tbody></table></div><div class="text-center py-5 <%= cases.length?'d-none':'' %>" id="adminLabCasesEmpty"><i class="bi bi-inbox fs-2 text-secondary"></i><div class="text-secondary mt-2">لا توجد حالات مرتبطة بهذا المختبر.</div></div></div>
+<div class="modal fade" id="adminEditLabModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content border-0 rounded-4"><form method="post" action="/admin/lab-details/<%= lab.Laboratory_ID %>/update">
+<input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><div class="modal-header"><h5 class="modal-title fw-bold">تعديل بيانات المختبر</h5><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+<div class="modal-body"><div class="row g-3">
+<div class="col-md-6"><label class="form-label">اسم المختبر *</label><input class="form-control" name="name" value="<%= lab.Laboratory_Name %>" maxlength="150" required></div>
+<div class="col-md-6"><label class="form-label">الهاتف *</label><input class="form-control" name="phone" value="<%= lab.Phone %>" maxlength="30" required></div>
+<div class="col-md-6"><label class="form-label">العنوان *</label><input class="form-control" name="address" value="<%= lab.Address %>" maxlength="150" required></div>
+<div class="col-md-6"><label class="form-label">واتساب / بريد</label><input class="form-control" name="contact" value="<%= lab.Additional_Contact||'' %>" maxlength="150"></div>
+<div class="col-12"><label class="form-label">سبب التعديل الإداري *</label><textarea class="form-control" name="reason" rows="2" minlength="8" maxlength="1000" required></textarea></div>
+</div></div><div class="modal-footer"><button class="btn btn-light" type="button" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-primary" type="submit">حفظ التعديل</button></div>
+</form></div></div></div>
+<div class="modal fade" id="adminToggleLabModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4"><form method="post" action="/admin/lab-details/<%= lab.Laboratory_ID %>/<%= lab.Is_Active?'deactivate':'activate' %>">
+<input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><div class="modal-header"><h5 class="modal-title fw-bold"><%= lab.Is_Active?'تعطيل المختبر':'تفعيل المختبر' %></h5><button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="إغلاق"></button></div>
+<div class="modal-body"><p class="text-secondary"><%= lab.Is_Active?'ستبقى السجلات القديمة محفوظة ولن يقبل المختبر طلبات جديدة حتى إعادة تفعيله.':'سيصبح المختبر متاحًا للعيادات المرتبطة به مجددًا، وفق حالة ارتباط كل عيادة.' %></p><label class="form-label">سبب الإجراء الإداري *</label><textarea name="reason" class="form-control" rows="3" minlength="8" maxlength="1000" required></textarea></div>
+<div class="modal-footer"><button class="btn btn-light" data-bs-dismiss="modal" type="button">رجوع</button><button type="submit" class="btn <%= lab.Is_Active?'btn-outline-danger':'btn-success' %>"><%= sdcT("تأكيد") %> <%= lab.Is_Active?'التعطيل':'التفعيل' %></button></div>
+</form></div></div></div>
+<% if(Number(lab.case_total)===0 && !lab.clinics){ %>
+<div class="modal fade" id="adminDeleteLabModal" tabindex="-1" aria-labelledby="adminDeleteLabTitle"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4"><form method="post" action="/admin/lab-details/<%= lab.Laboratory_ID %>/delete">
+<input type="hidden" name="csrf_token" value="<%= adminCsrfToken %>"><div class="modal-header"><h5 class="modal-title fw-bold" id="adminDeleteLabTitle">حذف المختبر نهائيًا</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button></div>
+<div class="modal-body"><p class="alert alert-danger">هذا الإجراء نهائي ومتاح فقط للمختبر غير المرتبط بأي عيادة أو حالة. يتأكد السيرفر من عدم وجود علاقات قبل الحذف، ويسجّل السبب في سجل النظام.</p><p class="fw-bold"><%= lab.Laboratory_Name %></p>
+<label class="form-label" for="adminLabDeleteReason">سبب الحذف *</label><textarea id="adminLabDeleteReason" name="reason" rows="3" minlength="8" maxlength="1000" class="form-control" required></textarea></div>
+<div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button><button class="btn btn-danger" type="submit">تأكيد الحذف النهائي</button></div>
+</form></div></div></div>
+<% } %>
+</section></main><script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+<script src="assets/app.js"></script><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>

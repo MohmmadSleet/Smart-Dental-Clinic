@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html dir="<%= typeof lang === 'string' && lang === 'en' ? 'ltr' : 'rtl' %>" lang="<%= typeof lang === 'string' && lang === 'en' ? 'en' : 'ar' %>"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>الرئيسية | Smart Dental Clinic</title>
+    <!-- Structural fallback: the original Bootstrap stylesheet stays available in both languages. -->
+    <link href="/assets/vendor/937abe4f713b-bootstrap.rtl.min.css" rel="stylesheet">
+    <% if (typeof lang === 'string' && lang === 'en') { %><link href="/assets/vendor/bootstrap.ltr.min.css" rel="stylesheet"><% } %>
+    <link href="../assets/vendor/28667e4f82c7-bootstrap-icons.css" rel="stylesheet">
+    <!-- ملف CSS الوحيد الخاص بهذه المجموعة -->
+<link rel="stylesheet" href="assets/styles.css">
+  <link href="../assets/vendor/8c34d74036e9-css2-fonts.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet" href="/assets/i18n.css">
+  </head>
+  <body class="admin-workspace"><a class="ux-skip" href="#main-content">تخطي إلى المحتوى</a>
+    <%- include('../partials/admin/header') %>
+    
+    <main class="page-shell" id="main-content">
+      <section class="container py-4 py-lg-5 admin-home-page" aria-label="لوحة المشرف العام">
+        <div class="admin-dashboard-head admin-home-primary mb-4">
+          <div>
+            <span class="badge badge-soft mb-2"><i class="bi bi-shield-check ms-1"></i>Super Admin</span>
+            <h1 class="fw-bold fs-2 mb-2">لوحة إدارة المنصة</h1>
+            <p class="text-secondary mb-0">ملخص حي للمنصة والقرارات التي تحتاج متابعة؛ كل إجراء إداري يتم من قسمه المختص، دون تكرار أو أزرار تجريبية.</p>
+          </div>
+          <a href="approvals" class="btn btn-outline-primary"><i class="bi bi-patch-check ms-1"></i>طلبات الاعتماد <span class="badge text-bg-light me-1"><%= pendingClinicCount %></span></a>
+        </div>
+        <div class="admin-dashboard-kpis mb-4" aria-label="مؤشرات المنصة الفعلية">
+          <a class="stat-card admin-kpi text-dark" href="/admin/users"><div class="d-flex justify-content-between align-items-start"><div><small class="text-secondary">الحسابات المسجّلة</small><div class="stat-value"><%= dashboardSummary.totalUsers %></div><small>جميع حالات الحسابات</small></div><span class="icon-box"><i class="bi bi-people"></i></span></div></a>
+          <a class="stat-card admin-kpi text-dark" href="/admin/approvals#approvedClinics"><div class="d-flex justify-content-between align-items-start"><div><small class="text-secondary">العيادات النشطة والمعتمدة</small><div class="stat-value"><%= dashboardSummary.activeClinics %></div><small>فتح سجل العيادات</small></div><span class="icon-box"><i class="bi bi-hospital"></i></span></div></a>
+          <a class="stat-card admin-kpi text-dark" href="/admin/doctors"><div class="d-flex justify-content-between align-items-start"><div><small class="text-secondary">تراخيص بانتظار المراجعة</small><div class="stat-value"><%= dashboardSummary.pendingDoctors %></div><small>التحقق من أرقام التراخيص</small></div><span class="icon-box"><i class="bi bi-person-badge"></i></span></div></a>
+          <a class="stat-card admin-kpi text-dark" href="/admin/appointments"><div class="d-flex justify-content-between align-items-start"><div><small class="text-secondary">حجوزات اليوم</small><div class="stat-value"><%= dashboardSummary.todayAppointments %></div><small>بحسب توقيت فلسطين</small></div><span class="icon-box"><i class="bi bi-calendar3"></i></span></div></a>
+        </div>
+        <div class="row g-4 mb-4">
+          <div class="col-xl-7"><section class="soft-card p-4 h-100 admin-task-panel" aria-labelledby="pendingTasksHeading">
+            <div class="d-flex justify-content-between align-items-start mb-3"><div><h2 class="section-title h5 mb-1" id="pendingTasksHeading">يحتاج قرارًا أو متابعة</h2><small class="text-secondary">المهام الفعلية لدى المشرف العام</small></div><span class="badge text-bg-info rounded-pill"><%= Number(pendingClinicCount)+Number(dashboardSummary.pendingDoctors) %></span></div>
+            <div class="admin-attention-list">
+              <% if(Number(pendingClinicCount)>0){ %><div class="action-row"><span class="icon-box"><i class="bi bi-hospital-add"></i></span><div class="flex-grow-1"><strong><%= pendingClinicCount %> <%= sdcT("طلب اعتماد عيادة") %></strong><div class="small text-secondary">بانتظار مراجعة وثائق وبيانات التسجيل.</div></div><a class="btn btn-sm btn-primary" href="approvals">مراجعة</a></div><% } %>
+              <% if(Number(dashboardSummary.pendingDoctors)>0){ %><div class="action-row"><span class="icon-box"><i class="bi bi-person-exclamation"></i></span><div class="flex-grow-1"><strong><%= dashboardSummary.pendingDoctors %> <%= sdcT("ترخيص طبيب بانتظار التحقق") %></strong><div class="small text-secondary">مراجعة رقم الترخيص وتحديث حالة الاعتماد.</div></div><a class="btn btn-sm btn-outline-primary" href="/admin/doctors">فتح</a></div><% } %>
+              <% if(Number(pendingClinicCount)===0 && Number(dashboardSummary.pendingDoctors)===0){ %><div class="alert alert-light border rounded-4 mb-0"><i class="bi bi-check-circle text-success ms-2"></i>لا توجد حاليًا طلبات اعتماد أو تراخيص معلّقة.</div><% } %>
+            </div>
+            <div class="admin-home-status"><i class="bi bi-info-circle"></i>المهام المعروضة لا تعني تفويض المشرف بإدارة العلاج أو الحجوزات بدل أصحاب الصلاحية.</div>
+          </section></div>
+          <div class="col-xl-5"><section class="soft-card p-4 h-100" aria-labelledby="adminSectionsHeading">
+            <div class="d-flex justify-content-between align-items-center mb-3"><div><h2 class="section-title h5 mb-1" id="adminSectionsHeading">الوصول السريع للإدارة</h2><small class="text-secondary">العمليات من صفحاتها الأصلية والمربوطة</small></div><i class="bi bi-grid-3x3-gap text-primary fs-4"></i></div>
+            <div class="admin-quick-grid">
+              <a href="/admin/users"><span class="icon-box"><i class="bi bi-people"></i></span><span>المستخدمون</span></a>
+              <a href="/admin/doctors"><span class="icon-box"><i class="bi bi-person-badge"></i></span><span>الأطباء</span></a>
+              <a href="/admin/approvals"><span class="icon-box"><i class="bi bi-hospital"></i></span><span>العيادات</span></a>
+              <a href="/admin/labs"><span class="icon-box"><i class="bi bi-buildings"></i></span><span>المختبرات</span></a>
+              <a href="/admin/services"><span class="icon-box"><i class="bi bi-list-check"></i></span><span>الخدمات</span></a>
+              <a href="/admin/specialties"><span class="icon-box"><i class="bi bi-diagram-3"></i></span><span>التخصصات</span></a>
+            </div>
+          </section></div>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-4"><section class="soft-card p-4 h-100" aria-labelledby="adminTodayTitle"><div class="d-flex justify-content-between mb-3 align-items-center"><h2 class="section-title h5 mb-0" id="adminTodayTitle">تشغيل اليوم</h2><a class="btn btn-sm btn-light" href="/admin/appointments">الحجوزات</a></div><div class="summary-row"><span>حجوزات اليوم</span><strong><%= dashboardSummary.todayAppointments %></strong></div><div class="summary-row"><span>دور المشرف</span><strong>الرقابة والمتابعة</strong></div><p class="small text-secondary mt-3 mb-0">تعديل المواعيد والتشخيصات يظل لدى الجهات المخوّلة، بينما المشرف يراجع النشاط.</p></section></div>
+          <div class="col-lg-4"><section class="soft-card p-4 h-100" aria-labelledby="adminFinanceTitle"><div class="d-flex justify-content-between mb-3 align-items-center"><h2 class="section-title h5 mb-0" id="adminFinanceTitle">المالية والتسويات</h2><a class="btn btn-sm btn-light" href="/admin/finance">فتح المالية</a></div><div class="summary-row"><span>نسبة العمولة</span><strong>وفق إعدادات المنصة</strong></div><div class="summary-row"><span>التحصيل</span><strong>بالإيصالات الفعلية</strong></div><p class="small text-secondary mt-3 mb-0">لا نعرض رقمًا ماليًا غير محسوب. جميع مبالغ التسويات والدفعات الفعلية داخل قسم المالية.</p></section></div>
+          <div class="col-lg-4"><section class="soft-card p-4 h-100" aria-labelledby="adminLatestTitle"><div class="d-flex justify-content-between mb-3 align-items-center"><h2 class="section-title h5 mb-0" id="adminLatestTitle">أحدث نشاط إداري</h2><a class="btn btn-sm btn-light" href="/admin/system-log">السجل</a></div>
+            <% if(!dashboardSummary.recentEvents.length){ %><p class="text-secondary small">لا يوجد نشاط إداري مسجّل بعد.</p><% } %>
+            <% dashboardSummary.recentEvents.slice(0,3).forEach(event=>{ %><div class="admin-dashboard-recent"><span class="icon-box"><i class="bi bi-clock-history"></i></span><div><strong class="d-block small"><%= event.action %></strong><div class="small text-secondary"><%= event.target||'النظام' %> • <%= event.occurred %></div></div></div><% }); %>
+          </section></div>
+        </div>
+      </section>
+    </main>
+    <script src="../assets/vendor/8d95173bee2e-bootstrap.bundle.min.js"></script>
+    
+  <!-- تفاعلات هذا الدور فقط؛ Bootstrap محمّل قبله. -->
+<script src="assets/app.js"></script>
+
+
+<button type="button" class="ux-top" aria-label="العودة للأعلى"><i class="bi bi-arrow-up"></i></button><%- include('../partials/admin/footer') %><script defer src="/assets/i18n.js"></script>
+  </body></html>
